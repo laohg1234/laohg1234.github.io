@@ -2,7 +2,7 @@
    <html>
        <head>
            <meta charset="gb2312">
-           <title>老黄瓜牌记逝本</title>
+           <title>老黄瓜牌留言板</title>
            <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
            <meta charset="UTF-8">
            <link rel="shortcut icon" href="./1.png">
@@ -55,7 +55,7 @@
 
                  }
                  else {
-                     document.getElementById("ritian").value = "匿名发言者";
+                     document.getElementById("ritian").value = "不起名的FW";
                  }
 
              }
@@ -73,7 +73,7 @@
                       }
                       else
                       {
-                          localStorage.setItem(time, data.value + "|" + "匿名发言者" + "|" + this.getDateTime());//
+                          localStorage.setItem(time, data.value + "|" + "不起名的FW" + "|" + this.getDateTime());//
                       }
 
                       data.value = "";
@@ -100,7 +100,7 @@
               {
                   if(localStorage.length > 0)
                   {
-                      if(window.confirm("清空后不可恢复，是否确认清空？"))
+                      if(window.confirm("清空后可就没了，你确定吗？"))
                       {
                           localStorage.clear();
                           this.writeData();
@@ -142,22 +142,45 @@
       </head>
       
       <body>
-          <h1>留言板</h1>
+          <h1>老黄瓜牌留言板（beta）</h1>
 
           <div id="content">
               <div id="post">
                   <div style="background:#3EADC5 ;height:30px;">
-                      昵称：<input type="submit" id="shangtian" name="Submit3" style="border:none; background-color:#3EADC5; color:white;" value="默认用户点击改变" onclick="prom()" />
+                      昵称：<input type="submit" id="shangtian" name="Submit3" style="border:none; background-color:#3EADC5; color:white;" value="默认用户，点我改名" onclick="prom()" />
                       <input type="text" id="ritian" style="border:none; background-color:#3EADC5; color:white;"   onclick="prom()"/>
                       <!--disabled="disabled"-->
                   </div>
                   <div>
                   <textarea class="transition"></textarea>
                       </div>
-                  <input id="postBt" type="button" style="border:none; background-color:#3EADC5; color:white;border-radius:5px; width:80px; height:30px;" value="发表留言"/>
-                 <input id="clearBt" type="button" style="border:none; background-color:#3EADC5; color:white;border-radius:5px; width:80px; height:30px;" value="清空"/>
+                  <input id="postBt" type="button" style="border:none; background-color:#3EADC5; color:white;border-radius:5px; width:80px; height:30px;" value="发表你滴留言"/>
+                 <input id="clearBt" type="button" style="border:none; background-color:#3EADC5; color:white;border-radius:5px; width:80px; height:30px;" value="火速清空"/>
              </div>
              <div id="comment"></div>
               </div>
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         <div style="position:fixed; bottom:0px; width:100%; text-align:center;"><b>Powered By Cucumber Flavor Cloud</b></div>
+         
           </body>
+      
  </html>
