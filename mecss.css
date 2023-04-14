@@ -1,0 +1,25 @@
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  section {
+    padding: 50px;
+  }
+  
+  section h2 {
+    font-size: 24px;
+  }
+  
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .gallery img {
+    width: 300px;
+    margin: 10px;
+    border: 1px solid #ddd;
+  }
