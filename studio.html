@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄瓜味工作室</title>
+    <link rel="stylesheet" href="studio.css">
+    <link rel="shortcut icon" href="https://img.picui.cn/free/2025/02/10/67aa037682549.jpg" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>黄瓜味工作室</h1>
+            <p>创意与技术的完美结合</p>
+        </header>
+        <main>
+            <section class="about">
+                <h2>关于我们</h2>
+                <p>黄瓜味工作室是一个交流游戏和聊天的地方，我们为黄瓜味工作室旗下的所有内容致力于打造独特的设计和创新的技术模式。无论你是游戏玩家、开发者还是创意爱好者，这里都有你的一席之地！</p>
+            </section>
+            <section class="join">
+                <h2>加入我们</h2>
+                <p>如果你对创意和技术充满热情，欢迎加入黄瓜味工作室！</p>
+                <button id="joinBtn">点击加入</button>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2025 黄瓜味工作室. 保留所有权利.</p>
+        </footer>
+    </div>
+
+    <!-- 加入方式菜单 -->
+    <div id="popupMenu" class="popup-menu">
+        <div class="popup-content">
+            <span id="closeBtn" class="close-btn">&times;</span>
+            <h2>选择加入方式</h2>
+            <div class="menu-buttons">
+                <button id="qqGroupBtn">加入QQ群</button>
+                <button id="qqBtn">联系瓜瓜的QQ</button>
+                <button id="wechatBtn">关注微信公众号</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 微信公众号弹窗 -->
+    <div id="wechatPopup" class="popup-menu">
+        <div class="popup-content">
+            <span id="closeWechatBtn" class="close-btn">&times;</span>
+            <h2>请使用微信扫码关注服务号</h2>
+            <img src="https://img.picui.cn/free/2025/02/12/67acb17b75781.png" alt="微信公众号二维码" class="wechat-qrcode">
+        </div>
+    </div>
+
+    <script src="studio.js"></script>
+</body>
+</html>
