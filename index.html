@@ -7,7 +7,7 @@
     <meta name="description" content="欢迎来到黄瓜LaHG的个人网站。">
     <meta name="author" content="duanliang, duanliang920.com">
     <title>瓜瓜yyds</title>
-    <link rel="shortcut icon" href="./home.jpg">
+    <link rel="shortcut icon" href="./flavorstudio.jpg">
     <style>
         /* 全局样式 */
         body {
@@ -120,12 +120,29 @@
 </head>
 <body>
     <header>
-        <h1>Hello</h1>
+<h1 id="randomTitle" style="display: none;">泥嚎</h1>
+<h1 id="randomTitle2" style="display: none;">Hello</h1>
+<script>
+    // 获取所有可能的标题
+    const titles = [
+        "泥嚎",
+        "Hello"
+    ];
+
+    // 随机选择一个标题
+    const randomIndex = Math.floor(Math.random() * titles.length);
+    const selectedTitle = titles[randomIndex];
+
+    // 显示选中的标题
+    const titleElement = document.createElement("h1");
+    titleElement.textContent = selectedTitle;
+    document.getElementById("randomTitle").insertAdjacentElement("afterend", titleElement);
+</script>
         <h2>欢迎来到黄瓜LaHG的个人网站。</h2>
     </header>
 
     <div class="announcement">
-        <marquee behavior="alternate">公告：这几天就能更新2.0版本辣awa</marquee>
+        <marquee behavior="alternate">公告：2.0来力！😈😈😈</marquee>
     </div>
 
     <nav>
@@ -142,7 +159,7 @@
     </nav>
 
     <footer>
-        <b>Ver:1.9.0 | Powered By Cucumber Flavor Cloud</b>
+        <b>Ver:2.0.0 | Powered By Cucumber Flavor Cloud</b>
     </footer>
 </body>
 </html>
