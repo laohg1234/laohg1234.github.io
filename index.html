@@ -120,23 +120,46 @@
 </head>
 <body>
     <header>
-<h1 id="randomTitle" style="display: none;">泥嚎</h1>
-<h1 id="randomTitle2" style="display: none;">Hello</h1>
+
+<h1 id="randomGreeting" style="display: none;"></h1>
+
 <script>
-    // 获取所有可能的标题
-    const titles = [
-        "泥嚎",
-        "Hello"
+    // 各国语言的“你好”
+    const greetings = [
+        "泥嚎！", // 中国
+        "Hello！", // 英语
+        "안녕하세요！", // 韩语
+        "Bonjour！", // 法语
+        "Hallo！", // 德语
+        "Привет！", // 俄语
+        "こんにちは！", // 日语
+        "مرحبا！", // 阿拉伯语
+        "hej！", // 丹麦语
+        "Olá！", // 葡萄牙语
+        "tere！", // 爱沙尼亚语
+        "Hallo！", // 荷兰语
+        "¡Buenas!！", // 西班牙语
+        "здравей！", // 保加利亚语
+        "ahoj！", // 捷克语
+        "hej！", // 瑞典语
+        "Γεια σου！", // 希腊语
+        "Ciao！", // 意大利语
+        "cześć！", // 波兰语
+        "bună！", // 罗马尼亚语
+        "zdravo！", // 斯洛文尼亚语
+        "helló！", // 匈牙利语
+        "hei！", // 芬兰语
+        "สวัสดี！" // 泰语
     ];
 
-    // 随机选择一个标题
-    const randomIndex = Math.floor(Math.random() * titles.length);
-    const selectedTitle = titles[randomIndex];
+    // 随机选择一个问候语
+    const randomIndex = Math.floor(Math.random() * greetings.length);
+    const selectedGreeting = greetings[randomIndex];
 
-    // 显示选中的标题
-    const titleElement = document.createElement("h1");
-    titleElement.textContent = selectedTitle;
-    document.getElementById("randomTitle").insertAdjacentElement("afterend", titleElement);
+    // 显示选中的问候语
+    const greetingElement = document.createElement("h1");
+    greetingElement.textContent = selectedGreeting;
+    document.getElementById("randomGreeting").insertAdjacentElement("afterend", greetingElement);
 </script>
         <h2>欢迎来到黄瓜LaHG的个人网站。</h2>
     </header>
