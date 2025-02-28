@@ -136,25 +136,21 @@
     </footer>
 
     <script>
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-            return hashHex;
+        const encryptedPassword = "TGl1eXVjaGVuMjAxMQ=="; 
+
+        function decryptPassword(encrypted) {
+            return atob(encrypted); 
         }
 
-        const correctHash = "d1b5f1a3e3e4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0";
-
-        async function checkPassword() {
+        function checkPassword() {
             const password = document.getElementById("password-input").value;
-            const hashedPassword = await hashPassword(password);
+            const correctPassword = decryptPassword(encryptedPassword); 
 
-            if (hashedPassword === correctHash) {
+            if (password === correctPassword) {
                 document.getElementById("password-container").style.display = "none";
                 document.getElementById("content").style.display = "block";
             } else {
+
                 alert("密码错误，请重试！");
             }
         }
