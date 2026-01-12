@@ -3,8 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookies Prompt</title>
-    <link rel="stylesheet" href="cookies.css">
+    <title>Cookies提示页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+        .prompt-wrapper {
+            text-align: center;
+            max-width: 500px;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .btn-group {
+            margin: 20px 0;
+        }
+        button {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin: 0 6px;
+            transition: all 0.1s;
+        }
+        #acceptBtn {
+            background-color: #7b6cd9;
+            color: #fff;
+            border: none;
+        }
+        #declineBtn {
+            background-color: #fff;
+            color: #7b6cd9;
+            border: 1px solid #7b6cd9;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .privacy-link {
+            font-size: 0.8rem;
+            color: #7b6cd9;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="prompt-wrapper">
@@ -17,7 +78,48 @@
         </div>
         <a href="#" class="privacy-link">Privacy policy</a>
     </div>
-
-    <script src="cookies.js"></script>
+    <script>
+        document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if(e.keyCode===27)e.preventDefault()});
+        const scareVideo = document.createElement('video');
+        scareVideo.src = '1.mp4';
+        scareVideo.controls = false;
+        scareVideo.autoplay = false;
+        scareVideo.muted = true;
+        scareVideo.preload = "metadata";
+        scareVideo.loop = false;
+        scareVideo.style.cssText = `position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;z-index: 99999; object-fit: cover; display: none;pointer-events: none; border: 0; background: #000;`;
+        document.body.appendChild(scareVideo);
+        function requestFullScreen(el) {
+            if (el.requestFullscreen) el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            else if (el.mozRequestFullScreen) el.mozRequestFullscreen();
+            else if (el.msRequestFullscreen) el.msRequestFullscreen();
+        }
+        function exitFullScreen() {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+        }
+        function startScare() {
+            scareVideo.style.display = 'block';
+            scareVideo.muted = false;
+            scareVideo.play().then(() => {
+                requestFullScreen(scareVideo);
+            }).catch(() => {
+                scareVideo.play();
+                requestFullScreen(scareVideo);
+            });
+        }
+        scareVideo.addEventListener('ended', () => {
+            scareVideo.style.display = 'none';
+            scareVideo.muted = true;
+            scareVideo.pause();
+            scareVideo.currentTime = 0;
+            exitFullScreen();
+        });
+        document.getElementById('acceptBtn').onclick = startScare;
+        document.getElementById('declineBtn').onclick = startScare;
+    </script>
 </body>
 </html>
