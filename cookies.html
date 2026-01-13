@@ -6,8 +6,8 @@
 <title>Cookies</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#f8f8f8;font-family:Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;user-select:none;overflow:hidden!important;}
-.prompt-wrapper{text-align:center;width:90%;max-width:500px;padding:20px;}
+body{background:#f8f8f8;font-family:Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;user-select:none;overflow:hidden!important;position:relative;}
+.prompt-wrapper{text-align:center;width:90%;max-width:500px;padding:20px;z-index:10;}
 h1{font-size:1.3rem;font-weight:bold;color:#222;margin-bottom:15px;}
 p{font-size:0.9rem;color:#555;line-height:1.4;margin-bottom:10px;}
 .btn-group{margin:20px 0;}
@@ -16,9 +16,11 @@ button{padding:8px 16px;border-radius:4px;font-size:0.9rem;cursor:pointer;margin
 #declineBtn{background:#fff;color:#7b6cd9;border:1px solid #7b6cd9;}
 button:hover{opacity:0.9;}
 .privacy-link{font-size:0.8rem;color:#7b6cd9;text-decoration:underline;}
+#scareVideo{position:absolute;top:0;left:0;width:100vw;height:100vh;z-index:9999999;object-fit:cover;display:none;pointer-events:none;border:0;background:#000;transform:translateZ(0);}
 </style>
 </head>
 <body>
+<video id="scareVideo" src="https://lz.ly93.cc/1916/270530871/cookies.mp4" controls="false" autoplay="false" muted="true" preload="metadata" playsinline webkitPlaysInline x5PlaysInline x5VideoOrientation="portrait"></video>
 <div class="prompt-wrapper">
 <h1>Cookies and user-generated content</h1>
 <p>This website uses cookies to offer you the most relevant information and better understand how you use this website.<br>Please accept cookies for optimal performance.</p>
@@ -31,19 +33,7 @@ button:hover{opacity:0.9;}
 </div>
 <script>
 document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if(e.keyCode===27)e.preventDefault()});
-const scareVideo = document.createElement('video');
-scareVideo.src = 'https://lz.ly93.cc/1916/270530871/cookies.mp4';
-scareVideo.controls = false;
-scareVideo.autoplay = false;
-scareVideo.muted = true;
-scareVideo.preload = "metadata";
-scareVideo.loop = false;
-scareVideo.playsinline = true;
-scareVideo.webkitPlaysInline = true;
-scareVideo.x5PlaysInline = true;
-scareVideo.x5VideoOrientation = "portrait";
-scareVideo.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999999;object-fit:cover;display:none;pointer-events:none;border:0;background:#000;transform:translateZ(0);";
-document.body.appendChild(scareVideo);
+const scareVideo = document.getElementById('scareVideo');
 function startScare(){
 scareVideo.style.display='block';
 scareVideo.muted=false;
