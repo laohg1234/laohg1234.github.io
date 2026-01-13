@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Cookies提示页</title>
+<title>Cookies</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#f8f8f8;font-family:Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;user-select:none;overflow:hidden;}
+body{background:#f8f8f8;font-family:Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;user-select:none;overflow:hidden!important;}
 .prompt-wrapper{text-align:center;width:90%;max-width:500px;padding:20px;}
 h1{font-size:1.3rem;font-weight:bold;color:#222;margin-bottom:15px;}
 p{font-size:0.9rem;color:#555;line-height:1.4;margin-bottom:10px;}
@@ -40,21 +40,23 @@ scareVideo.preload = "metadata";
 scareVideo.loop = false;
 scareVideo.playsinline = true;
 scareVideo.webkitPlaysInline = true;
-scareVideo.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999999;object-fit:cover;display:none;pointer-events:none;border:0;background:#000;";
+scareVideo.x5PlaysInline = true;
+scareVideo.x5VideoOrientation = "portrait";
+scareVideo.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999999;object-fit:cover;display:none;pointer-events:none;border:0;background:#000;transform:translateZ(0);";
 document.body.appendChild(scareVideo);
 function startScare(){
-scareVideo.style.display = 'block';
-scareVideo.muted = false;
-scareVideo.play().catch(()=>{scareVideo.play()});
+scareVideo.style.display='block';
+scareVideo.muted=false;
+scareVideo.play();
 }
 scareVideo.addEventListener('ended',()=>{
-scareVideo.style.display = 'none';
-scareVideo.muted = true;
+scareVideo.style.display='none';
+scareVideo.muted=true;
 scareVideo.pause();
-scareVideo.currentTime = 0;
+scareVideo.currentTime=0;
 });
-document.getElementById('acceptBtn').onclick = startScare;
-document.getElementById('declineBtn').onclick = startScare;
+document.getElementById('acceptBtn').onclick=startScare;
+document.getElementById('declineBtn').onclick=startScare;
 </script>
 </body>
 </html>
