@@ -202,6 +202,29 @@
             transform: translateY(-6px);
         }
 
+        .game-card-disabled {
+            cursor: not-allowed;
+            opacity: 0.72;
+        }
+
+        .game-card-disabled:hover {
+            border-color: var(--line);
+            transform: none;
+        }
+
+        .game-card-disabled .game-cover img {
+            filter: grayscale(0.75) brightness(0.72);
+        }
+
+        .game-card-disabled .play-action {
+            color: #ffcc80;
+        }
+
+        .game-card-disabled .play-action b {
+            color: #241506;
+            background: #ffcc80;
+        }
+
         .game-cover {
             position: relative;
             aspect-ratio: 16 / 10;
@@ -341,8 +364,8 @@
             <div>
                 <p class="hero-copy">挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p>
                 <div class="hero-stats">
-                    <div class="hero-stat"><strong>6</strong><span>游戏入口</span></div>
-                    <div class="hero-stat"><strong>0</strong><span>安装步骤</span></div>
+                    <div class="hero-stat"><strong>5</strong><span>可玩游戏</span></div>
+                    <div class="hero-stat"><strong>1</strong><span>修复中</span></div>
                 </div>
             </div>
         </section>
@@ -353,10 +376,10 @@
                 <div class="game-body"><p class="game-tag">Puzzle</p><h2>2048 军旗版</h2><p>熟悉的数字合成玩法，换上一点不一样的军旗风味。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
             </a>
 
-            <a class="game-card" href="./n">
+            <article class="game-card game-card-disabled" aria-disabled="true">
                 <figure class="game-cover"><img src="./game/n.png" alt="地狱闯关封面"><span class="game-number">02</span></figure>
-                <div class="game-body"><p class="game-tag">Challenge</p><h2>地狱闯关</h2><p>名字听起来很难，但其实没有那么地狱。瓜瓜原创小游戏。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
+                <div class="game-body"><p class="game-tag">BUG · CLOSED</p><h2>熔岩闯关</h2><p>当前版本存在 BUG，暂时无法正常游玩。修复完成后会重新开放入口。</p><div class="play-action"><span>暂时关闭</span><b aria-hidden="true">×</b></div></div>
+            </article>
 
             <a class="game-card" href="./b">
                 <figure class="game-cover"><img src="./game/b.png" alt="扫雷封面"><span class="game-number">03</span></figure>

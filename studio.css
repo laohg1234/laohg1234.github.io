@@ -527,9 +527,21 @@ a {
 }
 
 .button-light {
-    margin-top: 1.3rem;
     color: var(--text);
     background: #07140d;
+}
+
+.join-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.3rem;
+}
+
+.button-sponsor {
+    border-color: rgba(7, 21, 13, 0.2);
+    color: #07140d;
+    background: rgba(255, 255, 255, 0.58);
 }
 
 .site-footer {
