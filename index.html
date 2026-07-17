@@ -230,8 +230,8 @@
             margin: 0;
             font-size: clamp(3.3rem, 8vw, 6.8rem);
             font-weight: 850;
-            letter-spacing: -0.075em;
-            line-height: 0.92;
+            letter-spacing: -0.06em;
+            line-height: 1.03;
         }
 
         #greeting {
@@ -245,6 +245,7 @@
             display: inline-block;
             font-size: 0.82em;
             white-space: nowrap;
+            padding-bottom: 0.06em;
             color: transparent;
             background: linear-gradient(100deg, var(--yellow), var(--green) 65%, #caffdc);
             -webkit-background-clip: text;
@@ -833,7 +834,7 @@
                 const version = String(data.version || "").trim();
                 if (!version) throw new Error("Missing version");
 
-                versionValue.textContent = `v${version}`;
+                versionValue.textContent = version;
                 versionLabel.textContent = "当前版本";
             } catch (error) {
                 versionValue.textContent = "重试";
