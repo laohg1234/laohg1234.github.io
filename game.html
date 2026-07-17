@@ -1,131 +1,388 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
-    <title>游戏选择</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#06100c">
+    <meta name="description" content="黄瓜 LaHG 的小游戏中心，收录 2048、扫雷、冲浪等游戏。">
+    <title>游戏中心 · 黄瓜 LaHG</title>
+    <link rel="icon" href="./flavor-mark.png">
     <style>
-      body {
-        background-color: #f2f2f2;
-        font-family: Arial, sans-serif;
-      }
-      h1 {
-        text-align: center;
-        margin-top: 50px;
-        font-size: 36px;
-        color: #555;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        margin-top: 50px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .game-container {
-        width: 300px;
-        background-color: #fff;
-        box-shadow: 0px 0px 10px #888888;
-        margin-bottom: 50px;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .game-header {
-        background-color: #f44336;
-        color: #fff;
-        padding: 20px;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-      }
-      .game-image {
-        height: 200px;
-        background-position: center;
-        background-size: cover;
-      }
-      .game-info {
-        padding: 20px;
-        text-align: justify;
-      }
-      .game-info p {
-        font-size: 14px;
-        color: #555;
-      }
-      .btn {
-        display: inline-block;
-        padding: 10px 15px;
-        background-color: #f44336;
-        color: #fff;
-        border-radius: 4px;
-        border: none;
-        text-decoration: none;
-        margin-top: 20px;
-        cursor: pointer;
-      }
-      .btn:hover {
-        background-color: #f56b50;
-      }
-    </style>
-  </head>
+        :root {
+            color-scheme: dark;
+            --bg: #06100c;
+            --panel: rgba(13, 31, 24, 0.9);
+            --line: rgba(188, 255, 211, 0.14);
+            --text: #f2fff6;
+            --muted: #9fb4a6;
+            --green: #4ae98d;
+            --lime: #daff7a;
+            --radius: 25px;
+        }
 
-  <body>
-    <h1>选一个游戏玩罢（喜</h1>
-    <div class="container">
-      <div class="game-container">
-        <div class="game-header">2048</div>
-        <div class="game-image" style="background-image: url('./game/2048.png')"></div>
-        <div class="game-info">
-          <p>2048军旗版</p>
-          <p>2048都玩过吧？</p>
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 12% 3%, rgba(74, 233, 141, 0.12), transparent 27rem),
+                radial-gradient(circle at 92% 62%, rgba(218, 255, 122, 0.07), transparent 27rem),
+                linear-gradient(145deg, #07130f, #040906);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            line-height: 1.65;
+        }
+
+        body::before {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+            background-size: 48px 48px;
+            content: "";
+            mask-image: linear-gradient(to bottom, black, transparent 82%);
+        }
+
+        a { color: inherit; }
+
+        .shell {
+            width: min(1160px, calc(100% - 36px));
+            margin-inline: auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 86px;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.72rem;
+            font-weight: 850;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border-radius: 13px;
+            color: #06140b;
+            background: linear-gradient(140deg, var(--lime), var(--green));
+            box-shadow: 0 12px 30px rgba(74, 233, 141, 0.17);
+        }
+
+        .topnav {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .topnav a {
+            padding: 0.62rem 0.85rem;
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 750;
+            text-decoration: none;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .topnav a:hover,
+        .topnav a:focus-visible {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            outline: none;
+        }
+
+        main { padding: 4rem 0 6.5rem; }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.55fr);
+            align-items: end;
+            gap: 3rem;
+            margin-bottom: 4.5rem;
+        }
+
+        .eyebrow {
+            margin: 0 0 1.2rem;
+            color: var(--green);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(3.7rem, 8vw, 7rem);
+            font-weight: 880;
+            letter-spacing: -0.08em;
+            line-height: 0.92;
+        }
+
+        h1 span {
+            color: transparent;
+            background: linear-gradient(105deg, var(--lime), var(--green));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-copy {
+            margin: 0;
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.65rem;
+            margin-top: 1.5rem;
+        }
+
+        .hero-stat {
+            padding: 0.85rem;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .hero-stat strong,
+        .hero-stat span { display: block; }
+
+        .hero-stat strong {
+            color: var(--green);
+            font-size: 1.3rem;
+        }
+
+        .hero-stat span {
+            color: var(--muted);
+            font-size: 0.74rem;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .game-card {
+            display: flex;
+            min-width: 0;
+            overflow: hidden;
+            flex-direction: column;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: linear-gradient(145deg, rgba(15, 37, 28, 0.95), rgba(7, 19, 13, 0.86));
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.24);
+            text-decoration: none;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .game-card:hover,
+        .game-card:focus-visible {
+            border-color: rgba(126, 255, 170, 0.38);
+            outline: none;
+            transform: translateY(-6px);
+        }
+
+        .game-cover {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            margin: 0;
+            overflow: hidden;
+            background: #10241a;
+        }
+
+        .game-cover::after {
+            position: absolute;
+            inset: 45% 0 0;
+            background: linear-gradient(transparent, rgba(4, 14, 9, 0.76));
+            content: "";
+        }
+
+        .game-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+        }
+
+        .game-card:hover .game-cover img { transform: scale(1.045); }
+
+        .game-number {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+            padding: 0.32rem 0.56rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            color: #fff;
+            background: rgba(3, 12, 7, 0.6);
+            font-size: 0.68rem;
+            font-weight: 850;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-body {
+            display: flex;
+            min-height: 235px;
+            padding: 1.3rem;
+            flex-direction: column;
+        }
+
+        .game-tag {
+            margin: 0 0 0.45rem;
+            color: var(--green);
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .game-body h2 {
+            margin: 0 0 0.45rem;
+            font-size: 1.45rem;
+            letter-spacing: -0.04em;
+        }
+
+        .game-body > p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .play-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1.8rem;
+            color: #d9e9df;
+            font-size: 0.84rem;
+            font-weight: 850;
+        }
+
+        .play-action b {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border-radius: 50%;
+            color: #06140b;
+            background: linear-gradient(135deg, var(--lime), var(--green));
+        }
+
+        footer { border-top: 1px solid var(--line); }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 92px;
+            gap: 1rem;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .footer-inner strong { color: var(--text); }
+
+        @media (max-width: 860px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero-copy { max-width: 600px; }
+            .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 580px) {
+            .shell { width: min(100% - 24px, 1160px); }
+            .topbar { min-height: 72px; }
+            .topnav a:first-child { display: none; }
+            main { padding-top: 3rem; }
+            h1 { font-size: clamp(3.2rem, 16vw, 4.5rem); }
+            .game-grid { display: block; }
+            .game-card { margin-bottom: 0.85rem; }
+            .game-body { min-height: 220px; }
+            .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="shell topbar">
+        <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">🎮</span><span>LaHG / 游戏中心</span></a>
+        <nav class="topnav" aria-label="页面导航">
+            <a href="./studio">黄瓜味工作室</a>
+            <a href="./">返回主页 ↗</a>
+        </nav>
+    </header>
+
+    <main class="shell">
+        <section class="hero" aria-labelledby="page-title">
+            <div>
+                <p class="eyebrow">Game Selection</p>
+                <h1 id="page-title">今天，<br><span>玩点什么？</span></h1>
+            </div>
+            <div>
+                <p class="hero-copy">挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p>
+                <div class="hero-stats">
+                    <div class="hero-stat"><strong>6</strong><span>游戏入口</span></div>
+                    <div class="hero-stat"><strong>0</strong><span>安装步骤</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-grid" aria-label="游戏列表">
+            <a class="game-card" href="./2048">
+                <figure class="game-cover"><img src="./game/2048.png" alt="2048 军旗版封面"><span class="game-number">01</span></figure>
+                <div class="game-body"><p class="game-tag">Puzzle</p><h2>2048 军旗版</h2><p>熟悉的数字合成玩法，换上一点不一样的军旗风味。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+
+            <a class="game-card" href="./n">
+                <figure class="game-cover"><img src="./game/n.png" alt="地狱闯关封面"><span class="game-number">02</span></figure>
+                <div class="game-body"><p class="game-tag">Challenge</p><h2>地狱闯关</h2><p>名字听起来很难，但其实没有那么地狱。瓜瓜原创小游戏。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+
+            <a class="game-card" href="./b">
+                <figure class="game-cover"><img src="./game/b.png" alt="扫雷封面"><span class="game-number">03</span></figure>
+                <div class="game-body"><p class="game-tag">Classic</p><h2>扫雷</h2><p>经典扫雷玩法。观察数字，避开地雷，然后再来一局。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+
+            <a class="game-card" href="./d">
+                <figure class="game-cover"><img src="./game/d.png" alt="谷歌小恐龙封面"><span class="game-number">04</span></figure>
+                <div class="game-body"><p class="game-tag">Runner</p><h2>谷歌小恐龙</h2><p>按下空格躲开障碍。规则很简单，坚持得更久可不简单。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+
+            <a class="game-card" href="./surf">
+                <figure class="game-cover"><img src="./game/surf.png" alt="冲浪游戏封面"><span class="game-number">05</span></figure>
+                <div class="game-body"><p class="game-tag">Arcade</p><h2>冲浪</h2><p>来自 Edge 的离线冲浪游戏。进入后请稍等片刻完成加载。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+
+            <a class="game-card" href="./plane">
+                <figure class="game-cover"><img src="./game/plane.png" alt="3D 飞机游戏封面"><span class="game-number">06</span></figure>
+                <div class="game-body"><p class="game-tag">3D Action</p><h2>3D 飞机</h2><p>驾驶飞机穿过三维场景，也是这里最值得一试的游戏之一。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="shell footer-inner">
+            <span><strong>LaHG Game Center</strong> · Powered By FAlphaWeb</span>
+            <span>©2026 FlavorStudio</span>
         </div>
-        <a href="https://laohg1234.github.io/2048" class="btn">试玩</a>
-      </div>
-      <div class="game-container">
-        <div class="game-header">地狱闯关</div>
-        <div class="game-image" style="background-image: url('./game/n.png')"></div>
-        <div class="game-info">
-          <p>并不是地狱难度哦</p>
-          <p>瓜瓜原创小游戏</p>
-        </div>
-        <a href="https://laohg1234.github.io/n" class="btn">试玩</a>
-      </div>
-      <div class="game-container">
-        <div class="game-header">扫雷</div>
-        <div class="game-image" style="background-image: url('./game/b.png')"></div>
-        <div class="game-info">
-          <p>是人都会！！！</p>
-          <p>awa</p>
-        </div>
-        <a href="https://laohg1234.github.io/b" class="btn">试玩</a>
-      </div>
-      <div class="game-container">
-        <div class="game-header">谷哥小恐龙</div>
-        <div class="game-image" style="background-image: url('./game/d.png')"></div>
-        <div class="game-info">
-          <p>按空格跳就行了</p>
-          <p>就这么简单</p>
-        </div>
-        <a href="https://laohg1234.github.io/d" class="btn">试玩</a>
-      </div>
-      <div class="game-container">
-        <div class="game-header">冲浪</div>
-        <div class="game-image" style="background-image: url('./game/surf.png')"></div>
-        <div class="game-info">
-          <p>Edge离线小游戏</p>
-          <p>进入后需要等一会</p>
-        </div>
-        <a href="https://laohg1234.github.io/surf" class="btn">试玩</a>
-      </div>
-      <div class="game-container">
-        <div class="game-header">3D飞机</div>
-        <div class="game-image" style="background-image: url('./game/plane.png')"></div>
-        <div class="game-info">
-          <p>豪丸😋</p>
-          <p>这里面最豪丸的游戏</p>
-        </div>
-        <a href="https://laohg1234.github.io/plane" class="btn">试玩</a>
-      </div>
-    </div>
-    <div style="position:fixed; bottom:0px; width:100%; text-align:center;"><b>Powered By Flavor Cloud</b></div>
-  </body>
+    </footer>
+</body>
 </html>
