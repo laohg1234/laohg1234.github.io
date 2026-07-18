@@ -259,12 +259,17 @@ label {
 
 .dashboard-hero h1 {
     margin: 0;
+    padding-bottom: .08em;
     font-size: clamp(3.5rem, 8vw, 7rem);
     letter-spacing: -.08em;
-    line-height: .9;
+    line-height: 1.03;
 }
 
 .dashboard-hero h1 span {
+    display: inline-block;
+    margin-top: .04em;
+    padding-bottom: .12em;
+    line-height: 1.06;
     color: transparent;
     background: linear-gradient(105deg, var(--lime), var(--green));
     -webkit-background-clip: text;

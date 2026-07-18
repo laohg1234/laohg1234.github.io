@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#050b08">
-    <meta name="keywords" content="瓜瓜, 管理界面, FAlphaWeb">
+    <meta name="keywords" content="FlavorStudio, 管理界面, FAlphaWeb">
     <meta name="description" content="FAlphaWeb 管理界面">
     <title>FAlphaWeb 管理界面</title>
     <link rel="icon" href="./flavor-mark.png">
@@ -16,7 +16,7 @@
             <a class="mini-brand" href="./" aria-label="返回主页"><span>F</span>FAlphaWeb CONTROL</a>
             <p class="eyebrow">Authorized access only</p>
             <h1 id="auth-title">进入管理界面</h1>
-            <p class="auth-intro">请输入管理密码以继续。验证仅在当前浏览器中完成。</p>
+            <p class="auth-intro">请输入管理密码以继续。管理内容会在验证成功后于浏览器中解密。</p>
             <form id="password-form" novalidate>
                 <label for="password-input">管理密码</label>
                 <div class="input-row">
@@ -31,49 +31,9 @@
         <div class="auth-decoration" aria-hidden="true"><span>F</span><span>A</span><span>W</span></div>
     </main>
 
-    <div id="content" class="dashboard" hidden tabindex="-1">
-        <header class="dashboard-header">
-            <a class="dashboard-brand" href="./"><span>F</span><strong>FAlphaWeb</strong> / ADMIN</a>
-            <a class="exit-link" href="./">退出界面 ↗</a>
-        </header>
+    <div id="content" class="dashboard" hidden tabindex="-1"></div>
 
-        <main class="dashboard-main">
-            <section class="dashboard-hero">
-                <div>
-                    <p class="eyebrow">FAlphaWeb 管理界面</p>
-                    <h1>欢迎回来，<br><span>Administrator.</span></h1>
-                </div>
-                <p>常用资源与软件下载入口集中在这里。</p>
-            </section>
-
-            <section class="resource-grid" aria-label="管理资源">
-                <a class="resource-card featured" href="https://laohg1234.lanzoub.com/b047qu57a" target="_blank" rel="noreferrer">
-                    <span class="resource-icon" aria-hidden="true">📦</span>
-                    <span class="resource-type">SOFTWARE</span>
-                    <h2>软件仓库</h2>
-                    <p>蓝奏云资源，访问密码：laohg1234</p>
-                    <b aria-hidden="true">↗</b>
-                </a>
-                <a class="resource-card" href="https://laohg1234.lanzoue.com/i5tEM1vqbfvg" target="_blank" rel="noreferrer">
-                    <span class="resource-icon" aria-hidden="true">01</span>
-                    <span class="resource-type">RESOURCE</span>
-                    <h2>资源入口 1</h2>
-                    <p>打开第一个外部资源链接。</p>
-                    <b aria-hidden="true">↗</b>
-                </a>
-                <a class="resource-card" href="https://laohg1234.lanzoue.com/ihjWz1vqbggh" target="_blank" rel="noreferrer">
-                    <span class="resource-icon" aria-hidden="true">02</span>
-                    <span class="resource-type">RESOURCE</span>
-                    <h2>资源入口 2</h2>
-                    <p>打开第二个外部资源链接。</p>
-                    <b aria-hidden="true">↗</b>
-                </a>
-            </section>
-        </main>
-
-        <footer class="dashboard-footer"><span>Powered By <strong>FAlphaWeb</strong></span><span>©2026 FlavorStudio</span></footer>
-    </div>
-
+    <script src="./admin-data.js"></script>
     <script src="./admin.js"></script>
 </body>
 </html>

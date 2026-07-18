@@ -1,40 +1,135 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>简单闯关游戏</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#222222">
+<title>熔岩闯关</title>
+<link rel="icon" href="data:,">
 <style>
-body {
-  background: #222;
-  margin: 0;
+* {
+  box-sizing: border-box;
 }
 
-h2 {
-  color: #666;
-  font-family: monospace;
-  text-align: center;
+html,
+body {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  background: #222;
+  color: #777;
+  margin: 0;
+  overflow: hidden;
+  font-family: Consolas, "SFMono-Regular", "Microsoft YaHei", monospace;
+}
+
+button,
+a {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hud {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #333;
+  background: #1c1c1c;
+}
+
+.hud-left,
+.hud-right,
+.hud-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-title {
+  color: #aaa;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.hud-subtitle,
+.help {
+  color: #555;
+  font-size: 12px;
+}
+
+.hud-stat {
+  min-width: 76px;
+}
+
+.hud-stat span,
+.hud-stat strong {
+  display: block;
+}
+
+.hud-stat span {
+  color: #555;
+  font-size: 10px;
+}
+
+.hud-stat strong {
+  margin-top: 2px;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.hud-button,
+.back-link {
+  padding: 7px 10px;
+  border: 1px solid #3c3c3c;
+  background: #292929;
+  text-decoration: none;
+}
+
+.hud-button:hover,
+.back-link:hover {
+  color: #aaa;
+  border-color: #555;
+}
+
+.game-shell {
+  position: relative;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
+
+.game {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  outline: none;
 }
 
 .background {
   table-layout: fixed;
   border-spacing: 0;
-  /* margin: 0 auto; */
 }
 
 .background td {
   padding: 0;
 }
 
-.lava, .actor {
+.lava,
+.actor {
   background: #e55;
 }
 
 .wall {
   background: #444;
   border: solid 3px #333;
-  box-sizing: content-box;
 }
 
 .actor {
@@ -51,6 +146,31 @@ h2 {
   box-shadow: none;
 }
 
+.game.cheat-invincible .player {
+  background: #b34dff;
+  box-shadow: 0 0 14px rgba(179, 77, 255, .9);
+}
+
+.game.cheat-flight .player {
+  background: #28d9ff;
+  box-shadow: 0 0 14px rgba(40, 217, 255, .9);
+}
+
+.game.cheat-invincible.cheat-flight .player {
+  background: #f5ff70;
+  box-shadow: 0 0 8px #b34dff, 0 0 17px #28d9ff;
+}
+
+.checkpoint {
+  background: #4d8;
+  border: 3px solid #294;
+}
+
+.checkpoint.active {
+  background: #8f8;
+  box-shadow: 0 0 12px #6f6;
+}
+
 .lost .player {
   background: #a04040;
 }
@@ -59,13 +179,308 @@ h2 {
   background: green;
 }
 
-.game {
-  position: relative;
-  overflow: hidden;
+.message {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  left: 50%;
+  max-width: min(520px, calc(100% - 30px));
+  padding: 8px 12px;
+  border: 1px solid #444;
+  color: #aaa;
+  background: rgba(28, 28, 28, 0.92);
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: 160ms ease;
+}
+
+.message.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.screen-overlay {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(20, 20, 20, .86);
+  backdrop-filter: blur(5px);
+}
+
+.screen-overlay[hidden] {
+  display: none;
+}
+
+.overlay-panel {
+  width: min(560px, 100%);
+  padding: clamp(24px, 5vw, 46px);
+  border: 3px solid #444;
+  color: #aaa;
+  background: #1c1c1c;
+  box-shadow: 14px 14px 0 #111;
+}
+
+.overlay-label {
+  margin: 0 0 12px;
+  color: #e2e838;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: .16em;
+}
+
+.overlay-panel h2 {
+  margin: 0;
+  color: #ddd;
+  font-size: clamp(38px, 8vw, 68px);
+  line-height: 1;
+  letter-spacing: -.06em;
+}
+
+.overlay-copy {
+  margin: 18px 0 0;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.pause-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 22px;
+  border: 3px solid #555;
+  color: #e2e838;
+  background: #292929;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.result-overlay {
+  z-index: 11;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(226, 232, 56, .12), transparent 330px),
+    rgba(17, 17, 17, .9);
+}
+
+.result-overlay.final {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(75, 220, 130, .17), transparent 360px),
+    rgba(14, 18, 15, .93);
+}
+
+.result-overlay.final .overlay-panel {
+  border-color: #39734f;
+  box-shadow: 14px 14px 0 #07120b;
+}
+
+.result-overlay.final .overlay-label {
+  color: #6ef29f;
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.result-stat {
+  padding: 12px;
+  border: 1px solid #3c3c3c;
+  background: #242424;
+}
+
+.result-stat span,
+.result-stat strong {
+  display: block;
+}
+
+.result-stat span {
+  color: #666;
+  font-size: 10px;
+}
+
+.result-stat strong {
+  margin-top: 5px;
+  color: #ccc;
+  font-size: 16px;
+}
+
+.result-button {
+  width: 100%;
+  padding: 14px 16px;
+  border: 3px solid #4d4d31;
+  color: #222;
+  background: #e2e838;
+  font-weight: bold;
+}
+
+.result-overlay.final .result-button {
+  border-color: #39734f;
+  background: #6ef29f;
+}
+
+.mobile-controls {
+  position: absolute;
+  z-index: 7;
+  right: 14px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 14px;
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.mobile-group {
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.touch-button {
+  width: 62px;
+  height: 56px;
+  border: 3px solid #333;
+  color: #aaa;
+  background: rgba(68, 68, 68, 0.9);
+  font-size: 22px;
+  font-weight: bold;
+  touch-action: none;
+  user-select: none;
+}
+
+.touch-button.jump {
+  width: 76px;
+  color: #222;
+  background: rgba(226, 232, 56, 0.9);
+}
+
+.touch-button.active {
+  transform: translateY(2px);
+  filter: brightness(1.25);
+}
+
+@media (max-width: 760px) {
+  .hud {
+    min-height: 96px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  .hud-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hud-subtitle,
+  .help,
+  .back-link {
+    display: none;
+  }
+
+  .hud-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hud-stats {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .hud-stat {
+    min-width: 0;
+  }
+
+  .game-shell {
+    height: calc(100vh - 96px);
+  }
+
+  .screen-overlay {
+    padding: 14px;
+  }
+
+  .overlay-panel {
+    padding: 24px 20px;
+    box-shadow: 8px 8px 0 #111;
+  }
+
+  .result-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .mobile-controls {
+    display: flex;
+  }
 }
 </style>
 </head>
 <body>
+<header class="hud">
+  <div class="hud-left">
+    <div>
+      <div class="hud-title">熔岩闯关</div>
+      <div class="hud-subtitle" id="levelName">热身通道</div>
+    </div>
+    <div class="help">← → / A D 移动　↑ / W 跳跃　空格暂停　R 重开</div>
+  </div>
+  <div class="hud-right">
+    <div class="hud-stats">
+      <div class="hud-stat"><span>关卡</span><strong id="levelValue">1 / 10</strong></div>
+      <div class="hud-stat"><span>金币</span><strong id="coinValue">0 / 0</strong></div>
+      <div class="hud-stat"><span>重试</span><strong id="deathValue">0</strong></div>
+    </div>
+    <button class="hud-button" id="pauseButton" type="button">暂停</button>
+    <button class="hud-button" id="restartButton" type="button">重开</button>
+    <a class="back-link" href="./game">返回游戏中心</a>
+  </div>
+</header>
+
+<main class="game-shell" id="gameShell">
+  <div class="message" id="message" role="status" aria-live="polite"></div>
+  <section class="screen-overlay" id="pauseOverlay" hidden aria-labelledby="pauseTitle">
+    <div class="overlay-panel">
+      <div class="pause-icon" aria-hidden="true">Ⅱ</div>
+      <p class="overlay-label">GAME PAUSED</p>
+      <h2 id="pauseTitle">游戏已暂停</h2>
+      <p class="overlay-copy">当前关卡和金币进度已经保留。按空格键或点击右上角“继续”即可返回游戏。</p>
+    </div>
+  </section>
+  <section class="screen-overlay result-overlay" id="resultOverlay" hidden aria-labelledby="resultTitle">
+    <div class="overlay-panel">
+      <p class="overlay-label" id="resultLabel">LEVEL CLEAR</p>
+      <h2 id="resultTitle">当前关卡完成</h2>
+      <p class="overlay-copy" id="resultCopy">金币已经全部收集。</p>
+      <div class="result-stats">
+        <div class="result-stat"><span>关卡进度</span><strong id="resultLevel">1 / 10</strong></div>
+        <div class="result-stat"><span>收集金币</span><strong id="resultCoins">0 / 0</strong></div>
+        <div class="result-stat"><span>累计重试</span><strong id="resultDeaths">0</strong></div>
+      </div>
+      <button class="result-button" id="resultButton" type="button">进入下一关 →</button>
+    </div>
+  </section>
+  <div class="mobile-controls" aria-label="触屏控制">
+    <div class="mobile-group">
+      <button class="touch-button" type="button" data-control="left" aria-label="向左">←</button>
+      <button class="touch-button" type="button" data-control="right" aria-label="向右">→</button>
+    </div>
+    <div class="mobile-group">
+      <button class="touch-button jump" type="button" data-control="jump" aria-label="跳跃">跳</button>
+    </div>
+  </div>
+</main>
+
 <script src="./n.js"></script>
 </body>
 </html>

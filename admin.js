@@ -1,5 +1,3 @@
-const correctHash = "a6c27cd6b1ef50a558141633810d86a34818e38492ecc101f21ef9021ef5a7f0";
-
 const passwordContainer = document.querySelector("#password-container");
 const passwordBox = document.querySelector("#password-box");
 const passwordForm = document.querySelector("#password-form");
@@ -9,15 +7,57 @@ const submitButton = document.querySelector("#submit-button");
 const togglePassword = document.querySelector("#toggle-password");
 const content = document.querySelector("#content");
 
-async function hashPassword(password) {
-    const data = new TextEncoder().encode(password);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
+let failedAttempts = 0;
+let nextAttemptAt = 0;
+
+function decodeBase64(value) {
+    const binary = atob(value);
+    return Uint8Array.from(binary, (character) => character.charCodeAt(0));
 }
 
-function showDashboard() {
+async function deriveAdminKey(password, payload) {
+    const keyMaterial = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+    );
+
+    return crypto.subtle.deriveKey(
+        {
+            name: "PBKDF2",
+            hash: "SHA-256",
+            salt: decodeBase64(payload.salt),
+            iterations: payload.iterations
+        },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["decrypt"]
+    );
+}
+
+async function decryptDashboard(password) {
+    const payload = window.FAlphaAdminPayload;
+    if (!payload || payload.version !== 1) throw new Error("INVALID_PAYLOAD");
+
+    const key = await deriveAdminKey(password, payload);
+    const decrypted = await crypto.subtle.decrypt(
+        {
+            name: "AES-GCM",
+            iv: decodeBase64(payload.iv),
+            tagLength: 128
+        },
+        key,
+        decodeBase64(payload.ciphertext)
+    );
+
+    return new TextDecoder().decode(decrypted);
+}
+
+function showDashboard(markup) {
+    content.innerHTML = markup;
     passwordContainer.hidden = true;
     content.hidden = false;
     content.focus();
@@ -27,6 +67,15 @@ function showError(message) {
     passwordError.textContent = message;
     passwordBox.classList.remove("shake");
     requestAnimationFrame(() => passwordBox.classList.add("shake"));
+}
+
+function setSubmitting(submitting) {
+    submitButton.disabled = submitting;
+    submitButton.firstChild.textContent = submitting ? "正在验证 " : "验证并进入 ";
+}
+
+function wait(milliseconds) {
+    return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
 passwordForm.addEventListener("submit", async (event) => {
@@ -39,24 +88,29 @@ passwordForm.addEventListener("submit", async (event) => {
         return;
     }
 
-    submitButton.disabled = true;
-    submitButton.firstChild.textContent = "正在验证 ";
+    const remainingDelay = nextAttemptAt - Date.now();
+    if (remainingDelay > 0) {
+        showError(`尝试过于频繁，请在 ${Math.ceil(remainingDelay / 1000)} 秒后重试。`);
+        return;
+    }
+
+    setSubmitting(true);
 
     try {
-        const hashedPassword = await hashPassword(passwordInput.value);
-
-        if (hashedPassword === correctHash) {
-            passwordInput.value = "";
-            showDashboard();
-        } else {
-            showError("密码错误，请重试。");
-            passwordInput.select();
-        }
+        const markup = await decryptDashboard(passwordInput.value);
+        failedAttempts = 0;
+        nextAttemptAt = 0;
+        passwordInput.value = "";
+        showDashboard(markup);
     } catch (error) {
-        showError("当前浏览器无法完成验证，请更换现代浏览器重试。");
+        failedAttempts += 1;
+        const delay = Math.min(5000, 400 * (2 ** Math.min(failedAttempts - 1, 4)));
+        nextAttemptAt = Date.now() + delay;
+        await wait(delay);
+        showError("密码错误，无法解密管理内容。");
+        passwordInput.select();
     } finally {
-        submitButton.disabled = false;
-        submitButton.firstChild.textContent = "验证并进入 ";
+        setSubmitting(false);
     }
 });
 
