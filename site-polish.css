@@ -1,0 +1,161 @@
+/* Shared visual layer for the non-game pages. The existing page CSS owns layout;
+   this layer keeps materials, type, focus and interaction behavior consistent. */
+:root {
+    --polish-bg: #0a0d0c;
+    --polish-bg-raised: #101413;
+    --polish-surface: rgba(21, 27, 25, 0.72);
+    --polish-surface-strong: rgba(27, 34, 31, 0.9);
+    --polish-line: rgba(231, 245, 237, 0.15);
+    --polish-line-strong: rgba(231, 245, 237, 0.26);
+    --polish-text: #f1f5f2;
+    --polish-muted: #a4ada7;
+    --polish-accent: #a9f37b;
+    --polish-accent-strong: #59d987;
+    --polish-ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+body.polished-page {
+    color: var(--polish-text);
+    background: var(--polish-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", "Microsoft YaHei", sans-serif;
+    text-rendering: optimizeLegibility;
+}
+
+body.polished-page::before {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: 0.48;
+}
+
+body.home-page::before,
+body.home-page::after {
+    display: none;
+}
+
+body.polished-page a,
+body.polished-page button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.polished-page :is(a, button):focus-visible {
+    outline: 2px solid var(--polish-accent);
+    outline-offset: 4px;
+}
+
+body.polished-page :is(.topbar, .nav-inner) {
+    position: sticky;
+    top: 14px;
+    z-index: 20;
+    border: 1px solid var(--polish-line);
+    border-radius: 20px;
+    background: rgba(17, 22, 20, 0.72);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(24px) saturate(145%);
+    backdrop-filter: blur(24px) saturate(145%);
+}
+
+body.polished-page :is(.topbar, .nav-inner) :is(a, .brand, .studio-brand) {
+    transition: color 180ms var(--polish-ease), background-color 180ms var(--polish-ease), border-color 180ms var(--polish-ease), transform 160ms var(--polish-ease);
+}
+
+body.polished-page :is(.topbar, .nav-inner) .brand-mark,
+body.polished-page :is(.topbar, .nav-inner) .brand-icon {
+    box-shadow: none;
+}
+
+body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button) {
+    transition: transform 160ms var(--polish-ease), background-color 180ms var(--polish-ease), border-color 180ms var(--polish-ease), box-shadow 180ms var(--polish-ease), color 180ms var(--polish-ease);
+}
+
+body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button):active {
+    transform: scale(0.97);
+}
+
+body.polished-page :is(.hero-copy, .profile-card, .announcement, .link-card, .download-card, .game-card, .support-panel, .reason-card, .sponsor-card, .division-card, .service-card, .auth-card) {
+    border-color: var(--polish-line);
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.045);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+}
+
+body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card) {
+    transition: transform 220ms var(--polish-ease), border-color 180ms var(--polish-ease), background-color 180ms var(--polish-ease), box-shadow 220ms var(--polish-ease);
+}
+
+body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card):hover {
+    border-color: var(--polish-line-strong);
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+body.polished-page :is(h1, h2, h3, .dashboard-hero h1) {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", "Microsoft YaHei", sans-serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.035em;
+}
+
+body.polished-page :is(.accent, h1 span, .hero h1 em, .dashboard-hero h1 span) {
+    background: linear-gradient(105deg, var(--polish-accent), var(--polish-accent-strong));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+body.polished-page :is(.button-primary, .card-action a, .submit-button) {
+    background: var(--polish-accent);
+    box-shadow: 0 12px 28px rgba(169, 243, 123, 0.12);
+}
+
+body.polished-page :is(.button-primary, .card-action a, .submit-button):hover {
+    background: #c0fa98;
+    box-shadow: 0 16px 34px rgba(169, 243, 123, 0.2);
+}
+
+body.polished-page :is(.section-heading, .hero) > :last-child {
+    color: var(--polish-muted);
+}
+
+body.polished-page footer,
+body.polished-page .site-footer,
+body.polished-page .dashboard-footer {
+    border-color: var(--polish-line);
+}
+
+body.admin-page .auth-page {
+    background: var(--polish-bg);
+}
+
+body.admin-page .auth-card,
+body.admin-page .dashboard {
+    border-color: var(--polish-line);
+}
+
+body.admin-page .auth-card {
+    border-radius: 24px;
+    background: rgba(17, 24, 21, 0.78);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38), inset 0 1px rgba(255, 255, 255, 0.07);
+}
+
+body.admin-page .submit-button:active,
+body.admin-page .toggle-password:active {
+    transform: scale(0.97);
+}
+
+@media (max-width: 640px) {
+    body.polished-page :is(.topbar, .nav-inner) {
+        top: 8px;
+        border-radius: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card):hover {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    body.polished-page :is(.topbar, .nav-inner, .hero-copy, .profile-card, .announcement, .link-card, .download-card, .game-card, .support-panel, .reason-card, .sponsor-card, .division-card, .service-card, .auth-card) {
+        background: var(--polish-bg-raised);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}
