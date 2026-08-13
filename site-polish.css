@@ -151,23 +151,24 @@ body.home-page .page {
 }
 
 body.home-page main {
-    padding-top: 2rem;
+    padding-top: 0.75rem;
 }
 
 body.home-page .hero {
     position: relative;
     grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
-    min-height: min(760px, calc(100vh - 110px));
+    min-height: 0;
+    align-items: start;
     gap: clamp(1.5rem, 4vw, 4rem);
 }
 
 body.home-page .hero-copy {
     display: flex;
     min-height: 0;
-    padding: clamp(3rem, 7vw, 6.4rem) 0;
+    padding: clamp(2rem, 4vw, 3.5rem) 0 1rem;
     overflow: visible;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -187,7 +188,7 @@ body.home-page h1 {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.12em;
-    font-size: clamp(4.5rem, 8.4vw, 8rem);
+    font-size: clamp(3rem, 5vw, 4.6rem);
     font-weight: 760;
     line-height: 1;
 }
@@ -217,7 +218,8 @@ body.admin-page .dashboard-hero h1 span {
 }
 
 body.home-page .accent {
-    white-space: normal;
+    font-size: 0.82em;
+    white-space: nowrap;
     line-height: 1.08;
 }
 
@@ -233,7 +235,7 @@ body.home-page .profile-card {
     min-height: 0;
     height: auto;
     aspect-ratio: 1 / 1;
-    align-self: center;
+    align-self: start;
     padding: 12px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.74);
@@ -988,18 +990,23 @@ body.admin-page .resource-icon {
 
     body.home-page main,
     body:is(.app-page, .game-hub-page, .sponsor-page) main {
-        padding-top: 1.5rem;
+        padding-top: 0.5rem;
     }
 
     body.home-page .hero-copy {
         min-height: auto;
-        padding: 4.8rem 0 3rem;
+        padding: 2.5rem 0 2rem;
     }
 
-    body.home-page h1,
     body:is(.app-page, .game-hub-page, .sponsor-page) h1 {
         font-size: clamp(3.25rem, 16vw, 4.8rem);
         line-height: 1.06;
+    }
+
+    body.home-page h1 {
+        gap: 0.14em;
+        font-size: 2.85rem;
+        line-height: 1.04;
     }
 
     body.studio-page .hero h1 {
@@ -1008,7 +1015,8 @@ body.admin-page .resource-icon {
     }
 
     body.home-page .accent {
-        white-space: normal;
+        font-size: 0.82em;
+        white-space: nowrap;
     }
 
     body.home-page .profile-card {
