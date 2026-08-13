@@ -1,34 +1,36 @@
-/* Shared visual layer for the non-game pages. The existing page CSS owns layout;
-   this layer keeps materials, type, focus and interaction behavior consistent. */
+/* Apple-inspired shared visual system for the public site surfaces.
+   Page-level styles retain document structure; this file owns hierarchy and material. */
 :root {
-    --polish-bg: #0a0d0c;
-    --polish-bg-raised: #101413;
-    --polish-surface: rgba(21, 27, 25, 0.72);
-    --polish-surface-strong: rgba(27, 34, 31, 0.9);
-    --polish-line: rgba(231, 245, 237, 0.15);
-    --polish-line-strong: rgba(231, 245, 237, 0.26);
-    --polish-text: #f1f5f2;
-    --polish-muted: #a4ada7;
-    --polish-accent: #a9f37b;
-    --polish-accent-strong: #59d987;
-    --polish-ease: cubic-bezier(0.23, 1, 0.32, 1);
+    --apple-bg: #f4f5f1;
+    --apple-bg-deep: #e8ebe4;
+    --apple-ink: #161917;
+    --apple-muted: #626962;
+    --apple-hairline: rgba(17, 29, 22, 0.12);
+    --apple-hairline-strong: rgba(17, 29, 22, 0.2);
+    --apple-green: #087d3e;
+    --apple-green-bright: #39d572;
+    --apple-lime: #d9ff72;
+    --apple-glass: rgba(248, 250, 247, 0.68);
+    --apple-glass-heavy: rgba(247, 249, 246, 0.88);
+    --apple-dark-glass: rgba(18, 23, 20, 0.76);
+    --apple-shadow: 0 26px 70px rgba(28, 43, 34, 0.1);
+    --apple-shadow-hover: 0 34px 88px rgba(28, 43, 34, 0.16);
+    --apple-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body.polished-page {
-    color: var(--polish-text);
-    background: var(--polish-bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", "Microsoft YaHei", sans-serif;
+    color: var(--apple-ink);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.82), transparent 28rem),
+        var(--apple-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", sans-serif;
+    font-optical-sizing: auto;
+    letter-spacing: 0;
     text-rendering: optimizeLegibility;
 }
 
-body.polished-page::before {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-    background-size: 72px 72px;
-    opacity: 0.48;
-}
-
-body.home-page::before,
-body.home-page::after {
+body.polished-page::before,
+body.polished-page::after {
     display: none;
 }
 
@@ -37,125 +39,1054 @@ body.polished-page button {
     -webkit-tap-highlight-color: transparent;
 }
 
-body.polished-page :is(a, button):focus-visible {
-    outline: 2px solid var(--polish-accent);
+body.polished-page :is(a, button, input):focus-visible {
+    outline: 3px solid rgba(8, 125, 62, 0.32);
     outline-offset: 4px;
 }
 
-body.polished-page :is(.topbar, .nav-inner) {
-    position: sticky;
-    top: 14px;
-    z-index: 20;
-    border: 1px solid var(--polish-line);
-    border-radius: 20px;
-    background: rgba(17, 22, 20, 0.72);
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.08);
-    -webkit-backdrop-filter: blur(24px) saturate(145%);
-    backdrop-filter: blur(24px) saturate(145%);
+body.polished-page :is(h1, h2, h3, .dashboard-hero h1) {
+    color: var(--apple-ink);
+    font-family: inherit;
+    font-optical-sizing: auto;
+    letter-spacing: 0;
 }
 
-body.polished-page :is(.topbar, .nav-inner) :is(a, .brand, .studio-brand) {
-    transition: color 180ms var(--polish-ease), background-color 180ms var(--polish-ease), border-color 180ms var(--polish-ease), transform 160ms var(--polish-ease);
+body.polished-page :is(p, small, .intro, .hero-intro, .hero-note, .hero-copy, .section-heading > p:last-child) {
+    letter-spacing: 0;
+}
+
+body.polished-page :is(.eyebrow, .section-index, .game-tag, .service-label, .resource-type, .method-tag, .modal-kicker) {
+    color: var(--apple-green);
+    letter-spacing: 0;
+}
+
+/* Floating chrome: a compact, translucent functional layer over page content. */
+body.polished-page :is(.topbar, .nav-inner) {
+    position: sticky;
+    top: 12px;
+    z-index: 30;
+    min-height: 64px;
+    padding: 9px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 20px;
+    color: #f5f7f5;
+    background: var(--apple-dark-glass);
+    box-shadow: 0 16px 50px rgba(18, 27, 22, 0.14), inset 0 1px rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    backdrop-filter: blur(28px) saturate(150%);
+}
+
+body.polished-page :is(.topbar, .nav-inner) :is(.brand, .studio-brand, a) {
+    color: rgba(245, 248, 246, 0.68);
+    transition: color 180ms ease, background-color 180ms ease, transform 120ms ease;
+}
+
+body.polished-page :is(.topbar, .nav-inner) :is(.brand, .studio-brand, a:hover, a:focus-visible) {
+    color: #fff;
 }
 
 body.polished-page :is(.topbar, .nav-inner) .brand-mark,
 body.polished-page :is(.topbar, .nav-inner) .brand-icon {
-    box-shadow: none;
+    border: 0;
+    border-radius: 12px;
+    background: #f7f8f5;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
 }
 
-body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button) {
-    transition: transform 160ms var(--polish-ease), background-color 180ms var(--polish-ease), border-color 180ms var(--polish-ease), box-shadow 180ms var(--polish-ease), color 180ms var(--polish-ease);
+body.polished-page :is(.topbar, .nav-inner) :is(.topnav a, .site-nav a) {
+    border-radius: 12px;
 }
 
-body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button):active {
-    transform: scale(0.97);
+body.polished-page :is(.topbar, .nav-inner) :is(.topnav a, .site-nav a):hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-body.polished-page :is(.hero-copy, .profile-card, .announcement, .link-card, .download-card, .game-card, .support-panel, .reason-card, .sponsor-card, .division-card, .service-card, .auth-card) {
-    border-color: var(--polish-line);
-    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.045);
-    -webkit-backdrop-filter: blur(18px) saturate(125%);
-    backdrop-filter: blur(18px) saturate(125%);
+body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button, .show-qr-button) {
+    border-radius: 999px;
+    transition: transform 120ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 250ms var(--apple-spring), color 180ms ease;
 }
 
-body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card) {
-    transition: transform 220ms var(--polish-ease), border-color 180ms var(--polish-ease), background-color 180ms var(--polish-ease), box-shadow 220ms var(--polish-ease);
+body.polished-page :is(.button, .button-primary, .button-secondary, .button-ghost, .button-light, .button-sponsor, .card-action a, .submit-button, .show-qr-button):active {
+    transform: scale(0.96);
+    transition-duration: 80ms;
 }
 
-body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card):hover {
-    border-color: var(--polish-line-strong);
-    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.08);
+body.polished-page :is(.button-primary, .card-action a, .submit-button, .show-qr-button) {
+    border-color: transparent;
+    color: #fff;
+    background: #171b18;
+    box-shadow: 0 12px 28px rgba(19, 27, 22, 0.16);
 }
 
-body.polished-page :is(h1, h2, h3, .dashboard-hero h1) {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", "Microsoft YaHei", sans-serif;
-    font-optical-sizing: auto;
-    letter-spacing: -0.035em;
+body.polished-page :is(.button-primary, .card-action a, .submit-button, .show-qr-button):hover {
+    color: #fff;
+    background: var(--apple-green);
+    box-shadow: 0 16px 36px rgba(8, 125, 62, 0.2);
 }
 
-body.polished-page :is(.accent, h1 span, .hero h1 em, .dashboard-hero h1 span) {
-    background: linear-gradient(105deg, var(--polish-accent), var(--polish-accent-strong));
-    -webkit-background-clip: text;
-    background-clip: text;
-}
-
-body.polished-page :is(.button-primary, .card-action a, .submit-button) {
-    background: var(--polish-accent);
-    box-shadow: 0 12px 28px rgba(169, 243, 123, 0.12);
-}
-
-body.polished-page :is(.button-primary, .card-action a, .submit-button):hover {
-    background: #c0fa98;
-    box-shadow: 0 16px 34px rgba(169, 243, 123, 0.2);
-}
-
-body.polished-page :is(.section-heading, .hero) > :last-child {
-    color: var(--polish-muted);
+body.polished-page :is(.button-secondary, .button-ghost) {
+    border-color: var(--apple-hairline);
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.54);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
 }
 
 body.polished-page footer,
 body.polished-page .site-footer,
 body.polished-page .dashboard-footer {
-    border-color: var(--polish-line);
+    border-color: var(--apple-hairline);
+    color: var(--apple-muted);
 }
 
-body.admin-page .auth-page {
-    background: var(--polish-bg);
+body.polished-page footer strong,
+body.polished-page .site-footer strong,
+body.polished-page .dashboard-footer strong {
+    color: var(--apple-ink);
 }
 
-body.admin-page .auth-card,
+/* Personal home: let the portrait anchor the first viewport; supporting copy stays unframed. */
+body.home-page .page {
+    width: min(1240px, calc(100% - 40px));
+}
+
+body.home-page main {
+    padding-top: 2rem;
+}
+
+body.home-page .hero {
+    position: relative;
+    grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+    min-height: min(760px, calc(100vh - 110px));
+    gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+body.home-page .hero-copy {
+    display: flex;
+    min-height: 0;
+    padding: clamp(3rem, 7vw, 6.4rem) 0;
+    overflow: visible;
+    flex-direction: column;
+    justify-content: center;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+body.home-page .hero-copy::after {
+    display: none;
+}
+
+body.home-page h1 {
+    max-width: 800px;
+    padding-bottom: 0.12em;
+    font-size: clamp(4.5rem, 8.4vw, 8rem);
+    font-weight: 760;
+    line-height: 1.03;
+}
+
+body.home-page #greeting {
+    font-family: inherit;
+    font-weight: 650;
+    letter-spacing: 0;
+}
+
+body.home-page .accent,
+body.app-page h1 span,
+body.game-hub-page h1 span,
+body.sponsor-page h1 span,
+body.studio-page .hero h1 em,
+body.admin-page .dashboard-hero h1 span {
+    color: var(--apple-green);
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+}
+
+body.home-page .accent {
+    white-space: normal;
+}
+
+body.home-page .intro {
+    max-width: 590px;
+    color: var(--apple-muted);
+    line-height: 1.75;
+}
+
+body.home-page .profile-card {
+    position: relative;
+    min-height: 650px;
+    padding: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.74);
+    border-radius: 38px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: var(--apple-shadow);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+}
+
+body.home-page .portrait {
+    min-height: 0;
+    height: 100%;
+    border-radius: 29px;
+    background-position: center 35%;
+}
+
+body.home-page .stats {
+    position: absolute;
+    right: 28px;
+    bottom: 28px;
+    left: 28px;
+    z-index: 3;
+    margin: 0;
+}
+
+body.home-page .stat {
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    background: rgba(16, 22, 18, 0.62);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+}
+
+body.home-page .stat strong,
+body.home-page .stat span {
+    color: #fff;
+}
+
+body.home-page .portrait-label {
+    bottom: 7.2rem;
+}
+
+body.home-page .announcement {
+    margin-top: 1rem;
+    border: 0;
+    border-radius: 18px;
+    color: var(--apple-ink);
+    background: rgba(226, 231, 223, 0.72);
+    box-shadow: none;
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+
+body.home-page .announcement p {
+    color: var(--apple-muted);
+}
+
+body.home-page .announcement-badge {
+    color: #fff;
+    background: var(--apple-green);
+}
+
+body.home-page .section-heading {
+    margin-top: 7.5rem;
+}
+
+body.home-page .section-heading h2 {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.08;
+}
+
+body.home-page .section-heading p {
+    color: var(--apple-muted);
+}
+
+body.home-page .links-grid {
+    gap: 14px;
+}
+
+body.home-page .link-card {
+    min-height: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 26px;
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.56);
+    box-shadow: 0 14px 42px rgba(28, 43, 34, 0.06);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(130%);
+    transition: transform 350ms var(--apple-spring), box-shadow 350ms var(--apple-spring), background-color 180ms ease;
+}
+
+body.home-page .link-card:nth-child(1) {
+    color: #fff;
+    background: #171c18;
+}
+
+body.home-page .link-card:nth-child(1) :is(h3, p, .card-arrow) {
+    color: #fff;
+}
+
+body.home-page .link-card:nth-child(3) {
+    background: #d8f2df;
+}
+
+body.home-page .link-card:hover {
+    border-color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: var(--apple-shadow-hover);
+    transform: translateY(-8px) scale(1.01);
+}
+
+body.home-page .link-card:nth-child(1):hover {
+    background: #232a25;
+}
+
+body.home-page .link-card h3 {
+    margin-top: 2.8rem;
+    color: var(--apple-ink);
+    font-size: 1.45rem;
+}
+
+body.home-page .link-card p {
+    color: var(--apple-muted);
+}
+
+body.home-page .card-icon {
+    border-color: var(--apple-hairline);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.56);
+}
+
+body.home-page .card-arrow {
+    color: var(--apple-green);
+}
+
+body.home-page .link-card::after {
+    display: none;
+}
+
+/* Shared library pages: editorial hero, calm utility cards, clear primary item. */
+body:is(.app-page, .game-hub-page, .sponsor-page) .shell {
+    width: min(1220px, calc(100% - 40px));
+}
+
+body:is(.app-page, .game-hub-page, .sponsor-page) main {
+    padding-top: 4.5rem;
+}
+
+body:is(.app-page, .game-hub-page, .sponsor-page) .hero {
+    min-height: 500px;
+    padding: clamp(3rem, 7vw, 6.5rem) 0;
+    align-items: end;
+    border-bottom: 1px solid var(--apple-hairline);
+}
+
+body:is(.app-page, .game-hub-page, .sponsor-page) h1 {
+    padding-bottom: 0.12em;
+    color: var(--apple-ink);
+    font-size: clamp(4.6rem, 9vw, 8rem);
+    font-weight: 720;
+    line-height: 1.04;
+}
+
+body:is(.app-page, .game-hub-page, .sponsor-page) :is(.hero-note, .hero-copy, .hero-intro) {
+    color: var(--apple-muted);
+    line-height: 1.75;
+}
+
+body:is(.app-page, .game-hub-page) :is(.download-grid, .game-grid) {
+    gap: 14px;
+    padding: 5rem 0 7rem;
+}
+
+body.app-page .download-card,
+body.game-hub-page .game-card {
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 28px;
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 16px 46px rgba(28, 43, 34, 0.07);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+    transition: transform 350ms var(--apple-spring), box-shadow 350ms var(--apple-spring), border-color 180ms ease;
+}
+
+body.app-page .download-card:hover,
+body.game-hub-page .game-card:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--apple-shadow-hover);
+    transform: translateY(-8px);
+}
+
+body.app-page .download-card.featured {
+    color: #fff;
+    background: #171c18;
+}
+
+body.app-page .download-card.featured :is(h2, p, small) {
+    color: #fff;
+}
+
+body.app-page .download-card h2,
+body.game-hub-page .game-card h2 {
+    color: inherit;
+}
+
+body.app-page .download-card p,
+body.app-page .download-card small,
+body.game-hub-page .game-card p,
+body.game-hub-page .play-action {
+    color: var(--apple-muted);
+}
+
+body.app-page .card-icon,
+body.app-page .tag,
+body.game-hub-page .play-action b {
+    border-color: var(--apple-hairline);
+    color: var(--apple-green);
+    background: rgba(8, 125, 62, 0.08);
+}
+
+body.app-page .notice,
+body.game-hub-page .hero-stat {
+    border-color: var(--apple-hairline);
+    color: var(--apple-muted);
+    background: rgba(255, 255, 255, 0.46);
+}
+
+body.game-hub-page .game-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+body.game-hub-page .game-card {
+    grid-column: span 4;
+    overflow: hidden;
+}
+
+body.game-hub-page .game-card:first-child,
+body.game-hub-page .game-card:nth-child(2) {
+    grid-column: span 6;
+}
+
+body.game-hub-page .game-cover {
+    background: #dfe5de;
+}
+
+body.game-hub-page .game-number {
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(20, 26, 22, 0.58);
+}
+
+/* Studio: immersive brand stage, then quiet full-width content bands. */
+body.studio-page {
+    background: #f2f3ef;
+}
+
+body.studio-page .site-header {
+    padding-top: 1px;
+}
+
+body.studio-page .hero {
+    grid-template-columns: minmax(0, 0.78fr) minmax(520px, 1.22fr);
+    min-height: min(850px, calc(100vh - 72px));
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-top: 2.5rem;
+}
+
+body.studio-page .hero h1 {
+    padding-bottom: 0.12em;
+    color: var(--apple-ink);
+    font-size: clamp(4.4rem, 7.2vw, 7.5rem);
+    font-weight: 740;
+    line-height: 1.04;
+}
+
+body.studio-page .hero h1 em {
+    font-style: normal;
+}
+
+body.studio-page .hero-intro {
+    color: var(--apple-muted);
+    line-height: 1.8;
+}
+
+body.studio-page .hero-tags li {
+    border-color: var(--apple-hairline);
+    color: var(--apple-muted);
+    background: rgba(255, 255, 255, 0.52);
+}
+
+body.studio-page .brand-stage {
+    min-height: 650px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 42px;
+    background:
+        radial-gradient(circle at 48% 46%, rgba(180, 255, 189, 0.34), transparent 34%),
+        linear-gradient(145deg, #dff7e2, #bcebc8 56%, #a8dfb7);
+    box-shadow: 0 40px 90px rgba(29, 83, 47, 0.2), inset 0 1px rgba(255, 255, 255, 0.68);
+}
+
+body.studio-page .brand-stage::after,
+body.studio-page .stage-orbit {
+    border-color: rgba(8, 93, 47, 0.12);
+}
+
+body.studio-page .stage-chip {
+    border-color: rgba(8, 93, 47, 0.12);
+    color: #174b2b;
+    background: rgba(248, 255, 249, 0.62);
+    box-shadow: 0 8px 28px rgba(28, 74, 41, 0.08);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+}
+
+body.studio-page :is(.about-section, .services-section) {
+    padding-block: 8rem;
+    border-top: 1px solid var(--apple-hairline);
+}
+
+body.studio-page .section-heading h2,
+body.sponsor-page .section-heading h2,
+body.studio-page .join-section h2 {
+    color: var(--apple-ink);
+    font-size: clamp(3.2rem, 6vw, 5.8rem);
+    font-weight: 700;
+    line-height: 1.08;
+}
+
+body.studio-page .section-heading > p:last-child,
+body.sponsor-page .section-heading > p:last-child {
+    color: var(--apple-muted);
+}
+
+body.studio-page .division-grid {
+    gap: 14px;
+}
+
+body.studio-page .division-card {
+    min-height: 520px;
+    border: 1px solid rgba(255, 255, 255, 0.74);
+    border-radius: 30px;
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.58);
+    box-shadow: 0 16px 46px rgba(28, 43, 34, 0.07);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+}
+
+body.studio-page .main-division {
+    background: #dff2e3;
+}
+
+body.studio-page .division-visual {
+    height: 260px;
+    border-color: var(--apple-hairline);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+body.studio-page .division-card :is(h3, p) {
+    color: inherit;
+}
+
+body.studio-page .division-card > p,
+body.studio-page .card-number {
+    color: var(--apple-muted);
+}
+
+body.studio-page .services-grid {
+    gap: 14px;
+}
+
+body.studio-page .service-card {
+    min-height: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 26px;
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.58);
+    box-shadow: 0 14px 40px rgba(28, 43, 34, 0.06);
+}
+
+body.studio-page .service-card :is(h3, p) {
+    color: inherit;
+}
+
+body.studio-page .service-card > p:last-child {
+    color: var(--apple-muted);
+}
+
+body.studio-page .service-icon {
+    border-color: var(--apple-hairline);
+    color: var(--apple-green);
+    background: rgba(8, 125, 62, 0.08);
+}
+
+body.studio-page .forum-card {
+    color: #fff;
+    background: #171c18;
+}
+
+body.studio-page .forum-card :is(h3, p) {
+    color: #fff;
+}
+
+body.studio-page .join-section {
+    border: 0;
+    border-radius: 36px;
+    color: #102016;
+    background: linear-gradient(130deg, #dfff87, #8ff1aa 64%, #4bd681);
+    box-shadow: 0 34px 80px rgba(41, 145, 78, 0.18);
+}
+
+body.studio-page .button-light {
+    color: #fff;
+    background: #171c18;
+}
+
+body.studio-page .button-sponsor {
+    border-color: rgba(16, 40, 23, 0.15);
+    color: #102016;
+    background: rgba(255, 255, 255, 0.54);
+}
+
+/* Sponsor: keep payment images inspectable and frame the ask with restraint. */
+body.sponsor-page .hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.55fr);
+}
+
+body.sponsor-page .support-panel,
+body.sponsor-page .reason-card,
+body.sponsor-page .sponsor-card {
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 16px 46px rgba(28, 43, 34, 0.07);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+}
+
+body.sponsor-page :is(.support-panel, .reason-card, .sponsor-card) :is(h2, h3) {
+    color: var(--apple-ink);
+}
+
+body.sponsor-page :is(.support-panel, .reason-card, .sponsor-card) p,
+body.sponsor-page .scan-note,
+body.sponsor-page .voluntary-note {
+    color: var(--apple-muted);
+}
+
+body.sponsor-page .support-list li,
+body.sponsor-page .voluntary-note {
+    border-color: var(--apple-hairline);
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.48);
+}
+
+body.sponsor-page .support-list b,
+body.sponsor-page .reason-icon,
+body.sponsor-page .steps b,
+body.sponsor-page .service-visual span {
+    border-color: var(--apple-hairline);
+    color: #fff;
+    background: var(--apple-green);
+}
+
+body.sponsor-page .why-section,
+body.sponsor-page .payment-section {
+    padding-block: 7rem;
+    border-bottom: 1px solid var(--apple-hairline);
+}
+
+body.sponsor-page .service-card {
+    margin-top: 14px;
+}
+
+body.sponsor-page .service-visual {
+    border-color: var(--apple-hairline);
+    background: #dff2e3;
+}
+
+body.sponsor-page .steps li {
+    color: var(--apple-ink);
+}
+
+/* Modal surfaces materialize from their source without locking input. */
+body.polished-page .modal::backdrop {
+    background: rgba(27, 33, 29, 0.34);
+    -webkit-backdrop-filter: blur(14px) saturate(90%);
+    backdrop-filter: blur(14px) saturate(90%);
+}
+
+body.polished-page .modal[open] .modal-card {
+    animation: apple-materialize 360ms var(--apple-spring) both;
+}
+
+body.polished-page .modal-card {
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 30px;
+    color: var(--apple-ink);
+    background: var(--apple-glass-heavy);
+    box-shadow: 0 44px 120px rgba(27, 39, 31, 0.28), inset 0 1px rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: blur(32px) saturate(140%);
+    backdrop-filter: blur(32px) saturate(140%);
+}
+
+body.polished-page .modal-card :is(h2, strong) {
+    color: var(--apple-ink);
+}
+
+body.polished-page .modal-card :is(.modal-intro, small, .qr-note) {
+    color: var(--apple-muted);
+}
+
+body.polished-page .modal-close {
+    border-color: var(--apple-hairline);
+    color: var(--apple-ink);
+    background: rgba(20, 26, 22, 0.06);
+}
+
+body.studio-page .contact-list :is(a, button) {
+    border-color: var(--apple-hairline);
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.52);
+}
+
+body.studio-page .contact-list :is(a, button):hover {
+    border-color: var(--apple-hairline-strong);
+    background: #fff;
+}
+
+body.studio-page .contact-icon {
+    color: #fff;
+    background: var(--apple-green);
+}
+
+/* Admin: familiar macOS-like sign-in window and a quiet utility dashboard. */
+body.admin-page,
+body.admin-page .auth-page,
 body.admin-page .dashboard {
-    border-color: var(--polish-line);
+    color: var(--apple-ink);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 42%),
+        #e7ebe5;
+}
+
+body.admin-page .auth-page::before {
+    opacity: 0.46;
+    background-image: radial-gradient(circle, rgba(8, 125, 62, 0.13) 1px, transparent 1.5px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, black, transparent 82%);
 }
 
 body.admin-page .auth-card {
-    border-radius: 24px;
-    background: rgba(17, 24, 21, 0.78);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38), inset 0 1px rgba(255, 255, 255, 0.07);
+    width: min(480px, 100%);
+    padding: 16px 34px 36px;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 28px;
+    color: var(--apple-ink);
+    background: rgba(250, 252, 249, 0.78);
+    box-shadow: 0 38px 100px rgba(29, 45, 34, 0.18), inset 0 1px rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(30px) saturate(135%);
+    backdrop-filter: blur(30px) saturate(135%);
 }
 
-body.admin-page .submit-button:active,
-body.admin-page .toggle-password:active {
-    transform: scale(0.97);
+body.admin-page .auth-card::before {
+    display: block;
+    width: 100%;
+    height: 12px;
+    margin-bottom: 22px;
+    background:
+        radial-gradient(circle at 6px 6px, #ff5f57 0 5px, transparent 5.5px),
+        radial-gradient(circle at 26px 6px, #febc2e 0 5px, transparent 5.5px),
+        radial-gradient(circle at 46px 6px, #28c840 0 5px, transparent 5.5px);
+    content: "";
+}
+
+body.admin-page .mini-brand,
+body.admin-page .auth-card h1,
+body.admin-page label {
+    color: var(--apple-ink);
+}
+
+body.admin-page .mini-brand span,
+body.admin-page .dashboard-brand > span {
+    color: #fff;
+    background: var(--apple-green);
+}
+
+body.admin-page .auth-card h1 {
+    padding-bottom: 0.12em;
+    font-size: clamp(2.8rem, 7vw, 4rem);
+    font-weight: 720;
+    line-height: 1.05;
+}
+
+body.admin-page :is(.auth-intro, .back-link, .exit-link, .dashboard-hero > p) {
+    color: var(--apple-muted);
+}
+
+body.admin-page .input-row {
+    border-color: var(--apple-hairline);
+    background: rgba(255, 255, 255, 0.78);
+}
+
+body.admin-page .input-row:focus-within {
+    border-color: rgba(8, 125, 62, 0.45);
+    box-shadow: 0 0 0 4px rgba(8, 125, 62, 0.09);
+}
+
+body.admin-page #password-input {
+    color: var(--apple-ink);
+}
+
+body.admin-page .toggle-password {
+    color: var(--apple-green);
+}
+
+body.admin-page .auth-decoration {
+    color: rgba(8, 125, 62, 0.045);
+}
+
+body.admin-page .dashboard-main {
+    max-width: 1220px;
+}
+
+body.admin-page .dashboard-hero h1 {
+    padding-bottom: 0.12em;
+    color: var(--apple-ink);
+    font-weight: 720;
+    line-height: 1.04;
+}
+
+body.admin-page .resource-grid {
+    gap: 14px;
+}
+
+body.admin-page .resource-card {
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 28px;
+    color: var(--apple-ink);
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 16px 46px rgba(28, 43, 34, 0.07);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+    transition: transform 350ms var(--apple-spring), box-shadow 350ms var(--apple-spring);
+}
+
+body.admin-page .resource-card.featured {
+    color: #fff;
+    background: #171c18;
+}
+
+body.admin-page .resource-card:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--apple-shadow-hover);
+    transform: translateY(-8px);
+}
+
+body.admin-page .resource-card :is(h2, p, b) {
+    color: inherit;
+}
+
+body.admin-page .resource-card:not(.featured) p {
+    color: var(--apple-muted);
+}
+
+body.admin-page .resource-icon {
+    border-color: var(--apple-hairline);
+    color: var(--apple-green);
+    background: rgba(8, 125, 62, 0.08);
+}
+
+@keyframes apple-materialize {
+    from { opacity: 0; transform: translateY(18px) scale(0.94); filter: blur(7px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@media (max-width: 920px) {
+    body.home-page .hero,
+    body.studio-page .hero {
+        grid-template-columns: 1fr;
+    }
+
+    body.home-page .hero {
+        min-height: auto;
+    }
+
+    body.home-page .profile-card {
+        min-height: 620px;
+    }
+
+    body.studio-page .hero {
+        min-height: auto;
+        padding-bottom: 6rem;
+    }
+
+    body.sponsor-page .hero {
+        grid-template-columns: 1fr;
+    }
+
+    body.studio-page .brand-stage {
+        min-height: 570px;
+    }
+
+    body.game-hub-page .game-card,
+    body.game-hub-page .game-card:first-child,
+    body.game-hub-page .game-card:nth-child(2) {
+        grid-column: span 6;
+    }
 }
 
 @media (max-width: 640px) {
     body.polished-page :is(.topbar, .nav-inner) {
         top: 8px;
-        border-radius: 16px;
+        min-height: 58px;
+        padding: 7px 9px;
+        border-radius: 17px;
+    }
+
+    body.home-page .page,
+    body:is(.app-page, .game-hub-page, .sponsor-page) .shell {
+        width: min(100% - 24px, 1220px);
+    }
+
+    body.home-page main,
+    body:is(.app-page, .game-hub-page, .sponsor-page) main {
+        padding-top: 1.5rem;
+    }
+
+    body.home-page .hero-copy {
+        min-height: auto;
+        padding: 4.8rem 0 3rem;
+    }
+
+    body.home-page h1,
+    body:is(.app-page, .game-hub-page, .sponsor-page) h1,
+    body.studio-page .hero h1 {
+        font-size: clamp(3.25rem, 16vw, 4.8rem);
+        line-height: 1.06;
+    }
+
+    body.home-page .accent {
+        white-space: normal;
+    }
+
+    body.home-page .profile-card {
+        min-height: 520px;
+        border-radius: 28px;
+    }
+
+    body.home-page .portrait {
+        border-radius: 21px;
+    }
+
+    body.home-page .stats {
+        right: 22px;
+        bottom: 22px;
+        left: 22px;
+    }
+
+    body.home-page .portrait-label {
+        bottom: 7.1rem;
+    }
+
+    body.home-page .section-heading {
+        margin-top: 5.5rem;
+    }
+
+    body.home-page .link-card {
+        min-height: 210px;
+    }
+
+    body:is(.app-page, .game-hub-page, .sponsor-page) .hero {
+        min-height: auto;
+        padding: 5.5rem 0 4rem;
+    }
+
+    body:is(.app-page, .game-hub-page) :is(.download-grid, .game-grid) {
+        display: block;
+        padding: 3.5rem 0 5rem;
+    }
+
+    body.app-page .download-card,
+    body.game-hub-page .game-card {
+        margin-bottom: 12px;
+    }
+
+    body.studio-page .hero {
+        padding-top: 4rem;
+    }
+
+    body.studio-page .brand-stage {
+        min-height: 430px;
+        border-radius: 28px;
+    }
+
+    body.studio-page :is(.about-section, .services-section),
+    body.sponsor-page :is(.why-section, .payment-section) {
+        padding-block: 5rem;
+    }
+
+    body.studio-page .division-card {
+        min-height: 430px;
+    }
+
+    body.studio-page .division-visual {
+        height: 210px;
+    }
+
+    body.studio-page .join-section {
+        border-radius: 28px;
+    }
+
+    body.admin-page .auth-page {
+        padding: 12px;
+    }
+
+    body.admin-page .auth-card {
+        padding: 14px 22px 28px;
+        border-radius: 24px;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    body.polished-page :is(.link-card, .download-card, .game-card, .reason-card, .sponsor-card, .division-card, .service-card, .resource-card):hover {
+@media (hover: none) {
+    body.polished-page :is(.link-card, .download-card, .game-card, .division-card, .service-card, .resource-card):hover {
         transform: none;
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    body.polished-page .modal[open] .modal-card {
+        animation: apple-fade 180ms ease both;
+    }
+
+    body.polished-page :is(.link-card, .download-card, .game-card, .division-card, .service-card, .resource-card):hover {
+        transform: none;
+    }
+}
+
+@keyframes apple-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @media (prefers-reduced-transparency: reduce) {
-    body.polished-page :is(.topbar, .nav-inner, .hero-copy, .profile-card, .announcement, .link-card, .download-card, .game-card, .support-panel, .reason-card, .sponsor-card, .division-card, .service-card, .auth-card) {
-        background: var(--polish-bg-raised);
+    body.polished-page :is(.topbar, .nav-inner) {
+        background: #171c18;
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
+    }
+
+    body.polished-page :is(.profile-card, .announcement, .link-card, .download-card, .game-card, .support-panel, .reason-card, .sponsor-card, .division-card, .service-card, .auth-card, .resource-card, .modal-card) {
+        background: #fff;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}
+
+@media (prefers-contrast: more) {
+    body.polished-page {
+        --apple-muted: #3f453f;
+        --apple-hairline: rgba(17, 29, 22, 0.34);
+    }
+
+    body.polished-page :is(.topbar, .nav-inner) {
+        border-color: #fff;
+        background: #111512;
     }
 }
