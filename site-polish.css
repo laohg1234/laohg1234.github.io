@@ -229,7 +229,11 @@ body.home-page .intro {
 
 body.home-page .profile-card {
     position: relative;
-    min-height: 650px;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    align-self: center;
     padding: 12px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.74);
@@ -949,10 +953,6 @@ body.admin-page .resource-icon {
         min-height: auto;
     }
 
-    body.home-page .profile-card {
-        min-height: 620px;
-    }
-
     body.studio-page .hero {
         min-height: auto;
         padding-bottom: 6rem;
@@ -1012,7 +1012,7 @@ body.admin-page .resource-icon {
     }
 
     body.home-page .profile-card {
-        min-height: 520px;
+        min-height: 0;
         border-radius: 28px;
     }
 
