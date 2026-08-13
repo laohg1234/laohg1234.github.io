@@ -482,22 +482,28 @@ body.studio-page .site-header {
 }
 
 body.studio-page .hero {
-    grid-template-columns: minmax(0, 0.78fr) minmax(520px, 1.22fr);
+    grid-template-columns: minmax(580px, 1.08fr) minmax(0, 0.92fr);
     min-height: min(850px, calc(100vh - 72px));
-    gap: clamp(2rem, 5vw, 5rem);
+    gap: 3rem;
     padding-top: 2.5rem;
 }
 
 body.studio-page .hero h1 {
     padding-bottom: 0.12em;
     color: var(--apple-ink);
-    font-size: clamp(4.4rem, 7.2vw, 7.5rem);
+    font-size: 4.4rem;
     font-weight: 740;
     line-height: 1.04;
 }
 
+body.studio-page .hero h1 > span,
+body.studio-page .hero h1 > em {
+    display: block;
+}
+
 body.studio-page .hero h1 em {
     font-style: normal;
+    white-space: nowrap;
 }
 
 body.studio-page .hero-intro {
@@ -705,15 +711,16 @@ body.sponsor-page .steps li {
     color: var(--apple-ink);
 }
 
-/* Modal surfaces materialize from their source without locking input. */
+/* Native dialogs already own their top-layer layout. Fade the dialog itself so
+   the browser never animates a child while it is still measuring the surface. */
 body.polished-page .modal::backdrop {
     background: rgba(27, 33, 29, 0.34);
     -webkit-backdrop-filter: blur(14px) saturate(90%);
     backdrop-filter: blur(14px) saturate(90%);
 }
 
-body.polished-page .modal[open] .modal-card {
-    animation: apple-materialize 360ms var(--apple-spring) both;
+body.polished-page .modal[open] {
+    animation: apple-modal-fade 160ms ease-out both;
 }
 
 body.polished-page .modal-card {
@@ -893,9 +900,21 @@ body.admin-page .resource-icon {
     background: rgba(8, 125, 62, 0.08);
 }
 
-@keyframes apple-materialize {
-    from { opacity: 0; transform: translateY(18px) scale(0.94); filter: blur(7px); }
-    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+@keyframes apple-modal-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 1100px) {
+    body.studio-page .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-bottom: 6rem;
+    }
+
+    body.studio-page .brand-stage {
+        min-height: 570px;
+    }
 }
 
 @media (max-width: 920px) {
@@ -956,9 +975,13 @@ body.admin-page .resource-icon {
     }
 
     body.home-page h1,
-    body:is(.app-page, .game-hub-page, .sponsor-page) h1,
-    body.studio-page .hero h1 {
+    body:is(.app-page, .game-hub-page, .sponsor-page) h1 {
         font-size: clamp(3.25rem, 16vw, 4.8rem);
+        line-height: 1.06;
+    }
+
+    body.studio-page .hero h1 {
+        font-size: 2.65rem;
         line-height: 1.06;
     }
 
@@ -1051,7 +1074,7 @@ body.admin-page .resource-icon {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body.polished-page .modal[open] .modal-card {
+    body.polished-page .modal[open] {
         animation: apple-fade 180ms ease both;
     }
 
