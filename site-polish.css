@@ -181,17 +181,27 @@ body.home-page .hero-copy::after {
 }
 
 body.home-page h1 {
+    display: flex;
     max-width: 800px;
     padding-bottom: 0.12em;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.12em;
     font-size: clamp(4.5rem, 8.4vw, 8rem);
     font-weight: 760;
-    line-height: 1.03;
+    line-height: 1;
+}
+
+body.home-page h1 > br {
+    display: none;
 }
 
 body.home-page #greeting {
+    max-width: 100%;
     font-family: inherit;
     font-weight: 650;
     letter-spacing: 0;
+    line-height: 1.08;
 }
 
 body.home-page .accent,
@@ -208,6 +218,7 @@ body.admin-page .dashboard-hero h1 span {
 
 body.home-page .accent {
     white-space: normal;
+    line-height: 1.08;
 }
 
 body.home-page .intro {
@@ -261,6 +272,17 @@ body.home-page .stat span {
 
 body.home-page .portrait-label {
     bottom: 7.2rem;
+}
+
+body.home-page .portrait-label strong {
+    color: #fff;
+    font-weight: 750;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.82), 0 0 18px rgba(0, 0, 0, 0.5);
+}
+
+body.home-page .portrait-label span {
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.78);
 }
 
 body.home-page .announcement {
