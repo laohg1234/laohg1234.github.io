@@ -1,0 +1,58 @@
+# Parallax - LaHG / Umbra
+# Dense local-pulse map estimated from Parallax.wav.
+# Method: 8-second spectral-flux windows sampled every 4 seconds; timestamps
+# are snapped to the nearest detected onset. Global master tempo: 175.90 BPM.
+# 118/88 values describe the audible triplet/half-time pulse density rather
+# than claiming that the song's master tempo was rewritten at every node.
+# Low-confidence fade-out estimates after 02:44 were intentionally omitted.
+# [tempo-estimate-start]
+
+00:00.000 bpm 175.90
+00:07.674 bpm 174.20
+00:11.958 bpm 118.20
+00:15.836 bpm 118.30
+00:19.911 bpm 118.60
+00:22.767 bpm 175.90
+00:28.003 bpm 176.00
+00:32.276 bpm 176.10
+00:35.805 bpm 176.30
+00:39.718 bpm 177.00
+00:43.955 bpm 177.30
+00:47.856 bpm 176.80
+00:52.094 bpm 177.30
+00:54.126 bpm 177.80
+00:56.169 bpm 88.30
+00:58.688 bpm 118.01
+01:01.928 bpm 118.10
+01:05.840 bpm 118.20
+01:10.078 bpm 118.00
+01:13.990 bpm 117.70
+01:14.490 bpm 175.90
+01:20.179 bpm 175.80
+01:24.242 bpm 175.80
+01:27.829 bpm 176.30
+01:32.264 bpm 176.50
+01:35.689 bpm 88.20
+01:38.232 bpm 176.80
+01:42.319 bpm 176.00
+01:45.732 bpm 175.70
+01:49.830 bpm 176.40
+01:52.210 bpm 176.20
+01:54.068 bpm 117.30
+01:57.830 bpm 117.00
+02:00.036 bpm 116.90
+02:01.905 bpm 174.90
+02:05.864 bpm 175.80
+02:10.299 bpm 175.80
+02:12.168 bpm 175.70
+02:14.084 bpm 87.80
+02:15.941 bpm 174.90
+02:20.040 bpm 176.30
+02:24.138 bpm 175.80
+02:28.225 bpm 176.50
+02:31.986 bpm 175.90
+02:36.085 bpm 175.70
+02:39.672 bpm 175.20
+02:43.677 bpm 174.80
+
+# [tempo-estimate-end]

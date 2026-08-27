@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="zh-CN" data-i18n-lang="zh" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8efed">
+  <script>
+    // Apply an explicitly saved theme before the stylesheet paints the page.
+    try {
+      const savedTheme = localStorage.getItem("signal-room-theme-v1");
+      if (savedTheme === "light" || savedTheme === "dark") {
+        document.documentElement.dataset.theme = savedTheme;
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeMeta && savedTheme === "dark") themeMeta.content = "#0f1318";
+      }
+    } catch { /* private mode */ }
+  </script>
+  <title>FLAudioViz｜音频可视化</title>
+  <meta name="description" content="可在浏览器本地播放、分析并自定义导出的音频可视化工具。">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="FLAudioViz home" data-i18n-aria="a11y.home" title="FlavorAudioVisualization">
+        <img class="brand-logo" src="assets/flavorstudio-mark.png" alt="">
+        <span class="brand-lockup">
+          <span class="brand-name">FLAudioViz</span>
+          <span class="brand-full">FlavorAudioVisualization</span>
+        </span>
+      </a>
+      <span class="topbar-rule" aria-hidden="true"></span>
+      <button class="nav-more" id="moreButton" type="button" aria-expanded="false" aria-controls="moreMenu" data-i18n-aria="nav.more">
+        <span data-i18n="nav.more">MORE</span> <span aria-hidden="true">»</span>
+      </button>
+      <nav class="more-menu" id="moreMenu" hidden aria-label="More links" data-i18n-aria="nav.moreLinks">
+        <a href="#visualizer" data-i18n="nav.visualizer">Visualizer</a>
+        <a href="#customize" data-i18n="nav.customize">Customize</a>
+        <a href="#export" data-i18n="nav.export">Export</a>
+      </nav>
+      <div class="topbar-actions">
+        <div class="language-toggle" role="group" aria-label="Language" data-i18n-aria="nav.language">
+          <button type="button" class="language-button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="language-button is-active" data-lang="zh" aria-pressed="true">中</button>
+        </div>
+        <button class="icon-button" id="tutorialButton" type="button" aria-label="Open user guide" title="Open user guide" aria-haspopup="dialog" aria-controls="tutorialDialog" data-i18n-aria="guide.open" data-i18n-title="guide.open">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.4 9.2a2.8 2.8 0 1 1 4.9 1.9c-.8.9-2.3 1.3-2.3 2.9"></path><path d="M12 17h.01"></path></svg>
+        </button>
+        <button class="icon-button" id="themeButton" type="button" aria-label="Toggle theme" title="Toggle theme" data-i18n-aria="nav.theme" data-i18n-title="nav.theme">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        </button>
+        <button class="icon-button" id="customizeButton" type="button" aria-label="Open customization" title="Customize visualizer" data-i18n-aria="nav.customizeAria" data-i18n-title="nav.customizeAria">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h3M11 17h9M14 4v6M7 14v6"></path><circle cx="17" cy="7" r="3"></circle><circle cx="9" cy="17" r="3"></circle></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="top">
+      <section class="page-intro" aria-labelledby="pageTitle">
+        <div class="intro-line">
+          <div class="intro-title-wrap">
+            <h1 id="pageTitle" data-copy="title" data-i18n="intro.title">Audio Visualizer</h1>
+            <span class="title-badge" aria-hidden="true">◌</span>
+          </div>
+        </div>
+        <div class="intro-rule" aria-hidden="true"></div>
+      </section>
+
+      <section class="stage-section" id="visualizer" aria-label="Audio visualizer preview" data-i18n-aria="stage.aria">
+        <div class="stage-frame">
+          <canvas id="visualizerCanvas" width="1920" height="1080"></canvas>
+          <div class="stage-corner stage-corner--tl" aria-hidden="true"></div>
+          <div class="stage-corner stage-corner--br" aria-hidden="true"></div>
+          <div class="stage-empty-note" id="stageEmptyNote">
+            <span class="stage-empty-dot" aria-hidden="true"></span>
+            <span data-i18n="stage.drop">Drop an audio file to start previewing</span>
+          </div>
+        </div>
+        <div class="timeline-strip">
+          <button class="transport-icon" id="backButton" type="button" aria-label="Back 10 seconds" title="Back 10 seconds" data-i18n-aria="stage.back" data-i18n-title="stage.back">«</button>
+          <button class="play-button" id="playButton" type="button" data-i18n-aria="stage.play"><span class="play-glyph" aria-hidden="true">▶</span><span id="playLabel" data-i18n="stage.play">Play</span></button>
+          <button class="transport-icon" id="forwardButton" type="button" aria-label="Forward 10 seconds" title="Forward 10 seconds" data-i18n-aria="stage.forward" data-i18n-title="stage.forward">»</button>
+          <input class="scrub" id="scrub" type="range" min="0" max="1" value="0" step="0.001" aria-label="Song position" data-i18n-aria="stage.position">
+          <output class="time-readout" id="timeReadout">0:00 / 0:00</output>
+          <button class="icon-button icon-button--small" id="muteButton" type="button" aria-label="Mute" title="Mute" data-i18n-aria="stage.mute" data-i18n-title="stage.mute"><span aria-hidden="true">◖</span></button>
+        </div>
+      </section>
+
+      <section class="control-grid" aria-label="Audio controls">
+        <section class="panel upload-panel" aria-labelledby="uploadHeading">
+          <div class="panel-heading">
+            <div><span class="panel-index">01</span><h2 id="uploadHeading" data-i18n="source.heading">Source</h2></div>
+            <span class="panel-status" id="sourceStatus" data-i18n="source.waiting">Waiting</span>
+          </div>
+          <button class="drop-zone" id="audioDrop" type="button">
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <span class="drop-title" data-i18n="source.audio">Add or drop audio</span>
+            <span class="drop-help" data-i18n="source.audioHelp">MP3, WAV, OGG, FLAC, M4A if your browser can decode it</span>
+          </button>
+          <button class="drop-zone drop-zone--compact" id="coverDrop" type="button">
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <span class="drop-title" data-i18n="source.cover">Add cover</span>
+            <span class="drop-help" data-i18n="source.coverHelp">PNG, JPG, or WebP</span>
+          </button>
+          <button class="drop-zone drop-zone--compact" id="songfileDrop" type="button">
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <span class="drop-title" data-i18n="source.preset">Add project preset</span>
+            <span class="drop-help" data-i18n="source.presetHelp">.flavsettings settings sidecar</span>
+          </button>
+          <div class="file-strip" id="fileStrip" aria-live="polite" data-i18n="source.none">No source loaded</div>
+        </section>
+
+        <section class="panel metadata-panel" aria-labelledby="metadataHeading">
+          <div class="panel-heading">
+            <div><span class="panel-index">02</span><h2 id="metadataHeading" data-i18n="meta.heading">Identity</h2></div>
+            <span class="panel-status" data-i18n="source.localOnly">Local only</span>
+          </div>
+          <div class="field-grid field-grid--title">
+            <label class="field field--wide"><span data-i18n="meta.title">Song title</span><input id="titleInput" type="text" value="Untitled track" autocomplete="off"></label>
+            <label class="field"><span data-i18n="meta.artist">Artist / composer</span><input id="artistInput" type="text" value="Unknown artist" autocomplete="off"></label>
+            <label class="field"><span data-i18n="meta.album">Album</span><input id="albumInput" type="text" value="" autocomplete="off"></label>
+            <label class="field"><span data-i18n="meta.genre">Genre</span><input id="genreInput" type="text" value="Ambient" autocomplete="off"></label>
+            <label class="field field--number"><span data-i18n="meta.bpm">BPM</span><input id="bpmInput" type="number" min="1" max="300" placeholder="--"></label>
+            <label class="field field--number"><span data-i18n="meta.track">Track</span><input id="trackInput" type="number" min="1" max="999" placeholder="--"></label>
+          </div>
+          <div class="metadata-footer">
+            <label class="switch-row"><input id="rollingToggle" type="checkbox" checked><span class="switch" aria-hidden="true"></span><span data-i18n="meta.rolling">Rolling title</span></label>
+            <button class="text-button" id="estimateBpm" type="button"><span data-i18n="meta.estimate">Estimate BPM</span> <span aria-hidden="true">↗</span></button>
+          </div>
+        </section>
+
+        <section class="panel export-panel" id="export" aria-labelledby="exportHeading">
+          <div class="panel-heading">
+            <div><span class="panel-index">03</span><h2 id="exportHeading" data-i18n="output.heading">Output</h2></div>
+            <span class="panel-status" data-i18n="output.local">Local export</span>
+          </div>
+          <div class="export-launch">
+            <p data-i18n="output.launchHelp">Export a PNG frame or a complete MP4 video.</p>
+            <button class="primary-button export-launch__button" id="openExportDialog" type="button" aria-haspopup="dialog" aria-controls="exportDialog">
+              <span data-i18n="output.open">Open export window</span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section class="customizer" id="customize" aria-labelledby="customizeHeading">
+        <div class="customizer-heading">
+          <div>
+            <span class="panel-index">04</span>
+            <h2 id="customizeHeading" data-i18n="custom.heading">Customize visualization</h2>
+            <p data-i18n="custom.help">Turn display layers and audio metrics on or off as needed.</p>
+          </div>
+          <div class="customizer-actions">
+            <button class="secondary-button secondary-button--small" id="resetConfig" type="button" data-i18n="custom.reset">Reset</button>
+            <button class="primary-button primary-button--small" id="saveConfig" type="button" data-i18n="custom.save">Save preset</button>
+            <button class="secondary-button secondary-button--small" id="importConfig" type="button" data-i18n="custom.import">Import</button>
+          </div>
+        </div>
+        <div class="customizer-grid">
+          <details class="settings-group" open>
+            <summary><span data-i18n="custom.layers">Layers &amp; metrics</span><span class="summary-mark" aria-hidden="true">+</span></summary>
+            <div class="settings-content">
+              <div class="check-grid">
+                <label class="check-row"><input type="checkbox" data-layer="cover" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.cover">Cover art</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="coverOrbit" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.coverOrbit">Cover orbit</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="bpm" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.bpm">BPM display &amp; beat rail</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="spectrum" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.spectrum">Spectrum</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="waveform" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.waveform">Waveform</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="grid" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.grid">Grid</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="particles" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.particles">Particles</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="progress" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.progress">Progress</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="sourceLabel" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.sourceLabel">File source label</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="sourceMeta" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.sourceMeta">Right-side source</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="durationMeta" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.durationMeta">Right-side duration</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="timelineLabels" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.timelineLabels">Timeline times</span></label>
+              </div>
+              <div class="settings-divider"></div>
+              <p class="settings-label" data-i18n="custom.visible">Visible meters</p>
+              <div class="check-grid check-grid--metrics">
+                <label class="check-row"><input type="checkbox" data-metric="peak" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.peak">Peak</span></label>
+                <label class="check-row"><input type="checkbox" data-metric="rms" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.rms">RMS</span></label>
+                <label class="check-row" title="RMS loudness estimate in dBFS" data-i18n-title="custom.loudnessHint"><input type="checkbox" data-metric="loudness" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.loudness">Loudness estimate</span></label>
+                <label class="check-row" title="Short-window RMS spread estimate, not LUFS LRA" data-i18n-title="custom.dynamicHint"><input type="checkbox" data-metric="dynamicRange" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.dynamic">Dynamic range estimate</span></label>
+                <label class="check-row"><input type="checkbox" data-metric="crest" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.crest">Crest factor</span></label>
+                <label class="check-row"><input type="checkbox" data-metric="duration" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.duration">Duration</span></label>
+              </div>
+            </div>
+          </details>
+
+          <details class="settings-group" open>
+            <summary><span data-i18n="custom.colors">Color system</span><span class="summary-mark" aria-hidden="true">+</span></summary>
+            <div class="settings-content color-settings">
+              <label class="color-row"><input type="color" data-color="background" value="#e8efed"><span data-i18n="custom.background">Background</span><code id="backgroundHex">#E8EFED</code></label>
+              <label class="color-row"><input type="color" data-color="ink" value="#142a2d"><span data-i18n="custom.ink">Ink</span><code id="inkHex">#142A2D</code></label>
+              <label class="color-row"><input type="color" data-color="accent" value="#4d79ff"><span data-i18n="custom.accent">Accent</span><code id="accentHex">#4D79FF</code></label>
+              <label class="color-row"><input type="color" data-color="secondary" value="#d9574c"><span data-i18n="custom.secondary">Secondary</span><code id="secondaryHex">#D9574C</code></label>
+              <div class="color-actions">
+                <button class="text-button" id="randomizeColors" type="button"><span data-i18n="custom.shuffle">Shuffle palette</span><span aria-hidden="true">↗</span></button>
+                <button class="text-button" id="resetColors" type="button"><span data-i18n="custom.resetColors">Reset colors</span><span aria-hidden="true">↺</span></button>
+              </div>
+            </div>
+          </details>
+
+          <details class="settings-group" open>
+            <summary><span data-i18n="custom.motion">Motion &amp; density</span><span class="summary-mark" aria-hidden="true">+</span></summary>
+            <div class="settings-content slider-settings">
+              <label class="slider-row"><span><span data-i18n="custom.bar">Bar width</span><output data-output="barWidth">6 px</output></span><input type="range" data-setting="barWidth" min="2" max="16" value="6"></label>
+              <label class="slider-row"><span><span data-i18n="custom.energy">Spectrum energy</span><output data-output="spectrumGain">74%</output></span><input type="range" data-setting="spectrumGain" min="30" max="120" value="74"></label>
+              <label class="slider-row"><span><span data-i18n="custom.wave">Waveform height</span><output data-output="waveHeight">68%</output></span><input type="range" data-setting="waveHeight" min="30" max="100" value="68"></label>
+              <label class="slider-row"><span><span data-i18n="custom.motionAmount">Motion</span><output data-output="motion">100%</output></span><input type="range" data-setting="motion" min="0" max="140" value="100"></label>
+              <label class="select-row"><span data-i18n="custom.frequency">Frequency scale</span><select data-setting="frequencyScale"><option value="log" selected data-i18n="custom.log">Logarithmic</option><option value="linear" data-i18n="custom.linear">Linear</option></select></label>
+              <label class="select-row"><span data-i18n="custom.fft">FFT size</span><select data-setting="fftSize"><option value="2048">2048</option><option value="4096" selected>4096</option><option value="8192">8192</option><option value="16384">16384</option><option value="32768">32768</option></select></label>
+              <label class="select-row"><span data-i18n="custom.spectrumStyle">Spectrum style</span><select data-setting="spectrumStyle"><option value="line" data-i18n="custom.line">Line</option><option value="bars" selected data-i18n="custom.bars">Bars</option><option value="dots" data-i18n="custom.dots">Dots</option></select></label>
+            </div>
+          </details>
+
+          <details class="settings-group" open>
+            <summary><span data-i18n="custom.layout">Layout</span><span class="summary-mark" aria-hidden="true">+</span></summary>
+            <div class="settings-content layout-settings">
+              <div class="segmented" role="group" aria-label="Layout mode" data-i18n-aria="customize.layout.mode">
+                <button type="button" data-layout="split" class="is-active" data-i18n="custom.split">Split</button>
+                <button type="button" data-layout="stack" data-i18n="custom.stack">Stack</button>
+                <button type="button" data-layout="minimal" data-i18n="custom.minimal">Minimal</button>
+              </div>
+              <label class="switch-row"><input id="showLabels" type="checkbox" checked><span class="switch" aria-hidden="true"></span><span data-i18n="custom.showLabels">Show labels</span></label>
+              <label class="switch-row"><input id="reducedMotion" type="checkbox"><span class="switch" aria-hidden="true"></span><span data-i18n="custom.reduced">Reduce motion</span></label>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="details-panel" aria-labelledby="detailsHeading">
+        <div class="details-heading">
+          <div><span class="panel-index">05</span><h2 id="detailsHeading" data-i18n="details.heading">Audio information</h2></div>
+          <span id="analysisStatus" data-i18n="details.none">No audio decoded</span>
+        </div>
+        <div class="details-grid" id="detailsGrid">
+          <div><span data-i18n="details.sample">Sample rate</span><strong id="sampleRateValue">--</strong></div>
+          <div><span data-i18n="details.channels">Channels</span><strong id="channelsValue">--</strong></div>
+          <div><span data-i18n="details.bitDepth">Bit depth</span><strong id="bitDepthValue">--</strong></div>
+          <div><span data-i18n="details.fileSize">File size</span><strong id="fileSizeValue">--</strong></div>
+          <div><span data-i18n="details.headroom">Peak headroom</span><strong id="headroomValue">--</strong></div>
+          <div><span data-i18n="details.decode">Decode state</span><strong id="decodeValue" data-i18n="details.idle">Idle</strong></div>
+        </div>
+      </section>
+
+      <section class="actions-panel" aria-labelledby="actionsHeading">
+        <div class="actions-heading">
+          <div><span class="panel-index">06</span><h2 id="actionsHeading" data-i18n="actions.heading">Action List</h2></div>
+          <div class="actions-tools">
+            <button class="secondary-button secondary-button--small" id="copyTime" type="button" data-i18n="actions.copy">Copy time</button>
+            <button class="secondary-button secondary-button--small" id="importActions" type="button" data-i18n="actions.import">Import actions</button>
+            <button class="secondary-button secondary-button--small" id="saveActions" type="button" data-i18n="actions.save">Save list</button>
+            <button class="primary-button primary-button--small" id="addAction" type="button" data-i18n="actions.add">Add action</button>
+          </div>
+        </div>
+        <p class="actions-help" data-i18n="actions.help">Timestamped notes for beats, scene changes, captions, or anything you want to remember while shaping a visual.</p>
+        <textarea id="actionsEditor" data-action-drop spellcheck="false" data-i18n-placeholder="actions.placeholder" placeholder="00:00.000  bpm 175.90
+00:12.500  beat accent=#F1BF25
+00:24.000  note text=second movement"></textarea>
+        <div class="actions-status" id="actionsStatus" data-i18n="actions.none">No active actions yet. Saved locally in this browser.</div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="FlavorStudio">
+      <div class="footer-actions">
+        <button class="footer-version" id="versionButton" type="button" aria-live="polite" aria-atomic="true">
+          <strong id="versionValue">查询</strong>
+          <span id="versionLabel">点击查询版本</span>
+        </button>
+        <a class="footer-home" href="https://flavor.5yu.fun" target="_blank" rel="noopener noreferrer"><span data-i18n="footer.home">Home</span> <span aria-hidden="true">↗</span></a>
+        <span class="footer-copyright">©FlavorStudio</span>
+      </div>
+      <span class="footer-powered">Powered by FAlphaWeb</span>
+    </footer>
+  </div>
+
+  <input id="audioInput" type="file" accept="audio/*,.wav,.mp3,.flac,.m4a,.aac,.ogg,.opus" hidden>
+  <input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+  <input id="actionsInput" type="file" accept=".flavactions" hidden>
+  <input id="presetInput" type="file" accept=".flavsettings" hidden>
+  <input id="songfileInput" type="file" accept=".flavsettings" hidden>
+  <dialog class="export-dialog" id="exportDialog" aria-labelledby="exportDialogTitle" aria-describedby="exportNote">
+    <div class="export-dialog__surface">
+      <header class="export-dialog__header">
+        <div>
+          <span class="panel-index">FLAudioViz / EXPORT</span>
+          <h2 id="exportDialogTitle" data-i18n="output.dialogTitle">Export settings</h2>
+        </div>
+        <button class="export-dialog__close" id="closeExportDialog" type="button" aria-label="Close export window" title="Close export window" data-i18n-aria="output.close" data-i18n-title="output.close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+
+      <section class="export-state" id="exportState" data-phase="idle">
+        <div class="export-state__copy">
+          <span class="export-state__label" data-i18n="output.status">Export status</span>
+          <strong id="exportStatus" role="status" aria-live="polite" aria-atomic="true" data-i18n="output.ready">Ready</strong>
+          <span class="export-state__detail" id="exportStatusDetail" data-i18n="output.readyDetail">Choose a format when you are ready.</span>
+        </div>
+        <div class="export-progress" id="exportProgress" role="progressbar" aria-label="Export progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-i18n-aria="output.progress">
+          <span class="export-progress__fill" id="exportProgressFill"></span>
+        </div>
+        <span class="export-progress__text" id="exportProgressText">0%</span>
+      </section>
+
+      <div class="export-fields">
+        <label class="field"><span data-i18n="output.canvas">Canvas size</span><select id="exportSize"><option value="1280x720">1280 × 720</option><option value="1920x1080" selected>1920 × 1080</option><option value="1080x1080">1080 × 1080</option><option value="custom" data-i18n="output.custom">Custom</option></select></label>
+        <label class="field field--number"><span data-i18n="output.fps">Frame rate</span><input id="exportFps" type="number" value="30" min="1" step="1" inputmode="numeric"></label>
+      </div>
+      <div class="custom-size-fields" id="customSizeFields" hidden>
+        <label class="field field--number"><span data-i18n="output.width">Width</span><input id="customWidth" type="number" value="1920" min="320" max="3840"></label>
+        <label class="field field--number"><span data-i18n="output.height">Height</span><input id="customHeight" type="number" value="1080" min="180" max="2160"></label>
+      </div>
+      <div class="export-actions">
+        <button class="primary-button" id="exportPng" type="button"><span data-i18n="output.png">Export PNG</span></button>
+        <button class="primary-button" id="exportMp4" type="button"><span id="mp4Label" data-i18n="output.mp4">Export MP4</span></button>
+      </div>
+      <p class="export-note" id="exportNote" data-i18n="output.note">Exports are rendered locally in your browser.</p>
+    </div>
+  </dialog>
+  <dialog class="recovery-dialog" id="recoveryDialog" aria-labelledby="recoveryTitle">
+    <div class="recovery-dialog__body">
+      <span class="panel-index">FLAVIZ / LOCAL CACHE</span>
+      <h2 id="recoveryTitle" data-i18n="recovery.title">Recover previous session?</h2>
+      <p data-i18n="recovery.body">A local FLAudioViz snapshot was found.</p>
+      <p class="recovery-dialog__name" id="recoveryName">Untitled project</p>
+      <p class="recovery-dialog__note" id="recoveryAudioNote" data-i18n="recovery.audio">Audio and cover files are not stored in the snapshot; choose them again after restoring.</p>
+      <div class="recovery-dialog__actions">
+        <button class="secondary-button" id="recoveryDismiss" type="button" data-i18n="recovery.dismiss">Start fresh</button>
+        <button class="primary-button" id="recoveryRestore" type="button" data-i18n="recovery.restore">Restore</button>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="tutorial-dialog" id="tutorialDialog" aria-labelledby="tutorialDialogTitle" aria-describedby="tutorialDialogIntro">
+    <div class="tutorial-dialog__surface">
+      <header class="tutorial-dialog__header">
+        <div>
+          <span class="panel-index">FLAudioViz / GUIDE</span>
+          <h2 id="tutorialDialogTitle" tabindex="-1" data-i18n="guide.title">User guide</h2>
+          <p id="tutorialDialogIntro" data-i18n="guide.intro">Read this guide before using FLAudioViz for the first time.</p>
+        </div>
+        <button class="tutorial-dialog__close" id="closeTutorialDialog" type="button" aria-label="Close user guide" title="Close user guide" data-i18n-aria="guide.close" data-i18n-title="guide.close"><span aria-hidden="true">×</span></button>
+      </header>
+
+      <label class="tutorial-section-picker" for="tutorialSectionSelect">
+        <span data-i18n="guide.contents">Guide contents</span>
+        <select id="tutorialSectionSelect">
+          <option value="tutorial-start" data-i18n="guide.nav.start">Quick start</option>
+          <option value="tutorial-playback" data-i18n="guide.nav.playback">Preview and playback</option>
+          <option value="tutorial-layers" data-i18n="guide.nav.layers">Layers and meters</option>
+          <option value="tutorial-visual" data-i18n="guide.nav.visual">Visual tuning</option>
+          <option value="tutorial-layout" data-i18n="guide.nav.layout">Layout and reduced motion</option>
+          <option value="tutorial-actions" data-i18n="guide.nav.actions">Action list</option>
+          <option value="tutorial-export" data-i18n="guide.nav.export">Save and export</option>
+          <option value="tutorial-local" data-i18n="guide.nav.local">Recovery and version</option>
+        </select>
+      </label>
+
+      <div class="tutorial-dialog__body">
+        <nav class="tutorial-nav" aria-label="Guide contents" data-i18n-aria="guide.contents">
+          <span class="tutorial-nav__label" data-i18n="guide.contents">Guide contents</span>
+          <a class="is-active" href="#tutorial-start" data-tutorial-link="tutorial-start" aria-current="true"><span>01</span><span data-i18n="guide.nav.start">Quick start</span></a>
+          <a href="#tutorial-playback" data-tutorial-link="tutorial-playback"><span>02</span><span data-i18n="guide.nav.playback">Preview and playback</span></a>
+          <a href="#tutorial-layers" data-tutorial-link="tutorial-layers"><span>03</span><span data-i18n="guide.nav.layers">Layers and meters</span></a>
+          <a href="#tutorial-visual" data-tutorial-link="tutorial-visual"><span>04</span><span data-i18n="guide.nav.visual">Visual tuning</span></a>
+          <a href="#tutorial-layout" data-tutorial-link="tutorial-layout"><span>05</span><span data-i18n="guide.nav.layout">Layout and reduced motion</span></a>
+          <a href="#tutorial-actions" data-tutorial-link="tutorial-actions"><span>06</span><span data-i18n="guide.nav.actions">Action list</span></a>
+          <a href="#tutorial-export" data-tutorial-link="tutorial-export"><span>07</span><span data-i18n="guide.nav.export">Save and export</span></a>
+          <a href="#tutorial-local" data-tutorial-link="tutorial-local"><span>08</span><span data-i18n="guide.nav.local">Recovery and version</span></a>
+        </nav>
+
+        <div class="tutorial-content" id="tutorialContent" role="document" tabindex="0">
+          <section class="tutorial-section" id="tutorial-start" data-tutorial-section>
+            <header><span>01</span><h3 data-i18n="guide.start.title">Import a song</h3></header>
+            <p data-i18n="guide.start.intro">Choose a local audio file. It stays in this browser and is not uploaded.</p>
+            <ol class="tutorial-steps">
+              <li><strong data-i18n="guide.start.audioTitle">Add audio</strong><span data-i18n="guide.start.audioBody">Choose or drop an MP3, WAV, OGG, FLAC, or M4A file. Browser support decides which formats can be decoded; WAV and MP3 are the safest choices.</span></li>
+              <li><strong data-i18n="guide.start.coverTitle">Add a cover</strong><span data-i18n="guide.start.coverBody">Choose PNG, JPG, or WebP. Supported audio tags may also fill the cover, title, artist, album, genre, and track number automatically.</span></li>
+              <li><strong data-i18n="guide.start.identityTitle">Check song information</strong><span data-i18n="guide.start.identityBody">Edit the title, artist, album, genre, BPM, or track number. The title, artist, album, and track number appear in the preview and exports. Estimate BPM gives the whole song one BPM value; it does not make a changing BPM timeline.</span></li>
+              <li><strong data-i18n="guide.start.infoTitle">Check audio details</strong><span data-i18n="guide.start.infoBody">After the file loads, this panel shows the sample rate, channels, available bit depth, file size, peak headroom, and decode state. These values are read-only.</span></li>
+            </ol>
+            <div class="tutorial-note"><strong data-i18n="guide.tip">Good to know</strong><span data-i18n="guide.start.note">A .flavsettings file restores a saved setup, but it does not include the audio or cover. Choose those files again after importing.</span></div>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-playback" data-tutorial-section>
+            <header><span>02</span><h3 data-i18n="guide.playback.title">Preview and playback</h3></header>
+            <p data-i18n="guide.playback.intro">PNG and MP4 exports use the scene shown in the large preview. Use the controls below it to listen or jump to different parts of the song while you adjust the design.</p>
+            <dl class="tutorial-terms">
+              <div><dt data-i18n="guide.playback.transportTitle">Back, play, and forward</dt><dd data-i18n="guide.playback.transportBody">Jump back or forward by 10 seconds, or start and pause playback. The time readout shows the current position and total duration.</dd></div>
+              <div><dt data-i18n="guide.playback.scrubTitle">Song position</dt><dd data-i18n="guide.playback.scrubBody">Drag the long slider to seek. If the song was playing, it pauses while you drag and resumes when you release it.</dd></div>
+              <div><dt data-i18n="guide.playback.muteTitle">Mute</dt><dd data-i18n="guide.playback.muteBody">Mute only affects what you hear during preview. It does not remove audio from an exported MP4. The mute button is hidden on very narrow screens to preserve space.</dd></div>
+              <div><dt data-i18n="guide.playback.rollingTitle">Rolling title</dt><dd data-i18n="guide.playback.rollingBody">Long titles scroll only when they do not fit. Reduce motion keeps the title still.</dd></div>
+            </dl>
+            <figure class="tutorial-figure">
+              <button class="tutorial-figure__media" type="button" data-guide-open aria-haspopup="dialog" aria-controls="tutorialImageViewer" aria-describedby="tutorialOverviewCaption" aria-label="View full size" title="View full size" data-i18n-aria="guide.figure.open" data-i18n-title="guide.figure.open"><img data-guide-image="zh" src="assets/tutorial-overview-zh.webp" alt=""><img data-guide-image="en" src="assets/tutorial-overview-en.webp" alt=""></button>
+              <figcaption><span id="tutorialOverviewCaption" data-i18n="guide.playback.caption">The loaded preview shows the title, artist, album, and track number; use the controls below it to play or seek.</span><span class="tutorial-figure__hint" data-i18n="guide.figure.open">View full size</span></figcaption>
+            </figure>
+            <div class="tutorial-note"><strong data-i18n="guide.shortcut">Shortcuts</strong><span data-i18n="guide.playback.shortcuts">When you are not typing in a field, Space plays or pauses; Left and Right move by 5 seconds.</span></div>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-layers" data-tutorial-section>
+            <header><span>03</span><h3 data-i18n="guide.layers.title">Layers and meters</h3></header>
+            <p data-i18n="guide.layers.intro">Every switch in Layers and meters changes a visible part of the exported visual. Turn off anything you do not need.</p>
+            <dl class="tutorial-terms tutorial-terms--compact">
+              <div><dt data-i18n="guide.layers.coverTitle">Cover and cover track</dt><dd data-i18n="guide.layers.coverBody">Cover hides the artwork. Cover track controls the two thin animated lines beside it independently.</dd></div>
+              <div><dt data-i18n="guide.layers.bpmTitle">BPM display and beat rail</dt><dd data-i18n="guide.layers.bpmBody">Shows the current BPM and the small left-right beat indicator. It uses the BPM field unless the action list supplies timed BPM changes.</dd></div>
+              <div><dt data-i18n="guide.layers.graphTitle">Spectrum and waveform</dt><dd data-i18n="guide.layers.graphBody">Spectrum shows the current frequency energy. Waveform shows the song's overall shape and current short-window energy.</dd></div>
+              <div><dt data-i18n="guide.layers.atmosphereTitle">Grid and particles</dt><dd data-i18n="guide.layers.atmosphereBody">These are background guides and small drifting points. They can be removed without affecting audio analysis.</dd></div>
+              <div><dt data-i18n="guide.layers.progressTitle">Progress and timeline times</dt><dd data-i18n="guide.layers.progressBody">Progress is the thin line inside the exported picture. Timeline times controls its start and end labels; the webpage playback slider remains separate.</dd></div>
+              <div><dt data-i18n="guide.layers.sourceTitle">Source labels and right-side details</dt><dd data-i18n="guide.layers.sourceBody">File source label, right-side source, and right-side duration can each be hidden.</dd></div>
+            </dl>
+            <h4 data-i18n="guide.layers.metersTitle">Bottom meters</h4>
+            <dl class="tutorial-terms tutorial-terms--compact">
+              <div><dt data-i18n="guide.layers.peakTitle">Peak</dt><dd data-i18n="guide.layers.peakBody">The highest detected level.</dd></div>
+              <div><dt data-i18n="guide.layers.rmsTitle">RMS and loudness estimate</dt><dd data-i18n="guide.layers.rmsBody">Both use average signal energy, so their values may be close. Neither is a LUFS measurement.</dd></div>
+              <div><dt data-i18n="guide.layers.dynamicTitle">Dynamic range estimate</dt><dd data-i18n="guide.layers.dynamicBody">Short-window RMS variation. It is a visual estimate, not LUFS LRA.</dd></div>
+              <div><dt data-i18n="guide.layers.crestTitle">Crest factor</dt><dd data-i18n="guide.layers.crestBody">The difference between peak and average level.</dd></div>
+              <div><dt data-i18n="guide.layers.durationTitle">Duration</dt><dd data-i18n="guide.layers.durationBody">The full decoded song length.</dd></div>
+            </dl>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-visual" data-tutorial-section>
+            <header><span>04</span><h3 data-i18n="guide.visual.title">Visual tuning</h3></header>
+            <figure class="tutorial-figure">
+              <button class="tutorial-figure__media" type="button" data-guide-open aria-haspopup="dialog" aria-controls="tutorialImageViewer" aria-describedby="tutorialSettingsCaption" aria-label="View full size" title="View full size" data-i18n-aria="guide.figure.open" data-i18n-title="guide.figure.open"><img data-guide-image="zh" src="assets/tutorial-settings-zh.webp" alt=""><img data-guide-image="en" src="assets/tutorial-settings-en.webp" alt=""></button>
+              <figcaption><span id="tutorialSettingsCaption" data-i18n="guide.visual.caption">Changes here appear in the preview right away; there is no extra Apply step.</span><span class="tutorial-figure__hint" data-i18n="guide.figure.open">View full size</span></figcaption>
+            </figure>
+            <dl class="tutorial-terms">
+              <div><dt data-i18n="guide.visual.colorsTitle">Colors</dt><dd data-i18n="guide.visual.colorsBody">Adjust the background, text, primary, and secondary colors separately. Shuffle palette tries another combination. Reset colors restores only the current theme, and light and dark themes keep separate colors.</dd></div>
+              <div><dt data-i18n="guide.visual.barTitle">Bar width and spectrum energy</dt><dd data-i18n="guide.visual.barBody">Bar width changes the number and spacing of spectrum bars. Spectrum energy changes how strongly the graph responds.</dd></div>
+              <div><dt data-i18n="guide.visual.waveTitle">Waveform height</dt><dd data-i18n="guide.visual.waveBody">Makes the waveform taller or shorter without changing the music file.</dd></div>
+              <div><dt data-i18n="guide.visual.motionTitle">Motion</dt><dd data-i18n="guide.visual.motionBody">This mainly controls how fast and how far the particles and cover track move. Set it to 0 to stop those decorative movements.</dd></div>
+              <div><dt data-i18n="guide.visual.scaleTitle">Frequency scale</dt><dd data-i18n="guide.visual.scaleBody">Logarithmic gives more room to bass and mids, similar to how we hear. Linear spreads frequencies evenly.</dd></div>
+              <div><dt data-i18n="guide.visual.fftTitle">FFT size</dt><dd data-i18n="guide.visual.fftBody">Higher values separate nearby frequencies more clearly but react a little less quickly. The default is 16384 and works well for most songs.</dd></div>
+              <div><dt data-i18n="guide.visual.styleTitle">Spectrum style</dt><dd data-i18n="guide.visual.styleBody">Choose bars, line, or dots. Bars are the default.</dd></div>
+            </dl>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-layout" data-tutorial-section>
+            <header><span>05</span><h3 data-i18n="guide.layout.title">Layout and reduced motion</h3></header>
+            <dl class="tutorial-terms">
+              <div><dt data-i18n="guide.layout.splitTitle">Split</dt><dd data-i18n="guide.layout.splitBody">The default layout puts the cover on the left and the title and graphs on the right. It works well for landscape video.</dd></div>
+              <div><dt data-i18n="guide.layout.stackTitle">Stack</dt><dd data-i18n="guide.layout.stackBody">The cover sits higher, with the other information arranged below it. Choose this when you want the cover to stand out.</dd></div>
+              <div><dt data-i18n="guide.layout.minimalTitle">Minimal</dt><dd data-i18n="guide.layout.minimalBody">Uses a smaller, tighter arrangement. It does not automatically hide the cover, but the cover track is omitted in this layout.</dd></div>
+              <div><dt data-i18n="guide.layout.labelsTitle">Show labels</dt><dd data-i18n="guide.layout.labelsBody">Hides descriptive labels, frequency markings, meter names, and canvas timeline times for a cleaner picture.</dd></div>
+              <div><dt data-i18n="guide.layout.reduceTitle">Reduce motion</dt><dd data-i18n="guide.layout.reduceBody">This stops title scrolling, particle drift, and moving cover-track highlights. The spectrum and waveform still react to the music.</dd></div>
+            </dl>
+            <div class="tutorial-note"><strong data-i18n="guide.tip">Good to know</strong><span data-i18n="guide.layout.note">Turn on Reduce motion if moving visuals feel uncomfortable, you want a steadier result, or preview feels choppy on your device.</span></div>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-actions" data-tutorial-section>
+            <header><span>06</span><h3 data-i18n="guide.actions.title">Action list</h3></header>
+            <p data-i18n="guide.actions.intro">Use the action list as notes tied to points in the song. A bpm or tempo line changes the BPM display and beat movement from that time onward; other text is only saved as a note.</p>
+            <figure class="tutorial-figure">
+              <button class="tutorial-figure__media" type="button" data-guide-open aria-haspopup="dialog" aria-controls="tutorialImageViewer" aria-describedby="tutorialActionsCaption" aria-label="View full size" title="View full size" data-i18n-aria="guide.figure.open" data-i18n-title="guide.figure.open"><img data-guide-image="zh" src="assets/tutorial-actions-zh.webp" alt=""><img data-guide-image="en" src="assets/tutorial-actions-en.webp" alt=""></button>
+              <figcaption><span id="tutorialActionsCaption" data-i18n="guide.actions.caption">The list is plain text, and you can edit any line directly.</span><span class="tutorial-figure__hint" data-i18n="guide.figure.open">View full size</span></figcaption>
+            </figure>
+            <pre class="tutorial-code"><code>00:00.000  bpm 175.90<br>00:12.500  tempo value=118.75<br>00:24.000  note text=section-2</code></pre>
+            <dl class="tutorial-terms tutorial-terms--compact">
+              <div><dt data-i18n="guide.actions.timeTitle">Time stamp</dt><dd data-i18n="guide.actions.timeBody">Use MM:SS.sss, HH:MM:SS.sss, or a number of seconds. Empty lines and lines beginning with # are ignored.</dd></div>
+              <div><dt data-i18n="guide.actions.bpmTitle">bpm / tempo</dt><dd data-i18n="guide.actions.bpmBody">These are the only action types that currently change the visual. Enter a positive BPM after the command.</dd></div>
+              <div><dt data-i18n="guide.actions.noteTitle">beat / note and other text</dt><dd data-i18n="guide.actions.noteBody">Saved as notes only. They do not yet change colors, captions, or scenes.</dd></div>
+              <div><dt data-i18n="guide.actions.copyTitle">Copy time</dt><dd data-i18n="guide.actions.copyBody">Copies the current playback position so you can paste an exact time stamp.</dd></div>
+              <div><dt data-i18n="guide.actions.addTitle">Add action</dt><dd data-i18n="guide.actions.addBody">Inserts a note with the current playback time wherever your text cursor is.</dd></div>
+              <div><dt data-i18n="guide.actions.filesTitle">Import and save</dt><dd data-i18n="guide.actions.filesBody">Only .flavactions files can be imported. Save list opens Save As and creates a .flavactions file.</dd></div>
+            </dl>
+            <div class="tutorial-note tutorial-note--important"><strong data-i18n="guide.important">Important</strong><span data-i18n="guide.actions.note">The list is saved in this browser as you type. Saving a .flavactions file is still recommended before clearing browser data or moving to another device.</span></div>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-export" data-tutorial-section>
+            <header><span>07</span><h3 data-i18n="guide.export.title">Save and export</h3></header>
+            <figure class="tutorial-figure">
+              <button class="tutorial-figure__media" type="button" data-guide-open aria-haspopup="dialog" aria-controls="tutorialImageViewer" aria-describedby="tutorialExportCaption" aria-label="View full size" title="View full size" data-i18n-aria="guide.figure.open" data-i18n-title="guide.figure.open"><img data-guide-image="zh" src="assets/tutorial-export-zh.webp" alt=""><img data-guide-image="en" src="assets/tutorial-export-en.webp" alt=""></button>
+              <figcaption><span id="tutorialExportCaption" data-i18n="guide.export.caption">While exporting, this window shows the progress and estimated time remaining.</span><span class="tutorial-figure__hint" data-i18n="guide.figure.open">View full size</span></figcaption>
+            </figure>
+            <dl class="tutorial-terms">
+              <div><dt data-i18n="guide.export.settingsTitle">Save preset / Import</dt><dd data-i18n="guide.export.settingsBody">A .flavsettings file stores the visual setup, song information, export choices, and action list. It does not contain audio or cover files. Importing may replace the current setup.</dd></div>
+              <div><dt data-i18n="guide.export.resetTitle">Reset</dt><dd data-i18n="guide.export.resetBody">Restores visual and color defaults only. It does not erase song information, the action list, or export settings.</dd></div>
+              <div><dt data-i18n="guide.export.pngTitle">Export PNG</dt><dd data-i18n="guide.export.pngBody">Saves the picture at the current playback position using the selected canvas size.</dd></div>
+              <div><dt data-i18n="guide.export.mp4Title">Export MP4</dt><dd data-i18n="guide.export.mp4Body">Exports the full-song visual and audio as an MP4. A current version of Edge or Chrome is recommended, and you can stop the render at any time.</dd></div>
+              <div><dt data-i18n="guide.export.sizeTitle">Canvas size and frame rate</dt><dd data-i18n="guide.export.sizeBody">Choose 720p, 1080p, square, or custom dimensions. Frame rate accepts your own positive whole number; higher values take longer and the page will warn you if the job is too large for the browser.</dd></div>
+              <div><dt data-i18n="guide.export.saveTitle">Where files go</dt><dd data-i18n="guide.export.saveBody">Supported browsers let you choose a location with Save As. Otherwise, the file uses your browser's usual download behavior.</dd></div>
+              <div><dt data-i18n="guide.export.markTitle">FLAudioViz attribution</dt><dd data-i18n="guide.export.markBody">MP4 places “Made with FLAudioViz” in the lower-right corner.</dd></div>
+            </dl>
+          </section>
+
+          <section class="tutorial-section" id="tutorial-local" data-tutorial-section>
+            <header><span>08</span><h3 data-i18n="guide.local.title">Recovery and version</h3></header>
+            <dl class="tutorial-terms">
+              <div><dt data-i18n="guide.local.cacheTitle">Automatic local saving</dt><dd data-i18n="guide.local.cacheBody">Song information, visual settings, export options, and actions are saved automatically in this browser. Audio and cover files are not included, so choose them again after restoring.</dd></div>
+              <div><dt data-i18n="guide.local.recoveryTitle">Recovery prompt</dt><dd data-i18n="guide.local.recoveryBody">When saved work is found after reopening, choose Restore to bring it back or Start fresh to clear it. After restoring, choose the audio and cover again.</dd></div>
+              <div><dt data-i18n="guide.local.topbarTitle">Top-bar controls</dt><dd data-i18n="guide.local.topbarBody">More jumps to the main areas. EN / 中 changes language. The sun button changes theme, the help button opens this guide, and the sliders button jumps to customization.</dd></div>
+              <div><dt data-i18n="guide.local.versionTitle">Version check</dt><dd data-i18n="guide.local.versionBody">The version button in the footer reads the FLAudioViz version included with this site; it does not check online for updates. If the version cannot be read, the button changes to Retry.</dd></div>
+              <div><dt data-i18n="guide.local.homeTitle">Home</dt><dd data-i18n="guide.local.homeBody">Home opens 黄瓜LaHG's personal website.</dd></div>
+            </dl>
+            <div class="tutorial-finish"><strong data-i18n="guide.finish.title">Check before export</strong><span data-i18n="guide.finish.body">Preview a few points in the song, check that the visible items and design look right, then save the setup before starting the MP4 export.</span><button class="primary-button" id="finishTutorial" type="button" data-i18n="guide.finish.close">Close guide</button></div>
+          </section>
+        </div>
+      </div>
+
+      <div class="tutorial-image-viewer" id="tutorialImageViewer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tutorialImageViewerTitle" aria-describedby="tutorialImageCaption" hidden>
+        <header class="tutorial-image-viewer__header">
+          <div>
+            <span class="panel-index">FLAudioViz / GUIDE</span>
+            <h3 id="tutorialImageViewerTitle" data-i18n="guide.figure.viewerTitle">Image preview</h3>
+          </div>
+          <button class="tutorial-dialog__close" id="closeTutorialImageViewer" type="button" aria-label="Close image preview" title="Close image preview" data-i18n-aria="guide.figure.close" data-i18n-title="guide.figure.close"><span aria-hidden="true">×</span></button>
+        </header>
+        <div class="tutorial-image-viewer__stage" id="tutorialImageStage"><img id="tutorialImagePreview" alt=""></div>
+        <p class="tutorial-image-viewer__caption" id="tutorialImageCaption"></p>
+      </div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
