@@ -3,350 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#07110d">
+    <meta name="theme-color" content="#f5f3ee">
     <meta name="keywords" content="瓜瓜, 软件, Scratch, 下载">
     <meta name="description" content="黄瓜 LaHG 的软件与实验项目下载页。">
     <title>软件 · 黄瓜 LaHG</title>
     <link rel="icon" href="./flavor-mark.png">
-    <style>
-        :root {
-            color-scheme: dark;
-            --bg: #06100c;
-            --panel: rgba(13, 31, 24, 0.88);
-            --line: rgba(188, 255, 211, 0.14);
-            --text: #f2fff6;
-            --muted: #9eb4a6;
-            --green: #46e889;
-            --lime: #d9ff7a;
-            --radius: 26px;
-        }
-
-        * { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            min-width: 320px;
-            min-height: 100vh;
-            margin: 0;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 15% 5%, rgba(70, 232, 137, 0.11), transparent 27rem),
-                radial-gradient(circle at 90% 75%, rgba(217, 255, 122, 0.07), transparent 25rem),
-                linear-gradient(145deg, #07130f, #040a07);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
-            line-height: 1.65;
-        }
-
-        body::before {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image: radial-gradient(rgba(255,255,255,.09) 0.7px, transparent 0.7px);
-            background-size: 22px 22px;
-            content: "";
-            mask-image: linear-gradient(to bottom, black, transparent 80%);
-            opacity: 0.18;
-        }
-
-        a { color: inherit; }
-
-        .shell {
-            width: min(1120px, calc(100% - 36px));
-            margin-inline: auto;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 86px;
-            gap: 1rem;
-        }
-
-        .brand,
-        .home-link {
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .brand {
-            gap: 0.7rem;
-            font-weight: 850;
-        }
-
-        .brand-mark {
-            display: grid;
-            width: 38px;
-            height: 38px;
-            place-items: center;
-            border-radius: 13px;
-            color: #06140b;
-            background: linear-gradient(140deg, var(--lime), var(--green));
-            box-shadow: 0 12px 28px rgba(70, 232, 137, 0.17);
-        }
-
-        .home-link {
-            gap: 0.4rem;
-            padding: 0.6rem 0.85rem;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            color: var(--muted);
-            font-size: 0.88rem;
-            font-weight: 700;
-        }
-
-        main { padding: 4.2rem 0 6rem; }
-
-        .hero {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            align-items: end;
-            gap: 3rem;
-            margin-bottom: 4.5rem;
-        }
-
-        .eyebrow {
-            margin: 0 0 1.2rem;
-            color: var(--green);
-            font-size: 0.76rem;
-            font-weight: 900;
-            letter-spacing: 0.13em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(3.4rem, 6.4vw, 5.8rem);
-            font-weight: 880;
-            letter-spacing: -0.06em;
-            line-height: 1.03;
-        }
-
-        h1 span {
-            display: inline-block;
-            font-size: 0.78em;
-            white-space: nowrap;
-            padding-bottom: 0.06em;
-            color: transparent;
-            background: linear-gradient(105deg, var(--lime), var(--green));
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        .hero-note {
-            margin: 0;
-            color: var(--muted);
-            font-size: 1.02rem;
-        }
-
-        .download-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1rem;
-        }
-
-        .download-card {
-            position: relative;
-            display: flex;
-            grid-column: span 3;
-            flex-direction: column;
-            min-height: 350px;
-            padding: 1.45rem;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: linear-gradient(145deg, rgba(15, 37, 28, 0.94), rgba(7, 19, 13, 0.82));
-            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.24);
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .download-card:hover {
-            border-color: rgba(121, 255, 169, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .download-card.featured {
-            grid-column: span 6;
-            background:
-                radial-gradient(circle at 90% 10%, rgba(217, 255, 122, 0.14), transparent 18rem),
-                linear-gradient(145deg, rgba(20, 52, 37, 0.98), rgba(7, 21, 14, 0.9));
-        }
-
-        .card-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .card-icon {
-            display: grid;
-            width: 54px;
-            height: 54px;
-            place-items: center;
-            border: 1px solid rgba(121, 255, 169, 0.17);
-            border-radius: 17px;
-            background: rgba(70, 232, 137, 0.07);
-            font-size: 1.45rem;
-        }
-
-        .tag {
-            padding: 0.35rem 0.62rem;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            color: var(--green);
-            font-size: 0.68rem;
-            font-weight: 850;
-            letter-spacing: 0.07em;
-            text-transform: uppercase;
-        }
-
-        .download-card h2 {
-            margin: 4rem 0 0.5rem;
-            font-size: clamp(1.5rem, 3vw, 2.3rem);
-            letter-spacing: -0.045em;
-            line-height: 1.05;
-        }
-
-        .download-card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .card-action {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: auto;
-            padding-top: 2rem;
-        }
-
-        .card-action a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            padding: 0.7rem 0.9rem;
-            border-radius: 13px;
-            color: #06140b;
-            background: linear-gradient(135deg, var(--lime), var(--green));
-            font-size: 0.84rem;
-            font-weight: 850;
-            text-decoration: none;
-        }
-
-        .card-action small {
-            color: #789083;
-        }
-
-        .notice {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-top: 1rem;
-            padding: 1rem 1.15rem;
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            color: var(--muted);
-            background: rgba(255,255,255,.02);
-            font-size: 0.86rem;
-        }
-
-        footer {
-            border-top: 1px solid var(--line);
-        }
-
-        .footer-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 90px;
-            gap: 1rem;
-            color: var(--muted);
-            font-size: 0.82rem;
-        }
-
-        .footer-inner strong { color: var(--text); }
-
-        @media (max-width: 820px) {
-            .hero { grid-template-columns: 1fr; }
-            .hero-note { max-width: 580px; }
-            .download-card,
-            .download-card.featured { grid-column: span 6; }
-        }
-
-        @media (max-width: 590px) {
-            .shell { width: min(100% - 24px, 1120px); }
-            .topbar { min-height: 72px; }
-            main { padding-top: 3rem; }
-            h1 { font-size: clamp(3rem, 16vw, 4.5rem); }
-            h1 span { font-size: 0.7em; }
-            .download-grid { display: block; }
-            .download-card { min-height: 320px; margin-bottom: 0.85rem; }
-            .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: 1.4rem; }
-        }
-    </style>
-    <link rel="stylesheet" href="./site-polish.css">
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
+    <link rel="stylesheet" href="./app-page.css?v=PW3.50A">
+    <script src="./site-ui.js?v=PW3.50A" defer></script>
 </head>
 <body class="polished-page app-page">
-    <header class="shell topbar">
-        <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">🥒</span><span>LaHG / 软件库</span></a>
-        <a class="home-link" href="./">返回主页 <span aria-hidden="true">↗</span></a>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+    <header class="site-header">
+        <div class="shell nav-inner">
+            <a class="site-brand" href="./"><span class="site-mark" aria-hidden="true">L.</span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="./">首页</a><a href="./studio">工作室</a><a href="./app" aria-current="page">软件</a><a href="./game">游戏</a><a href="./sponsor">赞助</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="shell">
-        <section class="hero" aria-labelledby="page-title">
+    <main id="main" class="shell software-main">
+        <section class="software-intro" aria-labelledby="page-title">
             <div>
                 <p class="eyebrow">Downloads &amp; Experiments</p>
                 <h1 id="page-title">闲的没事干<br><span>搞点小东西。</span></h1>
             </div>
-            <p class="hero-note">这里收录黄瓜 LaHG 做过的软件、Scratch 项目和其他实验。</p>
+            <div class="software-intro-note"><span class="catalogue-label">软件与实验 / COLLECTION</span><p>这里收录黄瓜 LaHG 做过的软件、Scratch 项目和其他实验。</p></div>
         </section>
 
-        <section class="download-grid" aria-label="软件下载列表">
-            <article class="download-card featured">
-                <div class="card-head"><span class="card-icon" aria-hidden="true">🪟</span><span class="tag">TurboWarp Project</span></div>
-                <h2>TurboWarp</h2>
-                <p>一个使用 TurboWarp 制作的桌面系统实验。下载后请使用 TurboWarp 打开。</p>
-                <div class="card-action">
-                    <a href="./laohgdows%2010.sb3" download>下载 .sb3 <span aria-hidden="true">↓</span></a>
-                    <small>本地文件</small>
-                </div>
-            </article>
-
-            <article class="download-card">
-                <div class="card-head"><span class="card-icon" aria-hidden="true">🐱</span><span class="tag">Runtime</span></div>
-                <h2>TurboWarp</h2>
-                <p>运行和编辑 laohgdows 10 所需的软件，可通过官网获取。</p>
-                <div class="card-action">
-                    <a href="https://desktop.turbowarp.org/" target="_blank" rel="noreferrer">前往下载 <span aria-hidden="true">↗</span></a>
-                    <small>外部链接</small>
-                </div>
-            </article>
-
-            <article class="download-card">
-                <div class="card-head"><span class="card-icon" aria-hidden="true">🤝</span><span class="tag">Join Studio</span></div>
-                <h2>更多软件</h2>
-                <p>更多工具与实验等待开发。欢迎加入黄瓜味工作室，和我们一起把新想法做成软件。</p>
-                <div class="card-action">
-                    <a href="./studio">加入工作室 <span aria-hidden="true">↗</span></a>
-                    <small>共同开发</small>
-                </div>
-            </article>
+        <section class="tool-feature" aria-labelledby="featured-tool-title">
+            <div class="tool-feature-copy">
+                <p class="section-index"><span class="release-dot" aria-hidden="true"></span>精选工具 / WEB APP</p>
+                <h2 id="featured-tool-title">FLAudioViz<span class="feature-period">.</span></h2>
+                <p class="tool-feature-summary">音频可视化制作工具</p>
+                <p class="tool-feature-description">在浏览器中把音乐做成画面。编辑可视化效果与歌词，预览你的作品。</p>
+                <a class="button button-primary" href="./flaudioviz/">打开 FLAudioViz <span aria-hidden="true">↗</span></a>
+                <span class="tool-feature-meta">浏览器运行 · 无需安装</span>
+            </div>
+            <a class="tool-preview" href="./flaudioviz/" aria-label="打开 FLAudioViz 音频可视化制作工具">
+                <div class="preview-chrome" aria-hidden="true"><span>FLAudioViz</span><span>WORKSPACE ↗</span></div>
+                <img src="./flaudioviz/assets/tutorial-overview-zh.webp" alt="FLAudioViz 的可视化编辑工作区" width="1380" height="860" loading="eager">
+            </a>
         </section>
 
-        <div class="notice"><span aria-hidden="true">ℹ</span><span>软件来自较早未开智时期，建议先确认运行环境，再开始下载。</span></div>
+        <section class="software-archive" aria-labelledby="archive-title">
+            <div class="archive-heading"><h2 id="archive-title">下载与其他实验</h2><p class="section-index">03 / ARCHIVE</p></div>
+            <div class="software-list">
+                <article class="software-row">
+                    <span class="software-number" aria-hidden="true">01</span>
+                    <div class="software-row-title"><span class="software-type">TurboWarp Project</span><h3>TurboWarp</h3></div>
+                    <p>一个使用 TurboWarp 制作的桌面系统实验。下载后请使用 TurboWarp 打开。</p>
+                    <div class="software-row-action"><a href="./laohgdows%2010.sb3" download>下载 .sb3 <span aria-hidden="true">↓</span></a><small>本地文件</small></div>
+                </article>
+                <article class="software-row">
+                    <span class="software-number" aria-hidden="true">02</span>
+                    <div class="software-row-title"><span class="software-type">Runtime</span><h3>TurboWarp</h3></div>
+                    <p>运行和编辑 laohgdows 10 所需的软件，可通过官网获取。</p>
+                    <div class="software-row-action"><a href="https://desktop.turbowarp.org/" target="_blank" rel="noreferrer">前往下载 <span aria-hidden="true">↗</span></a><small>外部链接</small></div>
+                </article>
+                <article class="software-row">
+                    <span class="software-number" aria-hidden="true">03</span>
+                    <div class="software-row-title"><span class="software-type">Join Studio</span><h3>更多软件</h3></div>
+                    <p>更多工具与实验等待开发。欢迎加入黄瓜味工作室，和我们一起把新想法做成软件。</p>
+                    <div class="software-row-action"><a href="./studio">加入工作室 <span aria-hidden="true">↗</span></a><small>共同开发</small></div>
+                </article>
+            </div>
+            <p class="software-notice"><span aria-hidden="true">i</span>软件来自较早未开智时期，建议先确认运行环境，再开始下载。</p>
+        </section>
     </main>
 
-    <footer>
-        <div class="shell footer-inner">
-            <span><strong>LaHG Software Lab</strong> · Powered By FAlphaWeb</span>
-            <span>©2026 FlavorStudio</span>
-        </div>
-    </footer>
-
+    <footer class="site-footer"><div class="shell footer-inner"><span><strong>LaHG Software Lab</strong> · Powered By FAlphaWeb</span><span>©2026 FlavorStudio</span></div></footer>
 </body>
 </html>

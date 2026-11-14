@@ -3,37 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050b08">
+    <meta name="theme-color" content="#153b2b">
     <meta name="keywords" content="FlavorStudio, 管理界面, FAlphaWeb">
     <meta name="description" content="FAlphaWeb 管理界面">
     <title>FAlphaWeb 管理界面</title>
     <link rel="icon" href="./flavor-mark.png">
-    <link rel="stylesheet" href="./admin.css">
-    <link rel="stylesheet" href="./site-polish.css">
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
+    <link rel="stylesheet" href="./admin.css?v=PW3.50A">
 </head>
 <body class="polished-page admin-page">
     <main id="password-container" class="auth-page">
-        <section id="password-box" class="auth-card" aria-labelledby="auth-title">
-            <a class="mini-brand" href="./" aria-label="返回主页"><span>F</span>FAlphaWeb CONTROL</a>
-            <p class="eyebrow">Authorized access only</p>
-            <h1 id="auth-title">进入管理界面</h1>
-            <p class="auth-intro">请输入管理密码以继续。管理内容会在验证成功后于浏览器中解密。</p>
-            <form id="password-form" novalidate>
-                <label for="password-input">管理密码</label>
-                <div class="input-row">
-                    <input type="password" id="password-input" autocomplete="current-password" placeholder="输入密码" required>
-                    <button class="toggle-password" id="toggle-password" type="button" aria-label="显示密码">显示</button>
-                </div>
-                <p id="password-error" class="form-error" role="alert" aria-live="polite"></p>
-                <button class="submit-button" id="submit-button" type="submit">验证并进入 <span aria-hidden="true">→</span></button>
-            </form>
-            <a class="back-link" href="./">← 返回个人主页</a>
-        </section>
-        <div class="auth-decoration" aria-hidden="true"><span>F</span><span>A</span><span>W</span></div>
+        <aside class="auth-brand-panel" aria-labelledby="workspace-title">
+            <a class="mini-brand" href="./" aria-label="返回个人主页"><span class="admin-mark" aria-hidden="true">F.</span>FAlphaWeb</a>
+            <div class="workspace-copy">
+                <p class="workspace-index">FLAVORSTUDIO / WORKSPACE</p>
+                <h2 id="workspace-title">留给创作，<br>一点秩序。</h2>
+                <p class="workspace-description">创作、资源与工作室，<br>在这里有序连接。</p>
+                <div class="workspace-rule" aria-hidden="true"><span></span><span></span><span></span></div>
+            </div>
+            <div class="workspace-foot"><span>FLAVORSTUDIO</span><span>EST. 2022.03.11</span></div>
+        </aside>
+        <div class="auth-form-panel">
+            <a class="back-link" href="./"><span aria-hidden="true">←</span> 返回个人主页</a>
+            <section id="password-box" class="auth-card" aria-labelledby="auth-title">
+                <p class="eyebrow">FALPHAWEB / 管理界面</p>
+                <h1 id="auth-title">进入管理界面</h1>
+                <p class="auth-intro">请输入管理密码以继续。管理内容会在验证成功后于浏览器中解密。</p>
+                <form id="password-form" novalidate>
+                    <label for="password-input">管理密码</label>
+                    <div class="input-row">
+                        <input type="password" id="password-input" autocomplete="current-password" placeholder="输入密码" required aria-describedby="password-error">
+                        <button class="toggle-password" id="toggle-password" type="button" aria-label="显示密码">显示</button>
+                    </div>
+                    <p id="password-error" class="form-error" role="alert" aria-live="polite"></p>
+                    <button class="submit-button" id="submit-button" type="submit">验证并进入 <span aria-hidden="true">↗</span></button>
+                </form>
+                <p class="access-note"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="7" rx="1" stroke="currentColor"/><path d="M5.5 7V4.5a2.5 2.5 0 0 1 5 0V7M8 10v1.5" stroke="currentColor" stroke-linecap="round"/></svg>仅供工作室内部使用</p>
+            </section>
+            <footer class="auth-footer"><span>Powered By <strong>FAlphaWeb</strong></span><span>©2026 FlavorStudio</span></footer>
+        </div>
     </main>
-
     <div id="content" class="dashboard" hidden tabindex="-1"></div>
-
     <script src="./admin-data.js"></script>
     <script src="./admin.js"></script>
 </body>

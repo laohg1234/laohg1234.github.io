@@ -35,7 +35,7 @@ qqGroupBtn.addEventListener("click", function() {
 
 // 瓜瓜的QQ按钮
 qqBtn.addEventListener("click", function() {
-    window.open("https://wpa.qq.com/msgrd?v=3&uin=2123084080&site=qqq&menu=yes"); // 替换为瓜瓜的QQ号
+    window.alert("瓜瓜的 QQ：2123084080，请在 QQ 中搜索并添加好友。");
 });
 
 // 微信公众号按钮

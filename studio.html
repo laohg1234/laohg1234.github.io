@@ -3,182 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050a08">
+    <meta name="theme-color" content="#f5f3ee">
     <meta name="description" content="黄瓜味工作室：一个交流游戏、技术与创意的地方。">
     <title>黄瓜味工作室 · FlavorStudio</title>
     <link rel="icon" href="./flavor-mark.png">
-    <link rel="stylesheet" href="./studio.css">
-    <link rel="stylesheet" href="./site-polish.css">
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
+    <link rel="stylesheet" href="./studio.css?v=PW3.50A">
+    <script src="./site-ui.js?v=PW3.50A" defer></script>
+    <script src="./studio.js?v=PW3.50A" defer></script>
 </head>
 <body class="polished-page studio-page">
     <a class="skip-link" href="#main">跳到主要内容</a>
-
     <header class="site-header">
         <div class="shell nav-inner">
-            <a class="studio-brand" href="#" aria-label="黄瓜味工作室首页">
-                <span class="brand-icon"><img src="./flavor-nav-logo.png" alt=""></span>
-                <span class="brand-type">FLAVOR <strong>STUDIO</strong></span>
-            </a>
-            <nav class="site-nav" aria-label="工作室导航">
-                <a href="#about">架构</a>
-                <a href="#services">业务</a>
-                <a href="./sponsor">赞助</a>
-                <a href="#join">加入</a>
-                <a class="nav-home" href="./">个人主页 <span aria-hidden="true">↗</span></a>
-            </nav>
+            <a class="site-brand" href="./studio" aria-label="黄瓜味工作室首页"><span class="site-mark" aria-hidden="true">FS</span><span>FlavorStudio</span></a>
+            <nav class="site-nav" aria-label="页面导航"><a href="./">主页</a><a href="./studio" aria-current="page">工作室</a><a href="./app">软件</a><a href="./game">游戏</a><a href="./sponsor">赞助</a></nav>
         </div>
     </header>
-
     <main id="main">
-        <section class="hero shell" aria-labelledby="hero-title">
-            <div class="hero-copy">
-                <p class="eyebrow"><span></span>Flavor Creative Lab</p>
+        <section class="studio-hero shell" aria-labelledby="hero-title">
+            <div class="studio-introduction">
+                <p class="eyebrow">Flavor Creative Lab <span>/</span> 自 2022 年起</p>
                 <h1 id="hero-title"><span>把脑洞，</span><em>做成可以玩的东西</em></h1>
-                <p class="hero-intro">
-                    黄瓜味工作室成立于 2022 年 3 月 11 日，由主要创作品牌黄瓜味工作室和
-                    Minecraft 创作团队 FlavorSERV 地图组组成，一起把游戏、音乐与影像里的想法做成作品
-                </p>
-                <div class="hero-actions">
-                    <button class="button button-primary" id="joinBtn" type="button">加入工作室 <span aria-hidden="true">→</span></button>
-                    <a class="button button-ghost" href="#about">了解我们</a>
-                </div>
-                <ul class="hero-tags" aria-label="工作室方向">
-                    <li>Game</li>
-                    <li>Minecraft</li>
-                    <li>Music</li>
-                    <li>Video</li>
-                    <li>Community</li>
-                </ul>
+                <p class="hero-intro">黄瓜味工作室成立于 2022 年 3 月 11 日，由主要创作品牌黄瓜味工作室和 Minecraft 创作团队 FlavorSERV 地图组组成，一起把游戏、音乐与影像里的想法做成作品</p>
+                <div class="hero-actions"><button class="button button-primary" id="joinBtn" type="button">加入工作室 <span aria-hidden="true">↗</span></button><a class="button button-ghost" href="#about">了解我们 <span aria-hidden="true">↓</span></a></div>
             </div>
-
-            <div class="brand-stage" aria-label="Flavor Studio 品牌标志">
-                <div class="stage-orbit orbit-one"></div>
-                <div class="stage-orbit orbit-two"></div>
-                <img class="studio-lockup" src="./flavor-studio-lockup.png" alt="Flavor Studio">
-                <span class="stage-chip chip-top">SINCE 2022.03.11</span>
-                <span class="stage-chip chip-bottom">MAKE · PLAY · SHARE</span>
+            <figure class="studio-specimen"><div class="specimen-meta"><span>FLAVORSTUDIO</span><span>NO. 001</span></div><div class="specimen-logo"><img src="./flavor-studio-lockup.png" alt="Flavor Studio 品牌标志" width="500" height="500"></div><figcaption><span>MAKE · PLAY · SHARE</span><span>EST. 2022.03.11</span></figcaption></figure>
+            <ul class="studio-disciplines" aria-label="工作室方向"><li>Game</li><li>Minecraft</li><li>Music</li><li>Video</li><li>Community</li></ul>
+        </section>
+        <section class="studio-section shell" id="about" aria-labelledby="about-title">
+            <div class="studio-section-heading"><p class="section-index">01 / STRUCTURE</p><h2 id="about-title">一个工作室，<br>两条创作主线</h2><p>从2025年12月开始，我们用不同的团队方向承接不同类型的创作</p></div>
+            <div class="division-list">
+                <article class="division-row"><div class="division-wordmark"><img src="./flavor-studio-lockup.png" alt="Flavor Studio" width="500" height="500" loading="lazy"></div><div class="division-copy"><p class="section-index">01 / MAIN STUDIO</p><h3>黄瓜味工作室</h3><p>工作室的主要创作品牌，涵盖游戏与技术实验，也开展音乐制作和视频内容业务</p></div><span class="division-note">游戏 / 技术 / 声音 / 影像</span></article>
+                <article class="division-row"><div class="division-wordmark serv-wordmark"><img src="./flavor-serv-lockup.png" alt="FlavorSERV" width="660" height="100" loading="lazy"></div><div class="division-copy"><p class="section-index">02 / MINECRAFT TEAM</p><h3>FlavorSERV 地图组</h3><p>专注《我的世界》地图、模组与皮肤制作，让方块世界里的想法变成可以游玩的作品</p></div><span class="division-note">地图 / 模组 / 皮肤</span></article>
             </div>
         </section>
-
-        <section class="about-section shell" id="about" aria-labelledby="about-title">
-            <div class="section-heading">
-                <p class="section-index">01 / STRUCTURE</p>
-                <h2 id="about-title">一个工作室，<br>两条创作主线</h2>
-                <p>从2025年12月开始，我们用不同的团队方向承接不同类型的创作</p>
-            </div>
-
-            <div class="division-grid">
-                <article class="division-card main-division">
-                    <div class="division-visual studio-visual">
-                        <img src="./flavor-studio-lockup.png" alt="Flavor Studio">
-                    </div>
-                    <span class="card-number">01 / MAIN STUDIO</span>
-                    <h3>黄瓜味工作室</h3>
-                    <p>工作室的主要创作品牌，涵盖游戏与技术实验，也开展音乐制作和视频内容业务</p>
-                </article>
-                <article class="division-card serv-division">
-                    <div class="division-visual serv-visual">
-                        <img src="./flavor-serv-lockup.png" alt="FlavorSERV">
-                    </div>
-                    <span class="card-number">02 / MINECRAFT TEAM</span>
-                    <h3>FlavorSERV 地图组</h3>
-                    <p>专注《我的世界》地图、模组与皮肤制作，让方块世界里的想法变成可以游玩的作品</p>
-                </article>
+        <section class="studio-section services-section shell" id="services" aria-labelledby="services-title">
+            <div class="studio-section-heading"><p class="section-index">02 / BUSINESS</p><h2 id="services-title">声音、画面，<br>还有其他内容</h2><p>除了游戏创作，我们也在持续拓展音乐、视频与社区服务</p></div>
+            <div class="business-list">
+                <article class="business-row"><span class="business-number" aria-hidden="true">01</span><p class="business-label">MUSIC</p><h3>音乐业务</h3><p>围绕原创音乐、配乐与声音内容展开更多创作</p><span class="business-symbol" aria-hidden="true">♪</span></article>
+                <article class="business-row"><span class="business-number" aria-hidden="true">02</span><p class="business-label">VIDEO</p><h3>视频业务</h3><p>制作短视频与影像内容，并通过抖音，视频号等平台发布</p><span class="business-symbol" aria-hidden="true">↗</span></article>
+                <article class="business-row"><span class="business-number" aria-hidden="true">03</span><p class="business-label">WECHAT</p><h3>黄瓜味CFS</h3><p>微信服务号，用于发布工作室动态与相关服务信息</p><button class="text-action" id="serviceWechatBtn" type="button" aria-label="查看黄瓜味CFS服务号二维码">查看二维码 ↗</button></article>
+                <article class="business-row"><span class="business-number" aria-hidden="true">04</span><p class="business-label">COMING SOON</p><h3>瓜瓜论坛</h3><p>筹备中的作品分享与社区交流空间，敬请期待</p><span class="coming-label">筹备中</span></article>
             </div>
         </section>
-
-        <section class="services-section shell" id="services" aria-labelledby="services-title">
-            <div class="section-heading">
-                <p class="section-index">02 / BUSINESS</p>
-                <h2 id="services-title">声音、画面，<br>还有其他内容</h2>
-                <p>除了游戏创作，我们也在持续拓展音乐、视频与社区服务</p>
-            </div>
-
-            <div class="services-grid">
-                <article class="service-card">
-                    <span class="service-icon" aria-hidden="true">♫</span>
-                    <p class="service-label">MUSIC</p>
-                    <h3>音乐业务</h3>
-                    <p>围绕原创音乐、配乐与声音内容展开更多创作</p>
-                </article>
-                <article class="service-card">
-                    <span class="service-icon" aria-hidden="true">▶</span>
-                    <p class="service-label">VIDEO</p>
-                    <h3>视频业务</h3>
-                    <p>制作短视频与影像内容，并通过抖音，视频号等平台发布</p>
-                </article>
-                <article class="service-card">
-                    <span class="service-icon" aria-hidden="true">微</span>
-                    <p class="service-label">WECHAT</p>
-                    <h3>黄瓜味CFS</h3>
-                    <p>微信服务号，用于发布工作室动态与相关服务信息</p>
-                </article>
-                <article class="service-card forum-card">
-                    <span class="service-icon" aria-hidden="true">⌁</span>
-                    <p class="service-label">COMING SOON</p>
-                    <h3>瓜瓜论坛</h3>
-                    <p>筹备中的作品分享与社区交流空间，敬请期待</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="join-section shell" id="join" aria-labelledby="join-title">
-            <div class="join-copy">
-                <p class="section-index">03 / JOIN US</p>
-                <h2 id="join-title">下一颗怪点子，<br>也许来自你</h2>
-            </div>
-            <div class="join-action">
-                <p>如果你对游戏、创意或技术充满热情，欢迎来聊聊</p>
-                <div class="join-buttons"><button class="button button-light" id="joinBtnBottom" type="button">选择联系方式 <span aria-hidden="true">↗</span></button><a class="button button-sponsor" href="./sponsor">赞助支持 <span aria-hidden="true">♥</span></a></div>
-            </div>
-        </section>
+        <section class="studio-join shell" id="join" aria-labelledby="join-title"><div><p class="section-index">03 / JOIN US</p><h2 id="join-title">下一颗怪点子，<br>也许来自你</h2></div><div class="join-action"><p>如果你对游戏、创意或技术充满热情，欢迎来聊聊</p><div class="join-buttons"><button class="button" id="joinBtnBottom" type="button">选择联系方式 <span aria-hidden="true">↗</span></button><a class="join-sponsor" href="./sponsor">赞助支持 <span aria-hidden="true">↗</span></a></div></div></section>
     </main>
-
-    <footer class="site-footer">
-        <div class="shell footer-inner">
-            <span><strong>FLAVORSTUDIO</strong> · Powered By FAlphaWeb</span>
-            <span>©2026 FlavorStudio</span>
-        </div>
-    </footer>
-
-    <dialog class="modal" id="joinDialog" aria-labelledby="join-dialog-title">
-        <div class="modal-card">
-            <button class="modal-close" type="button" data-close="joinDialog" aria-label="关闭">×</button>
-            <p class="modal-kicker">JOIN FLAVOR STUDIO</p>
-            <h2 id="join-dialog-title">选择一种方式找到我们</h2>
-            <p class="modal-intro">加入群聊、联系瓜瓜，或者关注微信公众号。</p>
-            <div class="contact-list">
-                <a href="https://qm.qq.com/q/exuEa0Kkqk" target="_blank" rel="noreferrer">
-                    <span class="contact-icon" aria-hidden="true">群</span>
-                    <span><strong>加入 QQ 群</strong><small>和大家一起交流</small></span>
-                    <b aria-hidden="true">↗</b>
-                </a>
-                <a href="https://wpa.qq.com/msgrd?v=3&amp;uin=2123084080&amp;site=qqq&amp;menu=yes" target="_blank" rel="noreferrer">
-                    <span class="contact-icon" aria-hidden="true">Q</span>
-                    <span><strong>联系瓜瓜的 QQ</strong><small>QQ：2123084080</small></span>
-                    <b aria-hidden="true">↗</b>
-                </a>
-                <button id="wechatBtn" type="button">
-                    <span class="contact-icon" aria-hidden="true">微</span>
-                    <span><strong>微信服务号：黄瓜味CFS</strong><small>扫码关注工作室服务号</small></span>
-                    <b aria-hidden="true">→</b>
-                </button>
-            </div>
-        </div>
-    </dialog>
-
-    <dialog class="modal" id="wechatDialog" aria-labelledby="wechat-dialog-title">
-        <div class="modal-card qr-card">
-            <button class="modal-close" type="button" data-close="wechatDialog" aria-label="关闭">×</button>
-            <p class="modal-kicker">WECHAT</p>
-            <h2 id="wechat-dialog-title">微信扫码关注黄瓜味CFS</h2>
-            <div class="qr-frame">
-                <img src="./wechatmp.png" alt="黄瓜味工作室微信公众号二维码">
-            </div>
-            <p class="qr-note">请使用微信扫描上方二维码</p>
-        </div>
-    </dialog>
-
-    <script src="./studio.js"></script>
+    <footer class="site-footer"><div class="shell footer-inner"><span><strong>FLAVORSTUDIO</strong> · Powered By FAlphaWeb</span><span>©2026 FlavorStudio</span></div></footer>
+    <dialog class="modal" id="joinDialog" aria-labelledby="join-dialog-title"><div class="modal-card"><button class="modal-close" type="button" data-close="joinDialog" aria-label="关闭">×</button><p class="modal-kicker">JOIN FLAVOR STUDIO</p><h2 id="join-dialog-title">选择一种方式<br>找到我们</h2><p class="modal-intro">加入群聊、联系瓜瓜，或者关注微信公众号。</p><div class="contact-list">
+        <a href="https://qm.qq.com/q/exuEa0Kkqk" target="_blank" rel="noreferrer"><span class="contact-icon" aria-hidden="true">群</span><span><strong>加入 QQ 群</strong><small>和大家一起交流</small></span><b aria-hidden="true">↗</b></a>
+        <button class="qq-copy" type="button" data-copy="2123084080" aria-label="复制瓜瓜的QQ号2123084080"><span class="contact-icon" aria-hidden="true">Q</span><span><strong>联系瓜瓜的 QQ</strong><small>QQ：2123084080 · 复制 QQ 号</small></span><b aria-hidden="true">⧉</b></button>
+        <button id="wechatBtn" type="button"><span class="contact-icon" aria-hidden="true">微</span><span><strong>微信服务号：黄瓜味CFS</strong><small>扫码关注工作室服务号</small></span><b aria-hidden="true">↗</b></button>
+    </div></div></dialog>
+    <dialog class="modal" id="wechatDialog" aria-labelledby="wechat-dialog-title"><div class="modal-card qr-card"><button class="modal-close" type="button" data-close="wechatDialog" aria-label="关闭">×</button><p class="modal-kicker">WECHAT</p><h2 id="wechat-dialog-title">微信扫码关注<br>黄瓜味CFS</h2><div class="qr-frame"><img src="./wechatmp.png" alt="黄瓜味工作室微信公众号二维码" width="1710" height="624"></div><p class="qr-note">请使用微信扫描上方二维码</p></div></dialog>
 </body>
 </html>

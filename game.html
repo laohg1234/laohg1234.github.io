@@ -3,412 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#06100c">
-    <meta name="description" content="黄瓜 LaHG 的小游戏中心，收录 2048、扫雷、冲浪等游戏。">
+    <meta name="theme-color" content="#f5f3ee">
+    <meta name="description" content="黄瓜 LaHG 的网页游戏中心，选择喜欢的小游戏，点开即玩。">
     <title>游戏中心 · 黄瓜 LaHG</title>
     <link rel="icon" href="./flavor-mark.png">
-    <style>
-        :root {
-            color-scheme: dark;
-            --bg: #06100c;
-            --panel: rgba(13, 31, 24, 0.9);
-            --line: rgba(188, 255, 211, 0.14);
-            --text: #f2fff6;
-            --muted: #9fb4a6;
-            --green: #4ae98d;
-            --lime: #daff7a;
-            --radius: 25px;
-        }
-
-        * { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            min-width: 320px;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 12% 3%, rgba(74, 233, 141, 0.12), transparent 27rem),
-                radial-gradient(circle at 92% 62%, rgba(218, 255, 122, 0.07), transparent 27rem),
-                linear-gradient(145deg, #07130f, #040906);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
-            line-height: 1.65;
-        }
-
-        body::before {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-            background-size: 48px 48px;
-            content: "";
-            mask-image: linear-gradient(to bottom, black, transparent 82%);
-        }
-
-        a { color: inherit; }
-
-        .shell {
-            width: min(1160px, calc(100% - 36px));
-            margin-inline: auto;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 86px;
-            gap: 1rem;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.72rem;
-            font-weight: 850;
-            text-decoration: none;
-        }
-
-        .brand-mark {
-            display: grid;
-            width: 38px;
-            height: 38px;
-            place-items: center;
-            border-radius: 13px;
-            color: #06140b;
-            background: linear-gradient(140deg, var(--lime), var(--green));
-            box-shadow: 0 12px 30px rgba(74, 233, 141, 0.17);
-        }
-
-        .topnav {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .topnav a {
-            padding: 0.62rem 0.85rem;
-            border-radius: 999px;
-            color: var(--muted);
-            font-size: 0.88rem;
-            font-weight: 750;
-            text-decoration: none;
-            transition: color 0.2s ease, background 0.2s ease;
-        }
-
-        .topnav a:hover,
-        .topnav a:focus-visible {
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.05);
-            outline: none;
-        }
-
-        main { padding: 4rem 0 6.5rem; }
-
-        .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.55fr);
-            align-items: end;
-            gap: 3rem;
-            margin-bottom: 4.5rem;
-        }
-
-        .eyebrow {
-            margin: 0 0 1.2rem;
-            color: var(--green);
-            font-size: 0.76rem;
-            font-weight: 900;
-            letter-spacing: 0.13em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(3.7rem, 8vw, 7rem);
-            font-weight: 880;
-            letter-spacing: -0.06em;
-            line-height: 1.03;
-        }
-
-        h1 span {
-            display: inline-block;
-            padding-bottom: 0.06em;
-            color: transparent;
-            background: linear-gradient(105deg, var(--lime), var(--green));
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        .hero-copy {
-            margin: 0;
-            color: var(--muted);
-            font-size: 1.02rem;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.65rem;
-            margin-top: 1.5rem;
-        }
-
-        .hero-stat {
-            padding: 0.85rem;
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.025);
-        }
-
-        .hero-stat strong,
-        .hero-stat span { display: block; }
-
-        .hero-stat strong {
-            color: var(--green);
-            font-size: 1.3rem;
-        }
-
-        .hero-stat span {
-            color: var(--muted);
-            font-size: 0.74rem;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .game-card {
-            display: flex;
-            min-width: 0;
-            overflow: hidden;
-            flex-direction: column;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: linear-gradient(145deg, rgba(15, 37, 28, 0.95), rgba(7, 19, 13, 0.86));
-            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.24);
-            text-decoration: none;
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .game-card:hover,
-        .game-card:focus-visible {
-            border-color: rgba(126, 255, 170, 0.38);
-            outline: none;
-            transform: translateY(-6px);
-        }
-
-        .game-card-disabled {
-            cursor: not-allowed;
-            opacity: 0.72;
-        }
-
-        .game-card-disabled:hover {
-            border-color: var(--line);
-            transform: none;
-        }
-
-        .game-card-disabled .game-cover img {
-            filter: grayscale(0.75) brightness(0.72);
-        }
-
-        .game-card-disabled .play-action {
-            color: #ffcc80;
-        }
-
-        .game-card-disabled .play-action b {
-            color: #241506;
-            background: #ffcc80;
-        }
-
-        .game-cover {
-            position: relative;
-            aspect-ratio: 16 / 10;
-            margin: 0;
-            overflow: hidden;
-            background: #10241a;
-        }
-
-        .game-cover::after {
-            position: absolute;
-            inset: 45% 0 0;
-            background: linear-gradient(transparent, rgba(4, 14, 9, 0.76));
-            content: "";
-        }
-
-        .game-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.45s ease;
-        }
-
-        .game-card:hover .game-cover img { transform: scale(1.045); }
-
-        .game-number {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            z-index: 2;
-            padding: 0.32rem 0.56rem;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 999px;
-            color: #fff;
-            background: rgba(3, 12, 7, 0.6);
-            font-size: 0.68rem;
-            font-weight: 850;
-            backdrop-filter: blur(10px);
-        }
-
-        .game-body {
-            display: flex;
-            min-height: 235px;
-            padding: 1.3rem;
-            flex-direction: column;
-        }
-
-        .game-tag {
-            margin: 0 0 0.45rem;
-            color: var(--green);
-            font-size: 0.68rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .game-body h2 {
-            margin: 0 0 0.45rem;
-            font-size: 1.45rem;
-            letter-spacing: -0.04em;
-        }
-
-        .game-body > p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        .play-action {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: auto;
-            padding-top: 1.8rem;
-            color: #d9e9df;
-            font-size: 0.84rem;
-            font-weight: 850;
-        }
-
-        .play-action b {
-            display: grid;
-            width: 34px;
-            height: 34px;
-            place-items: center;
-            border-radius: 50%;
-            color: #06140b;
-            background: linear-gradient(135deg, var(--lime), var(--green));
-        }
-
-        footer { border-top: 1px solid var(--line); }
-
-        .footer-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 92px;
-            gap: 1rem;
-            color: var(--muted);
-            font-size: 0.82rem;
-        }
-
-        .footer-inner strong { color: var(--text); }
-
-        @media (max-width: 860px) {
-            .hero { grid-template-columns: 1fr; }
-            .hero-copy { max-width: 600px; }
-            .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-
-        @media (max-width: 580px) {
-            .shell { width: min(100% - 24px, 1160px); }
-            .topbar { min-height: 72px; }
-            .topnav a:first-child { display: none; }
-            main { padding-top: 3rem; }
-            h1 { font-size: clamp(3.2rem, 16vw, 4.5rem); }
-            .game-grid { display: block; }
-            .game-card { margin-bottom: 0.85rem; }
-            .game-body { min-height: 220px; }
-            .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; padding-block: 1.4rem; }
-        }
-    </style>
-    <link rel="stylesheet" href="./site-polish.css">
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
+    <link rel="stylesheet" href="./game-hub.css?v=PW3.50A">
+    <script src="./site-ui.js?v=PW3.50A" defer></script>
 </head>
 <body class="polished-page game-hub-page">
-    <header class="shell topbar">
-        <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">🎮</span><span>LaHG / 游戏中心</span></a>
-        <nav class="topnav" aria-label="页面导航">
-            <a href="./studio">黄瓜味工作室</a>
-            <a href="./">返回主页 ↗</a>
-        </nav>
-    </header>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+    <header class="site-header"><div class="shell nav-inner">
+        <a class="site-brand" href="./"><span class="site-mark" aria-hidden="true">L.</span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
+        <nav class="site-nav" aria-label="主导航"><a href="./">首页</a><a href="./studio">工作室</a><a href="./app">软件</a><a href="./game" aria-current="page">游戏</a><a href="./sponsor">赞助</a></nav>
+    </div></header>
 
-    <main class="shell">
-        <section class="hero" aria-labelledby="page-title">
-            <div>
-                <p class="eyebrow">Game Selection</p>
-                <h1 id="page-title">今天，<br><span>玩点什么？</span></h1>
-            </div>
-            <div>
-                <p class="hero-copy">挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p>
-                <div class="hero-stats">
-                    <div class="hero-stat"><strong>6</strong><span>可玩游戏</span></div>
-                    <div class="hero-stat"><strong>0</strong><span>修复中</span></div>
-                </div>
-            </div>
+    <main id="main" class="shell arcade-main">
+        <section class="arcade-intro" aria-labelledby="page-title">
+            <div><p class="eyebrow">Game Selection</p><h1 id="page-title">今天，<br><span>玩点什么？</span></h1></div>
+            <div class="arcade-intro-copy"><p>挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p><div class="arcade-status"><span><b>6</b> 可玩游戏</span><span><b>0</b> 修复中</span></div></div>
         </section>
 
-        <section class="game-grid" aria-label="游戏列表">
-            <a class="game-card" href="./2048">
-                <figure class="game-cover"><img src="./game/2048.png" alt="2048 军旗版封面"><span class="game-number">01</span></figure>
-                <div class="game-body"><p class="game-tag">Puzzle</p><h2>2048 军旗版</h2><p>熟悉的数字合成玩法，换上一点不一样的军旗风味。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
+        <section class="arcade-collection" aria-label="游戏列表">
+            <div class="arcade-toolbar">
+                <div class="genre-filters" role="group" aria-label="按类型筛选游戏"><button type="button" data-genre="all" aria-pressed="true">全部游戏</button><button type="button" data-genre="puzzle" aria-pressed="false">益智</button><button type="button" data-genre="action" aria-pressed="false">动作</button><button type="button" data-genre="arcade" aria-pressed="false">休闲</button></div>
+                <p class="game-count" aria-live="polite"><span id="gameCount">06</span> / GAMES</p>
+            </div>
 
-            <a class="game-card" href="./n.html">
-                <figure class="game-cover"><img src="./game/n.png" alt="熔岩闯关封面"><span class="game-number">02</span></figure>
-                <div class="game-body"><p class="game-tag">Platformer · 10 Levels</p><h2>熔岩闯关</h2><p>跨越熔岩、躲开机关并收集金币。十个关卡会逐步考验你的操作。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
-
-            <a class="game-card" href="./b">
-                <figure class="game-cover"><img src="./game/b.png" alt="扫雷封面"><span class="game-number">03</span></figure>
-                <div class="game-body"><p class="game-tag">Classic</p><h2>扫雷</h2><p>经典扫雷玩法。观察数字，避开地雷，然后再来一局。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
-
-            <a class="game-card" href="./d">
-                <figure class="game-cover"><img src="./game/d.png" alt="谷歌小恐龙封面"><span class="game-number">04</span></figure>
-                <div class="game-body"><p class="game-tag">Runner</p><h2>谷歌小恐龙</h2><p>按下空格躲开障碍。规则很简单，坚持得更久可不简单。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
-
-            <a class="game-card" href="./surf">
-                <figure class="game-cover"><img src="./game/surf.png" alt="冲浪游戏封面"><span class="game-number">05</span></figure>
-                <div class="game-body"><p class="game-tag">Arcade</p><h2>冲浪</h2><p>来自 Edge 的离线冲浪游戏。进入后请稍等片刻完成加载。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
-
-            <a class="game-card" href="./plane">
-                <figure class="game-cover"><img src="./game/plane.png" alt="3D 飞机游戏封面"><span class="game-number">06</span></figure>
-                <div class="game-body"><p class="game-tag">3D Action</p><h2>3D 飞机</h2><p>驾驶飞机穿过三维场景，也是这里最值得一试的游戏之一。</p><div class="play-action"><span>开始游戏</span><b aria-hidden="true">↗</b></div></div>
-            </a>
+            <div class="arcade-grid">
+                <a class="game-entry game-entry--featured" href="./n.html" data-game-genre="action">
+                    <figure class="entry-cover entry-cover--lava"><img src="./game/n.png" alt="熔岩闯关封面" width="960" height="540"><span class="entry-number">02 / PLATFORMER</span></figure>
+                    <div class="entry-copy"><p class="game-tag">Platformer · 10 Levels</p><h2>熔岩闯关</h2><p class="entry-description">跨越熔岩、躲开机关并收集金币。十个关卡会逐步考验你的操作。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+                <a class="game-entry" href="./2048" data-game-genre="puzzle">
+                    <figure class="entry-cover"><img src="./game/2048.png" alt="2048 军旗版封面" width="960" height="540" loading="lazy"><span class="entry-number">01</span></figure>
+                    <div class="entry-copy"><p class="game-tag">Puzzle</p><h2>2048 军旗版</h2><p class="entry-description">熟悉的数字合成玩法，换上一点不一样的军旗风味。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+                <a class="game-entry" href="./b" data-game-genre="puzzle">
+                    <figure class="entry-cover"><img src="./game/b.png" alt="扫雷封面" width="960" height="540" loading="lazy"><span class="entry-number">03</span></figure>
+                    <div class="entry-copy"><p class="game-tag">Classic</p><h2>扫雷</h2><p class="entry-description">经典扫雷玩法。观察数字，避开地雷，然后再来一局。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+                <a class="game-entry" href="./d" data-game-genre="action">
+                    <figure class="entry-cover"><img src="./game/d.png" alt="谷歌小恐龙封面" width="960" height="540" loading="lazy"><span class="entry-number">04</span></figure>
+                    <div class="entry-copy"><p class="game-tag">Runner</p><h2>谷歌小恐龙</h2><p class="entry-description">按下空格躲开障碍。规则很简单，坚持得更久可不简单。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+                <a class="game-entry" href="./surf" data-game-genre="arcade">
+                    <figure class="entry-cover"><img src="./game/surf.png" alt="冲浪游戏封面" width="960" height="540" loading="lazy"><span class="entry-number">05</span></figure>
+                    <div class="entry-copy"><p class="game-tag">Arcade</p><h2>冲浪</h2><p class="entry-description">来自 Edge 的离线冲浪游戏。进入后请稍等片刻完成加载。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+                <a class="game-entry" href="./plane" data-game-genre="action">
+                    <figure class="entry-cover"><img src="./game/plane.png" alt="3D 飞机游戏封面" width="960" height="540" loading="lazy"><span class="entry-number">06</span></figure>
+                    <div class="entry-copy"><p class="game-tag">3D Action</p><h2>3D 飞机</h2><p class="entry-description">驾驶飞机穿过三维场景，也是这里最值得一试的游戏之一。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                </a>
+            </div>
         </section>
     </main>
 
-    <footer>
-        <div class="shell footer-inner">
-            <span><strong>LaHG Game Center</strong> · Powered By FAlphaWeb</span>
-            <span>©2026 FlavorStudio</span>
-        </div>
-    </footer>
+    <footer class="site-footer"><div class="shell footer-inner"><span><strong>LaHG Game Center</strong> · Powered By FAlphaWeb</span><span>©2026 FlavorStudio</span></div></footer>
+    <script>
+        (() => {
+            const filters = [...document.querySelectorAll("[data-genre]")];
+            const entries = [...document.querySelectorAll("[data-game-genre]")];
+            filters.forEach((button) => button.addEventListener("click", () => {
+                const genre = button.dataset.genre;
+                filters.forEach((filter) => filter.setAttribute("aria-pressed", String(filter === button)));
+                entries.forEach((entry) => { entry.hidden = genre !== "all" && entry.dataset.gameGenre !== genre; });
+                document.querySelector("#gameCount").textContent = String(entries.filter((entry) => !entry.hidden).length).padStart(2, "0");
+            }));
+        })();
+    </script>
 </body>
 </html>
