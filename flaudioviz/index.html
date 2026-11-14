@@ -108,6 +108,11 @@
             <span class="drop-title" data-i18n="source.preset">Add project preset</span>
             <span class="drop-help" data-i18n="source.presetHelp">.flavsettings settings sidecar</span>
           </button>
+          <button class="drop-zone drop-zone--compact" id="lyricsDrop" type="button">
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <span class="drop-title" data-i18n="source.lyrics">Import lyrics</span>
+            <span class="drop-help" data-i18n="source.lyricsHelp">Timed .lrc lyrics file</span>
+          </button>
           <div class="file-strip" id="fileStrip" aria-live="polite" data-i18n="source.none">No source loaded</div>
         </section>
 
@@ -170,6 +175,7 @@
                 <label class="check-row"><input type="checkbox" data-layer="grid" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.grid">Grid</span></label>
                 <label class="check-row"><input type="checkbox" data-layer="particles" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.particles">Particles</span></label>
                 <label class="check-row"><input type="checkbox" data-layer="progress" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.progress">Progress</span></label>
+                <label class="check-row"><input type="checkbox" data-layer="lyrics" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.lyrics">Lyrics</span></label>
                 <label class="check-row"><input type="checkbox" data-layer="sourceLabel" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.sourceLabel">File source label</span></label>
                 <label class="check-row"><input type="checkbox" data-layer="sourceMeta" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.sourceMeta">Right-side source</span></label>
                 <label class="check-row"><input type="checkbox" data-layer="durationMeta" checked><span class="check-box" aria-hidden="true"></span><span data-i18n="custom.durationMeta">Right-side duration</span></label>
@@ -281,6 +287,7 @@
   <input id="actionsInput" type="file" accept=".flavactions" hidden>
   <input id="presetInput" type="file" accept=".flavsettings" hidden>
   <input id="songfileInput" type="file" accept=".flavsettings" hidden>
+  <input id="lyricsInput" type="file" accept=".lrc" hidden>
   <dialog class="export-dialog" id="exportDialog" aria-labelledby="exportDialogTitle" aria-describedby="exportNote">
     <div class="export-dialog__surface">
       <header class="export-dialog__header">
@@ -378,6 +385,7 @@
             <ol class="tutorial-steps">
               <li><strong data-i18n="guide.start.audioTitle">Add audio</strong><span data-i18n="guide.start.audioBody">Choose or drop an MP3, WAV, OGG, FLAC, or M4A file. Browser support decides which formats can be decoded; WAV and MP3 are the safest choices.</span></li>
               <li><strong data-i18n="guide.start.coverTitle">Add a cover</strong><span data-i18n="guide.start.coverBody">Choose PNG, JPG, or WebP. Supported audio tags may also fill the cover, title, artist, album, genre, and track number automatically.</span></li>
+              <li><strong data-i18n="guide.start.lyricsTitle">Import lyrics</strong><span data-i18n="guide.start.lyricsBody">Choose or drop an .lrc file. Timed lines follow playback and appear in the preview and exported video.</span></li>
               <li><strong data-i18n="guide.start.identityTitle">Check song information</strong><span data-i18n="guide.start.identityBody">Edit the title, artist, album, genre, BPM, or track number. The title, artist, album, and track number appear in the preview and exports. Estimate BPM gives the whole song one BPM value; it does not make a changing BPM timeline.</span></li>
               <li><strong data-i18n="guide.start.infoTitle">Check audio details</strong><span data-i18n="guide.start.infoBody">After the file loads, this panel shows the sample rate, channels, available bit depth, file size, peak headroom, and decode state. These values are read-only.</span></li>
             </ol>
@@ -409,6 +417,7 @@
               <div><dt data-i18n="guide.layers.graphTitle">Spectrum and waveform</dt><dd data-i18n="guide.layers.graphBody">Spectrum shows the current frequency energy. Waveform shows the song's overall shape and current short-window energy.</dd></div>
               <div><dt data-i18n="guide.layers.atmosphereTitle">Grid and particles</dt><dd data-i18n="guide.layers.atmosphereBody">These are background guides and small drifting points. They can be removed without affecting audio analysis.</dd></div>
               <div><dt data-i18n="guide.layers.progressTitle">Progress and timeline times</dt><dd data-i18n="guide.layers.progressBody">Progress is the thin line inside the exported picture. Timeline times controls its start and end labels; the webpage playback slider remains separate.</dd></div>
+              <div><dt data-i18n="guide.layers.lyricsTitle">Lyrics</dt><dd data-i18n="guide.layers.lyricsBody">Shows the current timed line from the imported .lrc file. This switch also controls lyrics in PNG and MP4 exports.</dd></div>
               <div><dt data-i18n="guide.layers.sourceTitle">Source labels and right-side details</dt><dd data-i18n="guide.layers.sourceBody">File source label, right-side source, and right-side duration can each be hidden.</dd></div>
             </dl>
             <h4 data-i18n="guide.layers.metersTitle">Bottom meters</h4>

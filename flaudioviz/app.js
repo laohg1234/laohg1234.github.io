@@ -10,6 +10,7 @@
   const ACTIONS_KEY = "signal-room-actions-v1";
   const RECOVERY_KEY = "flaviz-recovery-v1";
   const AUDIO_MAX_BYTES = 600 * 1024 * 1024;
+  const MAX_LRC_BYTES = 1024 * 1024;
   const MAX_EXPORT_VIDEO_MBPS = 120;
   const MAX_EXPORT_FRAME_BUDGET = 1_000_000;
   const EXPORT_METADATA = Object.freeze({
@@ -20,6 +21,7 @@
     actions: Object.freeze({ description: "FLAudioViz动作文件", extension: ".flavactions", mime: "application/x-flaudioviz-actions" }),
     settings: Object.freeze({ description: "FLAudioViz配置文件", extension: ".flavsettings", mime: "application/x-flaudioviz-settings" })
   });
+  const LRC_FILE_TYPE = Object.freeze({ description: "LRC lyrics", extension: ".lrc", mime: "text/plain" });
   const SPECTRUM_STYLES = Object.freeze(["bars", "line", "dots"]);
 
   // Keep the two built-in themes explicit so the initial canvas, CSS tokens,
@@ -135,7 +137,11 @@
       "guide.local.topbarTitle": "Top-bar controls", "guide.local.topbarBody": "More jumps to the main areas. EN / 中 changes language. The sun button changes theme, the help button opens this guide, and the sliders button jumps to customization.",
       "guide.local.versionTitle": "Version check", "guide.local.versionBody": "The version button in the footer reads the FLAudioViz version included with this site; it does not check online for updates. If the version cannot be read, the button changes to Retry.",
       "guide.local.homeTitle": "Home", "guide.local.homeBody": "Home opens 黄瓜LaHG's personal website.",
-      "guide.finish.title": "Check before export", "guide.finish.body": "Preview a few points in the song, check that the visible items and design look right, then save the setup before starting the MP4 export.", "guide.finish.close": "Close guide"
+      "guide.finish.title": "Check before export", "guide.finish.body": "Preview a few points in the song, check that the visible items and design look right, then save the setup before starting the MP4 export.", "guide.finish.close": "Close guide",
+      "source.lyrics": "Import lyrics", "source.lyricsHelp": "Timed .lrc lyrics file", "source.lyricsShort": "Lyrics",
+      "custom.lyrics": "Lyrics", "toast.lyricsImported": "Imported {count} timed lyric lines.", "toast.lyricsInvalid": "Choose an .lrc lyrics file.", "toast.lyricsEmpty": "No timestamped lyric lines were found in this file.", "toast.lyricsTooLarge": "This LRC file is larger than 1 MB.", "toast.lyricsReadError": "This lyrics file could not be read.",
+      "guide.start.lyricsTitle": "Import lyrics", "guide.start.lyricsBody": "Choose or drop an .lrc file. Timed lines follow playback and appear in the preview and exported video. Lines with the same timestamp are shown together for bilingual lyrics.",
+      "guide.layers.lyricsTitle": "Lyrics", "guide.layers.lyricsBody": "Shows the current timed line from the imported .lrc file. This switch also controls lyrics in PNG and MP4 exports."
     },
     zh: {
       "guide.open": "打开使用教程", "guide.close": "关闭使用教程", "guide.title": "使用教程", "guide.intro": "初次使用请先查看教程。", "guide.contents": "教程目录",
@@ -199,7 +205,11 @@
       "guide.local.topbarTitle": "顶栏按钮", "guide.local.topbarBody": "“更多”可跳到主要区域，EN / 中切换语言，太阳按钮切换主题，问号按钮打开本教程，滑杆按钮跳到自定义设置。",
       "guide.local.versionTitle": "版本查询", "guide.local.versionBody": "页脚的版本按钮会读取网站当前使用的 FLAudioViz 版本号，不会联网检查更新。读取失败时，按钮会显示“重试”。",
       "guide.local.homeTitle": "首页", "guide.local.homeBody": "点“首页”会打开黄瓜LaHG的个人网站。",
-      "guide.finish.title": "导出前检查", "guide.finish.body": "先试听几个片段，确认显示项和画面效果都没问题，再保存一次配置并开始 MP4 导出。", "guide.finish.close": "关闭教程"
+      "guide.finish.title": "导出前检查", "guide.finish.body": "先试听几个片段，确认显示项和画面效果都没问题，再保存一次配置并开始 MP4 导出。", "guide.finish.close": "关闭教程",
+      "source.lyrics": "导入歌词", "source.lyricsHelp": "带时间戳的 .lrc 歌词文件", "source.lyricsShort": "歌词",
+      "custom.lyrics": "歌词", "toast.lyricsImported": "已导入 {count} 行带时间戳的歌词。", "toast.lyricsInvalid": "请选择 .lrc 歌词文件。", "toast.lyricsEmpty": "没有找到带时间戳的歌词行。", "toast.lyricsTooLarge": "LRC 文件不能超过 1 MB。", "toast.lyricsReadError": "无法读取这个歌词文件。",
+      "guide.start.lyricsTitle": "导入歌词", "guide.start.lyricsBody": "选择或拖入 .lrc 文件，歌词会随播放进度同步显示在预览和导出视频中。若双语歌词分成相同时间戳的两行，会同时显示。",
+      "guide.layers.lyricsTitle": "歌词", "guide.layers.lyricsBody": "显示已导入 .lrc 文件中当前时间对应的歌词；此开关也会控制 PNG 和 MP4 导出画面中的歌词。"
     }
   };
 
@@ -267,6 +277,7 @@
       grid: true,
       particles: true,
       progress: true,
+      lyrics: true,
       sourceLabel: true,
       sourceMeta: true,
       durationMeta: true,
@@ -371,6 +382,9 @@
   const state = {
     config: initialConfig,
     audioFile: null,
+    lyricsFile: null,
+    lyricsText: "",
+    lyricsTimeline: [],
     coverFile: null,
     coverImage: null,
     // Distinguish an embedded cover from one explicitly supplied by the user.
@@ -438,11 +452,13 @@
     canvas: $("#visualizerCanvas"),
     stageNote: $("#stageEmptyNote"),
     audioInput: $("#audioInput"),
+    lyricsInput: $("#lyricsInput"),
     coverInput: $("#coverInput"),
     presetInput: $("#presetInput"),
     songfileInput: $("#songfileInput"),
     actionsInput: $("#actionsInput"),
     audioDrop: $("#audioDrop"),
+    lyricsDrop: $("#lyricsDrop"),
     coverDrop: $("#coverDrop"),
     songfileDrop: $("#songfileDrop"),
     sourceStatus: $("#sourceStatus"),
@@ -624,7 +640,9 @@
       format: "flaviz-recovery",
       version: 1,
       audioName: state.audioFile?.name || "",
-      coverName: state.coverFile?.name || ""
+      coverName: state.coverFile?.name || "",
+      lyricsName: state.lyricsFile?.name || "",
+      lyricsText: state.lyricsText
     };
   }
 
@@ -687,6 +705,9 @@
     try {
       state.applyingRecovery = true;
       applyPreset(snapshot, { silent: true });
+      if (typeof snapshot.lyricsText === "string" && snapshot.lyricsText) {
+        setLyricsText(snapshot.lyricsText, { name: snapshot.lyricsName || "lyrics.lrc" }, { notify: false, persist: false });
+      }
       // Keep the snapshot as an autosave, not a one-use token. A later page
       // load must ask again even when the user closes immediately after restore.
       try { localStorage.setItem(RECOVERY_KEY, JSON.stringify(snapshot)); } catch { /* private mode */ }
@@ -1410,12 +1431,15 @@
   }
 
   function updateFileStrip() {
-    if (!state.audioFile) {
+    const files = [];
+    if (state.audioFile) files.push(`${state.audioFile.name} · ${formatBytes(state.audioFile.size)}`);
+    if (state.coverFile) files.push(state.coverFile.name || t("source.cover", "Cover"));
+    if (state.lyricsFile?.name) files.push(`${t("source.lyricsShort", "Lyrics")}: ${state.lyricsFile.name}`);
+    if (!files.length) {
       refs.fileStrip.textContent = t("source.none", "No source loaded");
       return;
     }
-    const cover = state.coverFile ? ` + ${t("source.cover", "cover")}` : "";
-    refs.fileStrip.textContent = `${state.audioFile.name}${cover} · ${formatBytes(state.audioFile.size)}`;
+    refs.fileStrip.textContent = files.join(" · ");
   }
 
   function updateTimeUI() {
@@ -1593,7 +1617,7 @@
     if (staticOnly) return;
 
     const radiusX = halfSize + 2;
-    const radiusY = halfSize * .82;
+    const radiusY = radiusX;
     const tempo = tempoStateAt(playbackTime);
     const basePhase = tempo.bpm > 0 ? tempo.beat / 16 : playbackTime / 7;
     const phase = motion > 0 ? basePhase * motion : .5;
@@ -1648,6 +1672,59 @@
       else high = middle - 1;
     }
     return `${characters.slice(0, low).join("")}${suffix}`;
+  }
+
+  function lyricAtTime(time) {
+    const timeline = state.lyricsTimeline;
+    let low = 0;
+    let high = timeline.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (timeline[middle].time <= time) low = middle + 1;
+      else high = middle;
+    }
+    return low ? timeline[low - 1] : null;
+  }
+
+  function drawLyrics(ctx, colors, layout, time) {
+    if (!state.config.layers.lyrics || !state.lyricsTimeline.length) return;
+    const active = lyricAtTime(time);
+    const lines = active?.texts || (active?.text ? [active.text] : []);
+    if (!lines.length) return;
+
+    const maxWidth = layout === "stack" ? 1320 : 1540;
+    const centerY = layout === "stack" ? 446 : 846;
+    const lineGap = layout === "stack" ? 32 : 36;
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineJoin = "round";
+    lines.forEach((line, index) => {
+      const isTranslation = lines.length > 1 && index > 0;
+      const baseSize = lines.length === 1
+        ? 34
+        : layout === "stack"
+          ? (isTranslation ? 19 : 25)
+          : (isTranslation ? 23 : 31);
+      let fontSize = baseSize;
+      ctx.font = `500 ${fontSize}px "Segoe UI", sans-serif`;
+      while (fontSize > 17 && ctx.measureText(line).width > maxWidth) {
+        fontSize -= 2;
+        ctx.font = `500 ${fontSize}px "Segoe UI", sans-serif`;
+      }
+      const display = ellipsizeCanvasText(ctx, line, maxWidth);
+      const baseline = lines.length > 1
+        ? centerY + (index - (lines.length - 1) / 2) * lineGap
+        : centerY;
+      ctx.strokeStyle = colors.background;
+      ctx.lineWidth = isTranslation ? 6 : 8;
+      ctx.strokeText(display, W / 2, baseline, maxWidth);
+      ctx.fillStyle = colors.ink;
+      ctx.globalAlpha = isTranslation ? .78 : 1;
+      ctx.fillText(display, W / 2, baseline, maxWidth);
+      ctx.globalAlpha = 1;
+    });
+    ctx.restore();
   }
 
   function drawCover(ctx, colors, centerX, centerY, size, time) {
@@ -1979,7 +2056,12 @@
     const layout = state.config.layout;
     let coverX = 430; let coverY = 500; let coverSize = 410;
     let contentX = 820; let contentY = 150; let contentW = 980;
-    if (layout === "stack") { coverX = 960; coverY = 300; coverSize = 270; contentX = 210; contentY = 510; contentW = 1500; }
+    if (layout === "stack") {
+      coverX = 960;
+      coverY = state.lyricsTimeline.length ? 230 : 300;
+      coverSize = 270;
+      contentX = 210; contentY = 510; contentW = 1500;
+    }
     if (layout === "minimal") { coverX = 305; coverY = 465; coverSize = 270; contentX = 650; contentY = 210; contentW = 1110; }
     return { layout, coverX, coverY, coverSize, contentX, contentY, contentW };
   }
@@ -2217,6 +2299,7 @@
       ? H - 88
       : Math.min(H - 104, progressY == null ? waveY + 120 : progressY + 60);
     drawMetrics(ctx, colors, contentX, metricsY, contentW, 72, time);
+    drawLyrics(ctx, colors, layout, time);
     ctx.restore();
   }
 
@@ -2398,6 +2481,90 @@
 
   function fileHasExtension(file, extension) {
     return Boolean(file?.name) && String(file.name).toLowerCase().endsWith(extension);
+  }
+
+  function parseLrc(text) {
+    const source = String(text || "").replace(/^\uFEFF/, "");
+    const offsetMatch = source.match(/\[offset\s*:\s*([+-]?\d+)\s*\]/i);
+    const offsetValue = offsetMatch ? Number(offsetMatch[1]) : 0;
+    const offset = Number.isFinite(offsetValue) ? offsetValue / 1000 : 0;
+    const timeline = [];
+    let order = 0;
+
+    for (const rawLine of source.split(/\r?\n/)) {
+      const tags = [...rawLine.matchAll(/\[(\d+):(\d{1,2})(?:[.:](\d{1,3}))?\]/g)];
+      if (!tags.length) continue;
+      const lyric = rawLine.replace(/\[[^\]]*\]/g, "").trim();
+      if (!lyric) continue;
+      for (const tag of tags) {
+        const minutes = Number(tag[1]);
+        const seconds = Number(tag[2]);
+        if (!Number.isFinite(minutes) || seconds > 59) continue;
+        const fraction = Number(`0.${(tag[3] || "").padEnd(3, "0")}`);
+        timeline.push({ time: minutes * 60 + seconds + fraction + offset, text: lyric, order: order++ });
+      }
+    }
+
+    timeline.sort((a, b) => a.time - b.time || a.order - b.order);
+    const grouped = [];
+    for (const entry of timeline) {
+      const previous = grouped.at(-1);
+      if (previous && previous.time.toFixed(3) === entry.time.toFixed(3)) {
+        previous.texts.push(entry.text);
+      } else {
+        grouped.push({ time: entry.time, texts: [entry.text] });
+      }
+    }
+    return grouped;
+  }
+
+  function setLyricsText(text, file, options = {}) {
+    const timeline = parseLrc(text);
+    if (!timeline.length) {
+      if (options.notify !== false) showToast(t("toast.lyricsEmpty", "No timestamped lyric lines were found in this file."));
+      return false;
+    }
+    state.lyricsText = String(text || "").replace(/^\uFEFF/, "");
+    state.lyricsTimeline = timeline;
+    state.lyricsFile = { name: file?.name || "lyrics.lrc" };
+    updateFileStrip();
+    if (options.persist !== false) scheduleRecoverySnapshot();
+    renderOnce();
+    const lineCount = timeline.reduce((count, cue) => count + cue.texts.length, 0);
+    if (options.notify !== false) showToast(t("toast.lyricsImported", "Imported {count} timed lyric lines.", { count: lineCount }));
+    return true;
+  }
+
+  async function handleLyricsFile(file) {
+    if (!file) return false;
+    if (!fileHasExtension(file, LRC_FILE_TYPE.extension)) {
+      showToast(t("toast.lyricsInvalid", "Choose an .lrc lyrics file."));
+      return false;
+    }
+    if (file.size > MAX_LRC_BYTES) {
+      showToast(t("toast.lyricsTooLarge", "This LRC file is larger than 1 MB."));
+      return false;
+    }
+
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const encoding = bytes[0] === 0xff && bytes[1] === 0xfe
+        ? "utf-16le"
+        : bytes[0] === 0xfe && bytes[1] === 0xff
+          ? "utf-16be"
+          : "utf-8";
+      let text = new TextDecoder(encoding).decode(bytes);
+      if (text.includes("\uFFFD")) {
+        try {
+          const legacy = new TextDecoder("gb18030").decode(bytes);
+          if (!legacy.includes("\uFFFD")) text = legacy;
+        } catch { /* uncommon legacy encoding */ }
+      }
+      return setLyricsText(text, file);
+    } catch {
+      showToast(t("toast.lyricsReadError", "This lyrics file could not be read."));
+      return false;
+    }
   }
 
   async function openTypedFile(input, fileType) {
@@ -3486,6 +3653,7 @@
     bindDropZone(refs.audioDrop, refs.audioInput, handleAudioFile);
     bindDropZone(refs.coverDrop, refs.coverInput, handleCoverFile);
     bindDropZone(refs.songfileDrop, refs.songfileInput, (file) => importPresetFile(file, "toast.projectInvalid"), FLAV_FILE_TYPES.settings);
+    bindDropZone(refs.lyricsDrop, refs.lyricsInput, handleLyricsFile, LRC_FILE_TYPE);
     bindConfigControls();
     bindExportControls();
     bindActions();
