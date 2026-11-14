@@ -72,7 +72,7 @@
             ["home", "个人主页", "黄瓜 LaHG 的一小片互联网", "./"],
             ["studio", "黄瓜味工作室", "游戏、音乐、影像与 FlavorSERV", "./studio"],
             ["code", "软件与工具", "软件、实验和下载", "./app"],
-            ["game", "游戏乐园", "218 款游戏，找到你的下一局", "./game"],
+            ["game", "游戏乐园", "经典小游戏与 FlavorWebGames 新游戏中心", "./game"],
             ["audio", "FLAudioViz", "音频可视化制作工具", "./flaudioviz/"],
             ["heart", "赞助中心", "给创作一点继续生长的力量", "./sponsor"],
         ];
