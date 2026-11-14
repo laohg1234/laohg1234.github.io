@@ -3,74 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f5f3ee">
-    <meta name="description" content="黄瓜 LaHG 的网页游戏中心，选择喜欢的小游戏，点开即玩。">
+    <meta name="theme-color" content="#f6f9f6">
+    <meta name="description" content="黄瓜 LaHG 的网页游戏中心，218 款游戏，搜索、分类，点开即玩。">
     <title>游戏中心 · 黄瓜 LaHG</title>
     <link rel="icon" href="./flavor-mark.png">
-    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
-    <link rel="stylesheet" href="./game-hub.css?v=PW3.50A">
-    <script src="./site-ui.js?v=PW3.50A" defer></script>
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A-r2">
+    <link rel="stylesheet" href="./game-hub.css?v=PW3.50A-games">
+    <script src="./site-ui.js?v=PW3.50A-r2" defer></script>
+    <script src="./game-hub.js?v=PW3.50A-games" defer></script>
 </head>
 <body class="polished-page game-hub-page">
     <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="site-header"><div class="shell nav-inner">
-        <a class="site-brand" href="./"><span class="site-mark" aria-hidden="true">L.</span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
+        <a class="site-brand" href="./"><span class="site-mark site-avatar" aria-hidden="true"><img src="./avatar-lahg.jpg?v=20261114" alt="" width="34" height="34"></span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
         <nav class="site-nav" aria-label="主导航"><a href="./">首页</a><a href="./studio">工作室</a><a href="./app">软件</a><a href="./game" aria-current="page">游戏</a><a href="./sponsor">赞助</a></nav>
     </div></header>
 
     <main id="main" class="shell arcade-main">
         <section class="arcade-intro" aria-labelledby="page-title">
             <div><p class="eyebrow">Game Selection</p><h1 id="page-title">今天，<br><span>玩点什么？</span></h1></div>
-            <div class="arcade-intro-copy"><p>挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p><div class="arcade-status"><span><b>6</b> 可玩游戏</span><span><b>0</b> 修复中</span></div></div>
+            <div class="arcade-intro-copy"><div class="arcade-console" aria-hidden="true"><svg viewBox="0 0 380 170" fill="none"><ellipse cx="190" cy="86" rx="172" ry="62" stroke="#bdd6c5" stroke-dasharray="3 7"/><path d="M23 84h25m284 0h25M190 10v18m0 115v17" stroke="#acc9b6"/><g transform="rotate(-9 190 85)"><path d="M116 48h148l26 68c7 20-13 34-26 19l-27-28h-94l-28 28c-13 15-33 1-25-19z" fill="#c8ddce" stroke="#7aa68a"/><path d="M116 40h148l26 68c7 20-13 34-26 19l-27-28h-94l-28 28c-13 15-33 1-25-19z" fill="#edf5ee" stroke="#6f9a7b"/><path d="M131 54v31m-15-15h30" stroke="#087f4b" stroke-width="8" stroke-linecap="round"/><circle cx="252" cy="65" r="6" fill="#087f4b"/><circle cx="267" cy="80" r="6" fill="#82b694"/><circle cx="237" cy="80" r="6" fill="#bad7c1"/><path d="M180 69h9m13 0h9" stroke="#7aa68a" stroke-width="3" stroke-linecap="round"/><path d="M166 42h45" stroke="#fff" stroke-width="2"/></g><circle cx="33" cy="101" r="4" fill="#a2c6ae"/><path d="m327 30 4 7 8 2-8 3-4 7-3-7-8-3 8-2z" fill="#087f4b"/></svg><span>PLAYER 01 / READY</span></div><p>挑一个小游戏，暂时把正事放到一边。无需安装，点击卡片即可开始。</p><div class="arcade-status"><span><b>218</b> 可玩游戏</span><span><b>0</b> 修复中</span></div></div>
         </section>
 
-        <section class="arcade-collection" aria-label="游戏列表">
+        <section class="hub-discovery" aria-label="寻找游戏">
+            <div class="hub-discovery-top"><div><p class="section-index">PICK YOUR NEXT ADVENTURE</p><h2>你的下一局，在这里。</h2></div><button class="button button-primary" id="randomGame" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m18 3 3 3-3 3m0 6 3 3-3 3M3 6h3c5 0 7 12 12 12h3M3 18h3c2 0 4-2 6-6s4-6 6-6h3"/></svg>随机开玩</button></div>
+            <div class="hub-search-row"><label class="hub-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input id="gameSearch" type="search" placeholder="搜索游戏、玩法或关键词…" autocomplete="off" aria-label="搜索全部游戏"><kbd aria-hidden="true">/</kbd></label><p id="hubResultCount" role="status" aria-live="polite">正在整理游戏目录…</p></div>
+            <div class="hub-categories" role="group" aria-label="游戏分类"><button type="button" data-library-filter="all" aria-pressed="true">全部游戏 <span>218</span></button><button type="button" data-library-filter="original" aria-pressed="false">经典精选 <span>6</span></button><button type="button" data-library-filter="技能竞技" aria-pressed="false">技能竞技</button><button type="button" data-library-filter="解谜实验" aria-pressed="false">解谜实验</button><button type="button" data-library-filter="物理游乐" aria-pressed="false">物理游乐</button><button type="button" data-library-filter="策略对抗" aria-pressed="false">策略对抗</button></div>
+        </section>
+
+        <section class="arcade-collection" id="originalCollection" aria-labelledby="original-title">
+            <div class="hub-section-heading"><div><p class="section-index">01 / CLASSIC COLLECTION</p><h2 id="original-title">熟悉的老朋友</h2></div><p>原来的六款游戏，还是原来的味道。</p></div>
             <div class="arcade-toolbar">
                 <div class="genre-filters" role="group" aria-label="按类型筛选游戏"><button type="button" data-genre="all" aria-pressed="true">全部游戏</button><button type="button" data-genre="puzzle" aria-pressed="false">益智</button><button type="button" data-genre="action" aria-pressed="false">动作</button><button type="button" data-genre="arcade" aria-pressed="false">休闲</button></div>
                 <p class="game-count" aria-live="polite"><span id="gameCount">06</span> / GAMES</p>
             </div>
 
             <div class="arcade-grid">
-                <a class="game-entry game-entry--featured" href="./n.html" data-game-genre="action">
-                    <figure class="entry-cover entry-cover--lava"><img src="./game/n.png" alt="熔岩闯关封面" width="960" height="540"><span class="entry-number">02 / PLATFORMER</span></figure>
-                    <div class="entry-copy"><p class="game-tag">Platformer · 10 Levels</p><h2>熔岩闯关</h2><p class="entry-description">跨越熔岩、躲开机关并收集金币。十个关卡会逐步考验你的操作。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
-                </a>
-                <a class="game-entry" href="./2048" data-game-genre="puzzle">
+                <article class="game-feature-scroll" data-game-genre="action" data-hub-category="物理游乐" data-scroll-scene>
+                  <a class="game-entry game-entry--featured" href="./n.html">
+                    <figure class="entry-cover entry-cover--lava"><img src="./game/n.png" alt="熔岩闯关封面" width="960" height="540"><span class="entry-number">02 / PLATFORMER</span><span class="feature-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="m7 4 9 6-9 6z"/></svg></span><span class="feature-cover-caption" aria-hidden="true">TEN LEVELS. ONE MORE TRY.</span></figure>
+                    <div class="entry-copy"><span class="featured-label">本期精选 <i aria-hidden="true"></i> FEATURED</span><p class="game-tag">Platformer · 10 Levels</p><h2>熔岩闯关</h2><p class="entry-description">跨越熔岩、躲开机关并收集金币。十个关卡会逐步考验你的操作。</p><div class="level-marks" aria-label="10 个关卡"><span>01</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span>10</span></div><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
+                  </a>
+                </article>
+                <a class="game-entry" href="./2048" data-game-genre="puzzle" data-hub-category="解谜实验" data-reveal>
                     <figure class="entry-cover"><img src="./game/2048.png" alt="2048 军旗版封面" width="960" height="540" loading="lazy"><span class="entry-number">01</span></figure>
                     <div class="entry-copy"><p class="game-tag">Puzzle</p><h2>2048 军旗版</h2><p class="entry-description">熟悉的数字合成玩法，换上一点不一样的军旗风味。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
                 </a>
-                <a class="game-entry" href="./b" data-game-genre="puzzle">
+                <a class="game-entry" href="./b" data-game-genre="puzzle" data-hub-category="解谜实验" data-reveal>
                     <figure class="entry-cover"><img src="./game/b.png" alt="扫雷封面" width="960" height="540" loading="lazy"><span class="entry-number">03</span></figure>
                     <div class="entry-copy"><p class="game-tag">Classic</p><h2>扫雷</h2><p class="entry-description">经典扫雷玩法。观察数字，避开地雷，然后再来一局。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
                 </a>
-                <a class="game-entry" href="./d" data-game-genre="action">
+                <a class="game-entry" href="./d" data-game-genre="action" data-hub-category="物理游乐" data-reveal>
                     <figure class="entry-cover"><img src="./game/d.png" alt="谷歌小恐龙封面" width="960" height="540" loading="lazy"><span class="entry-number">04</span></figure>
                     <div class="entry-copy"><p class="game-tag">Runner</p><h2>谷歌小恐龙</h2><p class="entry-description">按下空格躲开障碍。规则很简单，坚持得更久可不简单。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
                 </a>
-                <a class="game-entry" href="./surf" data-game-genre="arcade">
+                <a class="game-entry" href="./surf" data-game-genre="arcade" data-hub-category="物理游乐" data-reveal>
                     <figure class="entry-cover"><img src="./game/surf.png" alt="冲浪游戏封面" width="960" height="540" loading="lazy"><span class="entry-number">05</span></figure>
                     <div class="entry-copy"><p class="game-tag">Arcade</p><h2>冲浪</h2><p class="entry-description">来自 Edge 的离线冲浪游戏。进入后请稍等片刻完成加载。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
                 </a>
-                <a class="game-entry" href="./plane" data-game-genre="action">
+                <a class="game-entry" href="./plane" data-game-genre="action" data-hub-category="技能竞技" data-reveal>
                     <figure class="entry-cover"><img src="./game/plane.png" alt="3D 飞机游戏封面" width="960" height="540" loading="lazy"><span class="entry-number">06</span></figure>
                     <div class="entry-copy"><p class="game-tag">3D Action</p><h2>3D 飞机</h2><p class="entry-description">驾驶飞机穿过三维场景，也是这里最值得一试的游戏之一。</p><div class="entry-action"><span>开始游戏</span><span aria-hidden="true">↗</span></div></div>
                 </a>
             </div>
         </section>
+        <section class="hub-library" id="gameLibrary" aria-labelledby="library-title">
+            <div class="hub-section-heading"><div><p class="section-index">02 / FLAVOR WEB GAMES</p><h2 id="library-title">再打开一点可能性</h2></div><p>212 款新游戏，从一场小冒险开始。</p></div>
+            <div class="library-status" id="libraryStatus" role="status"><span class="library-loading-mark" aria-hidden="true">＋</span><p id="libraryStatusText">正在加载游戏目录…</p><button type="button" id="retryLibrary" class="button button-secondary" hidden>重新加载</button></div>
+            <div class="library-grid" id="libraryGrid"></div>
+            <div class="library-pagination" id="libraryPagination" hidden><p id="libraryPageCount"></p><button type="button" class="button button-secondary" id="loadMoreGames">再看 24 款 <span aria-hidden="true">↓</span></button></div>
+        </section>
+        <div class="hub-empty" id="hubEmpty" hidden><span aria-hidden="true">⌕</span><h2>这一局，还没找到。</h2><p>换个关键词或分类，试试别的游戏吧。</p><button type="button" class="button button-primary" id="resetGames">查看全部游戏</button></div>
+        <noscript><p class="hub-noscript">启用 JavaScript 后可搜索全部 218 款游戏，也可以<a href="./play/">直接打开新游戏合集</a>。上方原有六款游戏可直接进入。</p></noscript>
     </main>
 
     <footer class="site-footer"><div class="shell footer-inner"><span><strong>LaHG Game Center</strong> · Powered By FAlphaWeb</span><span>©2026 FlavorStudio</span></div></footer>
-    <script>
-        (() => {
-            const filters = [...document.querySelectorAll("[data-genre]")];
-            const entries = [...document.querySelectorAll("[data-game-genre]")];
-            filters.forEach((button) => button.addEventListener("click", () => {
-                const genre = button.dataset.genre;
-                filters.forEach((filter) => filter.setAttribute("aria-pressed", String(filter === button)));
-                entries.forEach((entry) => { entry.hidden = genre !== "all" && entry.dataset.gameGenre !== genre; });
-                document.querySelector("#gameCount").textContent = String(entries.filter((entry) => !entry.hidden).length).padStart(2, "0");
-            }));
-        })();
-    </script>
 </body>
 </html>

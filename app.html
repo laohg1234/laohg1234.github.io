@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f5f3ee">
+    <meta name="theme-color" content="#f6f9f6">
     <meta name="keywords" content="瓜瓜, 软件, Scratch, 下载">
     <meta name="description" content="黄瓜 LaHG 的软件与实验项目下载页。">
     <title>软件 · 黄瓜 LaHG</title>
     <link rel="icon" href="./flavor-mark.png">
-    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A">
-    <link rel="stylesheet" href="./app-page.css?v=PW3.50A">
-    <script src="./site-ui.js?v=PW3.50A" defer></script>
+    <link rel="stylesheet" href="./site-polish.css?v=PW3.50A-r2">
+    <link rel="stylesheet" href="./app-page.css?v=PW3.50A-r2">
+    <script src="./site-ui.js?v=PW3.50A-r2" defer></script>
 </head>
 <body class="polished-page app-page">
     <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="site-header">
         <div class="shell nav-inner">
-            <a class="site-brand" href="./"><span class="site-mark" aria-hidden="true">L.</span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
+            <a class="site-brand" href="./"><span class="site-mark site-avatar" aria-hidden="true"><img src="./avatar-lahg.jpg?v=20261114" alt="" width="34" height="34"></span><span>LaHG<span class="brand-caption">个人网站</span></span></a>
             <nav class="site-nav" aria-label="主导航">
                 <a href="./">首页</a><a href="./studio">工作室</a><a href="./app" aria-current="page">软件</a><a href="./game">游戏</a><a href="./sponsor">赞助</a>
             </nav>
@@ -29,10 +29,11 @@
                 <p class="eyebrow">Downloads &amp; Experiments</p>
                 <h1 id="page-title">闲的没事干<br><span>搞点小东西。</span></h1>
             </div>
-            <div class="software-intro-note"><span class="catalogue-label">软件与实验 / COLLECTION</span><p>这里收录黄瓜 LaHG 做过的软件、Scratch 项目和其他实验。</p></div>
+            <div class="software-intro-note"><span class="catalogue-label">软件与实验 / COLLECTION</span><p>这里收录黄瓜 LaHG 做过的软件、Scratch 项目和其他实验。</p><div class="software-badges"><span>独立制作</span><span>保持好奇</span><span>持续折腾</span></div></div>
         </section>
 
-        <section class="tool-feature" aria-labelledby="featured-tool-title">
+        <section class="tool-feature" data-scroll-scene aria-labelledby="featured-tool-title">
+          <div class="tool-feature-sticky">
             <div class="tool-feature-copy">
                 <p class="section-index"><span class="release-dot" aria-hidden="true"></span>精选工具 / WEB APP</p>
                 <h2 id="featured-tool-title">FLAudioViz<span class="feature-period">.</span></h2>
@@ -40,30 +41,40 @@
                 <p class="tool-feature-description">在浏览器中把音乐做成画面。编辑可视化效果与歌词，预览你的作品。</p>
                 <a class="button button-primary" href="./flaudioviz/">打开 FLAudioViz <span aria-hidden="true">↗</span></a>
                 <span class="tool-feature-meta">浏览器运行 · 无需安装</span>
+                <div class="workspace-sequence" aria-label="工作流程"><span><b>01</b>声音</span><i aria-hidden="true"></i><span><b>02</b>画面</span><i aria-hidden="true"></i><span><b>03</b>作品</span></div>
             </div>
-            <a class="tool-preview" href="./flaudioviz/" aria-label="打开 FLAudioViz 音频可视化制作工具">
-                <div class="preview-chrome" aria-hidden="true"><span>FLAudioViz</span><span>WORKSPACE ↗</span></div>
-                <img src="./flaudioviz/assets/tutorial-overview-zh.webp" alt="FLAudioViz 的可视化编辑工作区" width="1380" height="860" loading="eager">
-            </a>
+            <div class="workspace-stage">
+                <svg class="workspace-orbit" viewBox="0 0 700 580" fill="none" aria-hidden="true"><ellipse cx="350" cy="290" rx="305" ry="220" stroke="currentColor" stroke-dasharray="3 8"/><ellipse cx="350" cy="290" rx="340" ry="260" stroke="currentColor" opacity=".4"/><path d="M30 290h640M350 20v540" stroke="currentColor" opacity=".4"/><circle cx="350" cy="30" r="5" fill="currentColor"/><path d="m650 280 10 10-10 10" stroke="currentColor"/></svg>
+                <div class="workspace-layer workspace-layer--back" aria-hidden="true"></div>
+                <a class="tool-preview" href="./flaudioviz/" aria-label="打开 FLAudioViz 音频可视化制作工具">
+                    <div class="preview-chrome" aria-hidden="true"><span><i></i>FLAudioViz</span><span>WORKSPACE ↗</span></div>
+                    <img src="./flaudioviz/assets/tutorial-overview-zh.webp" alt="FLAudioViz 的可视化编辑工作区" width="1380" height="860" loading="eager">
+                </a>
+                <span class="workspace-label workspace-label--audio" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9v6m4-10v14m4-17v20m4-17v14m4-10v6"/></svg>声音，变得可见。</span>
+                <span class="workspace-label workspace-label--lyrics" aria-hidden="true"><span>01:28</span>让歌词，也有自己的节奏。</span>
+                <div class="workspace-ruler" aria-hidden="true"><span>IMPORT</span><span>CREATE</span><span>PREVIEW</span></div>
+            </div>
+            <p class="workspace-scroll-note" aria-hidden="true"><span>继续滚动，走近工作区</span><span>↓</span></p>
+          </div>
         </section>
 
         <section class="software-archive" aria-labelledby="archive-title">
             <div class="archive-heading"><h2 id="archive-title">下载与其他实验</h2><p class="section-index">03 / ARCHIVE</p></div>
             <div class="software-list">
-                <article class="software-row">
-                    <span class="software-number" aria-hidden="true">01</span>
+                <article class="software-row" data-reveal>
+                    <span class="software-number software-number--project" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="24" height="17" rx="3"/><path d="M11 27h10M16 22v5m-7-16 4 3-4 3m7 0h6"/></svg></span>
                     <div class="software-row-title"><span class="software-type">TurboWarp Project</span><h3>TurboWarp</h3></div>
                     <p>一个使用 TurboWarp 制作的桌面系统实验。下载后请使用 TurboWarp 打开。</p>
                     <div class="software-row-action"><a href="./laohgdows%2010.sb3" download>下载 .sb3 <span aria-hidden="true">↓</span></a><small>本地文件</small></div>
                 </article>
-                <article class="software-row">
-                    <span class="software-number" aria-hidden="true">02</span>
+                <article class="software-row" data-reveal>
+                    <span class="software-number" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m10 9-7 7 7 7m12-14 7 7-7 7m-4-19-4 24"/></svg></span>
                     <div class="software-row-title"><span class="software-type">Runtime</span><h3>TurboWarp</h3></div>
                     <p>运行和编辑 laohgdows 10 所需的软件，可通过官网获取。</p>
                     <div class="software-row-action"><a href="https://desktop.turbowarp.org/" target="_blank" rel="noreferrer">前往下载 <span aria-hidden="true">↗</span></a><small>外部链接</small></div>
                 </article>
-                <article class="software-row">
-                    <span class="software-number" aria-hidden="true">03</span>
+                <article class="software-row" data-reveal>
+                    <span class="software-number" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="11" r="5"/><path d="M3 28v-3a9 9 0 0 1 18 0v3m0-17h8m-4-4v8"/></svg></span>
                     <div class="software-row-title"><span class="software-type">Join Studio</span><h3>更多软件</h3></div>
                     <p>更多工具与实验等待开发。欢迎加入黄瓜味工作室，和我们一起把新想法做成软件。</p>
                     <div class="software-row-action"><a href="./studio">加入工作室 <span aria-hidden="true">↗</span></a><small>共同开发</small></div>

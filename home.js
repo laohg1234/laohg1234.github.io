@@ -25,6 +25,14 @@
     const search = document.querySelector("#projectSearch");
     const filters = [...document.querySelectorAll("[data-project-filter]")];
     const projects = [...document.querySelectorAll(".directory-item")];
+    const directoryIcons = ["game", "spark", "studio", "heart", "folder", "code", "audio", "video", "spark", "game"];
+    projects.forEach((project, index) => {
+        const badge = document.createElement("span");
+        badge.className = "directory-icon";
+        badge.setAttribute("aria-hidden", "true");
+        badge.innerHTML = `<svg class="ui-icon"><use href="#icon-${directoryIcons[index]}"></use></svg>`;
+        project.prepend(badge);
+    });
     const count = document.querySelector("#projectCount");
     const empty = document.querySelector("#projectEmpty");
     let activeFilter = "all";
@@ -46,6 +54,17 @@
         updateProjects();
     }));
     search.addEventListener("input", updateProjects);
+    const mapStory = document.querySelector("#wuzi");
+    const phases = [...document.querySelectorAll("[data-map-phase]")];
+    const nodes = [...document.querySelectorAll(".system-node")];
+    mapStory.addEventListener("flavor:scene", (event) => {
+        const active = Math.min(2, Math.floor(event.detail.progress * 3));
+        phases.forEach((phase, index) => {
+            if (index === active) phase.setAttribute("aria-current", "step");
+            else phase.removeAttribute("aria-current");
+        });
+        nodes.forEach((node, index) => node.classList.toggle("is-current", index === active));
+    });
     document.addEventListener("keydown", (event) => {
         if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest("input, textarea, [contenteditable]")) {
             event.preventDefault();

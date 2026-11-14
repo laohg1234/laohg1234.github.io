@@ -1,0 +1,39 @@
+(() => {
+  'use strict';
+  const sidebar = document.querySelector('.sidebar');
+  const back = document.createElement('a');
+  back.className = 'center-return';
+  back.href = '../game';
+  back.innerHTML = '<span aria-hidden="true">←</span> 返回游戏中心';
+  sidebar.prepend(back);
+  const topBack = document.createElement('a');
+  topBack.className = 'mobile-center-return';
+  topBack.href = '../game';
+  topBack.textContent = '← 游戏中心';
+  document.querySelector('.breadcrumb').after(topBack);
+  document.querySelector('.local-badge').lastChild.textContent = 'FlavorStudio 游乐场';
+  const footer = document.querySelector('main > footer');
+  footer.firstElementChild.textContent = '©2026 FlavorStudio';
+  const powered = document.createElement('span');
+  powered.className = 'integration-powered';
+  powered.textContent = 'Powered By FAlphaWeb';
+  footer.insertBefore(powered, footer.lastElementChild);
+  const credit = document.querySelector('.studio-credit');
+  const studio = document.createElement('a');
+  studio.className = credit.className;
+  studio.href = '../studio';
+  studio.setAttribute('aria-label', '前往黄瓜味工作室');
+  studio.innerHTML = credit.innerHTML;
+  credit.replaceWith(studio);
+  window.addEventListener('hashchange', () => {
+    const app = window.FG?.app;
+    if (!app) return;
+    if (!location.hash.startsWith('#game=')) {
+      if (app.getState().id) app.closeGame();
+      return;
+    }
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(6)); } catch { return; }
+    if (app.getState().id !== id && FG.games.some(game => game.id === id)) app.openGame(id);
+  });
+})();
