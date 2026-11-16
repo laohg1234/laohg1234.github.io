@@ -65,8 +65,46 @@
         });
         nodes.forEach((node, index) => node.classList.toggle("is-current", index === active));
     });
+
+    const eggTrigger = document.querySelector("#wuziEggTrigger");
+    const redeemDialog = document.querySelector("#wuziRedeemDialog");
+    const redeemCode = document.querySelector("#wuziRedeemCode");
+    const copyRedeem = document.querySelector("#copyWuziRedeem");
+    const redeemStatus = document.querySelector("#wuziRedeemStatus");
+    eggTrigger.addEventListener("click", () => {
+        if (redeemDialog.open) return;
+        redeemStatus.textContent = "";
+        if (window.FlavorUI?.openDialog) window.FlavorUI.openDialog(redeemDialog);
+        else redeemDialog.showModal();
+    });
+    const closeRedeem = () => {
+        if (window.FlavorUI?.closeDialog) window.FlavorUI.closeDialog(redeemDialog);
+        else redeemDialog.close();
+    };
+    document.querySelector("#closeWuziRedeem").addEventListener("click", closeRedeem);
+    document.querySelector("#dismissWuziRedeem").addEventListener("click", closeRedeem);
+    redeemDialog.addEventListener("click", event => {
+        if (event.target !== redeemDialog) return;
+        const box = redeemDialog.getBoundingClientRect();
+        if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) closeRedeem();
+    });
+    redeemDialog.addEventListener("close", () => {
+        eggTrigger.focus({ preventScroll: true });
+    });
+    redeemCode.addEventListener("focus", () => redeemCode.select());
+    copyRedeem.addEventListener("click", async () => {
+        copyRedeem.disabled = true;
+        try {
+            await navigator.clipboard.writeText(redeemCode.value);
+            redeemStatus.textContent = "已复制兑换码，去物资乱斗的兑换中心领取吧。";
+        } catch {
+            redeemCode.focus();
+            redeemCode.select();
+            redeemStatus.textContent = "兑换码已选中，请长按或按 Ctrl+C 复制。";
+        } finally { copyRedeem.disabled = false; }
+    });
     document.addEventListener("keydown", (event) => {
-        if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest("input, textarea, [contenteditable]")) {
+        if (event.key === "/" && !document.querySelector("dialog[open]") && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest("input, textarea, [contenteditable]")) {
             event.preventDefault();
             search.focus({ preventScroll: false });
         }
