@@ -1,21 +1,3 @@
-# Security Policy
+# 安全说明
 
-## Supported Versions
-
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
-
-## Reporting a Vulnerability
-
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+请通过网站已有的联系入口向维护者反馈安全问题，说明受影响地址、复现步骤和可能影响。涉及凭证或隐私的细节请勿放在公开 Issue 中。

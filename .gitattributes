@@ -1,0 +1,11 @@
+* text=auto
+# Preserve imported website files, including their original line endings.
+site/** -text
+*.png binary
+*.jpg binary
+*.webp binary
+*.gif binary
+*.mp4 binary
+*.mp3 binary
+*.sb3 binary
+*.cur binary

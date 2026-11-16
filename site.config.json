@@ -1,0 +1,17 @@
+{
+  "mounts": [
+    { "source": "pages", "target": "" },
+    { "source": "styles", "target": "" },
+    { "source": "scripts", "target": "" },
+    { "source": "images", "target": "" },
+    { "source": "media", "target": "" },
+    { "source": "downloads", "target": "" },
+    { "source": "data", "target": "" },
+    { "source": "assets", "target": "assets" },
+    { "source": "game-covers", "target": "game" },
+    { "source": "apps/flaudioviz", "target": "flaudioviz" },
+    { "source": "apps/play", "target": "play" },
+    { "source": "legacy-assets/chromium", "target": "resources" },
+    { "source": "legacy-assets/eatkun", "target": "static" }
+  ]
+}

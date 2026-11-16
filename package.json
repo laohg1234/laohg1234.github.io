@@ -1,0 +1,13 @@
+{
+  "name": "flavorstudio-website",
+  "private": true,
+  "version": "3.50.0",
+  "description": "黄瓜 LaHG 与 FlavorStudio 的静态网站",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check-site.mjs",
+    "test": "node scripts/check-site.mjs",
+    "start": "node scripts/build.mjs && node scripts/preview.mjs"
+  },
+  "engines": { "node": ">=22" }
+}
