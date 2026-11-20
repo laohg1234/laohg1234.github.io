@@ -12,7 +12,7 @@
         if (window.FlavorUI?.closeDialog) window.FlavorUI.closeDialog(dialog);
         else dialog.close();
     }
-    document.querySelectorAll("#joinBtn, #joinBtnBottom").forEach((button) => button.addEventListener("click", () => openDialog(joinDialog)));
+    document.querySelectorAll("#joinBtn, #joinBtnBottom, #communityBtn").forEach((button) => button.addEventListener("click", () => openDialog(joinDialog)));
     document.querySelector("#wechatBtn")?.addEventListener("click", () => {
         returnToJoin = true;
         closeDialog(joinDialog);
