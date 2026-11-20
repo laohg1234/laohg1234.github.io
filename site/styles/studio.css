@@ -8,6 +8,7 @@
 .studio-introduction h1 > em { margin-top: .18em; color: var(--studio-green); font-size: .74em; font-style: normal; white-space: nowrap; letter-spacing: -.04em; }
 .studio-introduction .hero-intro { max-width: 37rem; margin-top: 1.65rem; color: var(--muted); font-size: .96rem; line-height: 1.95; }
 .studio-introduction .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.8rem; }
+.studio-introduction .support-entry { width: min(100%, 28rem); margin-top: 1.2rem; }
 .studio-specimen { position: relative; min-width: 0; margin: 0; padding: 1.2rem 1.4rem; overflow: hidden; border: 1px solid #dce8de; border-radius: 24px; background: radial-gradient(ellipse at 50% 42%, #e0f0e2, #f2f7f0 72%); box-shadow: 0 20px 60px #14372308, inset 0 1px 0 #fff; }
 .specimen-meta, .studio-specimen figcaption { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 1rem; color: #65816d; font: 10px/1.6 var(--mono); letter-spacing: .05em; }
 .specimen-meta > span:first-child { display: inline-flex; align-items: center; gap: 7px; }
