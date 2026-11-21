@@ -98,13 +98,23 @@ for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) {
 window.addEventListener('beforeunload',()=>{if(selected&&running&&!ended){const r=data.records[selected.id];r.best=Math.max(r.best||0,score);r.totalSeconds=(r.totalSeconds||0)+Math.round(elapsed);F.save(data);}});
 // Read-only diagnostics plus explicit normal play hooks, useful for acceptance testing.
 F.app={openGame,startGame,pauseGame,resumeGame,closeGame,getState:()=>({id:selected?.id,running,paused,ended,score,elapsed,count:F.games.length}),getSave:()=>JSON.parse(JSON.stringify(data)),art};
-render();
-if (location.hash.startsWith('#game=')) {
+function syncGameLink() {
+  if (!location.hash.startsWith('#game=')) {
+    if (selected) closeGame();
+    return;
+  }
+  let id;
   try {
-    const id = decodeURIComponent(location.hash.slice(6));
-    if (activeIds.has(id)) openGame(id);
+    id = decodeURIComponent(location.hash.slice(6));
   } catch {
-    // Ignore malformed links.
+    return;
+  }
+  if (id !== selected?.id && activeIds.has(id)) {
+    if (selected) closeGame();
+    openGame(id);
   }
 }
+render();
+syncGameLink();
+window.addEventListener('hashchange', syncGameLink);
 })();

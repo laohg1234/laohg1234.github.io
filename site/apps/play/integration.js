@@ -25,15 +25,4 @@
   studio.setAttribute('aria-label', '前往黄瓜味工作室');
   studio.innerHTML = credit.innerHTML;
   credit.replaceWith(studio);
-  window.addEventListener('hashchange', () => {
-    const app = window.FG?.app;
-    if (!app) return;
-    if (!location.hash.startsWith('#game=')) {
-      if (app.getState().id) app.closeGame();
-      return;
-    }
-    let id;
-    try { id = decodeURIComponent(location.hash.slice(6)); } catch { return; }
-    if (app.getState().id !== id && FG.games.some(game => game.id === id)) app.openGame(id);
-  });
 })();
