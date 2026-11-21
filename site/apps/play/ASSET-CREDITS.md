@@ -1,25 +1,28 @@
-# FlavorWebGames 2.0 · 美术来源
+# FlavorWebGames 4.0 · 美术来源
 
-所有图片随项目本地提供，运行时不会从外部下载。当前游戏素材目录含 **50 张透明 PNG 对象贴图与 9 张 JPG 场景，共 59 张图片**；另有用户提供的品牌 Logo。可核对 `assets/game/manifest.json`。
+游戏美术均随项目本地提供，运行时不下载外部资源。`js/art.js` 加载 **23 张透明 PNG 对象贴图与 3 张 JPG 场景，共 26 张图片**。品牌 Logo 与游戏实机封面也随项目提供。
 
 ## Kenney CC0 素材
 
-| 素材包 | 本项目使用的对象 | 许可文件 |
+| 素材包 | 当前使用的对象 | 随包许可 |
 | --- | --- | --- |
-| [Top-down Tanks Remastered](https://kenney.nl/assets/top-down-tanks-redux) | 坦克、木箱、油桶、树、子弹、导弹、爆炸帧、履带、沙袋和铁丝 | `assets/game/top-down-tanks-redux-LICENSE.txt` |
-| [Racing Pack](https://kenney.nl/assets/racing-pack) | 赛车、岩石、路锥、轮胎、围栏和看台 | `assets/game/racing-pack-LICENSE.txt` |
-| [Tower Defense Top-down](https://kenney.nl/assets/tower-defense-top-down) | 炮、炮塔及坦克底座 | `assets/game/tower-defense-top-down-LICENSE.txt` |
-| [Platformer Art Deluxe](https://kenney.nl/assets/platformer-art-deluxe) | 草地、泥土和石头地块 | `assets/game/platformer-art-deluxe-LICENSE.txt` |
+| [Top-down Tanks Remastered](https://kenney.nl/assets/top-down-tanks-redux) | 红色坦克、重型坦克、树及五帧爆炸效果 | `assets/game/top-down-tanks-redux-LICENSE.txt` |
+| [Racing Pack](https://kenney.nl/assets/racing-pack) | 岩石道具 | `assets/game/racing-pack-LICENSE.txt` |
+| [Tower Defense Top-down](https://kenney.nl/assets/tower-defense-top-down) | 炮台与炮塔 | `assets/game/tower-defense-top-down-LICENSE.txt` |
+| [Platformer Art Deluxe](https://kenney.nl/assets/platformer-art-deluxe) | 石质地块 | `assets/game/platformer-art-deluxe-LICENSE.txt` |
 
-作者为 Kenney / Kenney Vleugels；以上素材包采用 CC0。项目内的使用版本经过必要的缩放和格式转换，部分素材也用于合成场景背景。原许可文本随包保留。
+作者为 Kenney / Kenney Vleugels，以上素材采用 CC0。图片按需要转换为 PNG、缩放并用于场景合成，原许可文本随包保留。
 
-## 为本项目绘制的素材
+## 为本项目绘制的内容
 
-- 勇者、行走与跳跃姿态、红色勇者：原创透明 PNG。
-- 史莱姆、飞虫、金币、宝石、炸弹、爱心、护盾、旗帜、城堡与木桥：原创透明 PNG。
-- **蓝色与红色战机 `ship-blue.png` / `ship-red.png`：原创程序绘制的飞机贴图**。资源别名沿用 `ship`，当前内容不是 Kenney 塔防素材中的船只；用于战机、无人机及其他飞行单位。
-- 森林、花园、沙漠、城市、地下城、实验室、海面和太空八种场景：原创地形与纹理绘制，结合上述 Kenney CC0 道具合成。
-- 横版冒险场景 `scene-platformer.jpg`：原创绘制的天空、云层、山丘与远景森林。
-- 台球桌、弹弓木石结构、弹珠机关、卡牌、服务器、建筑、装置、攻击预警及界面图形：通过 Canvas / SVG 为项目绘制，不计入 PNG / JPG 文件数量。
+- 红色角色、跳跃角色、史莱姆、飞虫、金币、宝石、炸弹、爱心、护盾、旗帜与城堡：原创透明 PNG。
+- 森林、赤岩沙漠、海面三张背景：原创地形与纹理绘制，结合上述 Kenney CC0 道具合成。
+- 雾港码头、雨雾、人物、起重机首领、攻击预警、弹丸和技能效果：原创 Canvas 绘制。
+- 拉力赛车、轮胎与悬挂、松林 / 峡谷 / 雪岭远景、地形剖面和驾驶效果：原创 Canvas 绘制。
+- 光路工坊的反光镜、棱镜、滤镜、机房、光束与接收器：原创 Canvas 绘制。
+- 群岛防线的道路布局、建造圆台、范围预览、作战面板及部分攻击反馈：原创 Canvas 绘制，结合本地对象贴图。
+- 新增策略游戏的列车、人物、舰船、农田、水井、太阳能、电站、卡牌与棋盘：原创 Canvas 绘制，结合已有对象贴图。
+- 新增动作、物理与解谜游戏中的关卡棋盘、器械、光效与操作反馈：原创 Canvas 绘制，部分使用相同本地素材。
+- 大厅封面和主视觉：从本项目游戏的实际运行画面截取。
 
-Flavor Studio Logo 由用户提供，用作本项目品牌标识。本项目没有引入商业游戏角色或相关品牌素材。
+Flavor Studio Logo 由用户提供，用于本项目品牌展示。项目未使用商业游戏角色或品牌美术。

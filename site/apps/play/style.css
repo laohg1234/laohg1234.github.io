@@ -15,3 +15,46 @@ dialog{border:1px solid #38423e;box-shadow:0 30px 150px #000a;border-radius:12px
 .cover-bottom{position:absolute;inset:auto 0 0;display:flex;flex-direction:column;gap:4px;padding:28px 14px 11px;background:linear-gradient(transparent,#07131be8);pointer-events:none}.cover-bottom b{font-size:15px;letter-spacing:.8px;color:#f4f6e8;font-weight:600;text-shadow:0 2px 10px #0007}.cover-bottom small{font-size:5px;letter-spacing:1.7px;color:#afc5b6}.card-badge.featured{font-size:7px;background:#e0efb2;color:#283d24;border-color:#e0efb2}.game-overlay{background:#0c141dbe;backdrop-filter:blur(5px)}.game-overlay .overlay-symbol{text-shadow:0 4px 35px #101b12}.touch-skills button[data-key^="Digit"]{font-size:11px;min-width:29px}
 @media(hover:hover) and (pointer:fine){.card-image:hover .game-cover{transform:scale(1.045)}}
 @media(max-width:640px){.cover-bottom{padding:22px 9px 8px;gap:3px}.cover-bottom b{font-size:12px}.cover-bottom small{font-size:4px;letter-spacing:1px}.touch-skills{max-width:205px}.touch-skills button{min-width:30px;height:30px}.touch-skills button[data-key="Space"]{min-width:42px}}
+.featured-hero {
+  display: flex;
+  align-items: center;
+  min-height: 360px;
+  border: 0;
+  border-radius: 0;
+  background: #101b20;
+}
+.featured-hero .hero-art {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 47%;
+  opacity: 1;
+}
+.featured-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #10191d3b;
+  pointer-events: none;
+}
+.featured-hero .hero-content { padding: 30px 36px; }
+.featured-hero h1 { letter-spacing: 0; text-shadow: 0 2px 6px #091215; }
+.featured-hero #hero-copy { color: #d4e3de; font-size: 14px; }
+.featured-hero .eyebrow { margin: 0; color: #b8c9ad; }
+.touch-skills button:not([hidden]) {
+  min-width: 44px;
+  padding-inline: 6px;
+  font-size: 12px;
+  color: #e5f4d3;
+  border-color: #55664a;
+}
+@media (max-width: 640px) {
+  .featured-hero { min-height: 265px; }
+  .featured-hero .hero-content { padding: 22px; }
+  .featured-hero h1 { font-size: 36px; margin-top: 13px; }
+  .featured-hero .hero-art { object-position: 63% 50%; }
+  .featured-hero #hero-copy { max-width: 190px; font-size: 12px; }
+  .featured-hero::after { background: #10191d65; }
+}

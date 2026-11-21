@@ -15,7 +15,7 @@
 | `site/data/` | 独立版本信息及网站数据 | 网站根目录，例如 `/version.json` |
 | `site/assets/` | 按项目组织的素材 | `/assets/` |
 | `site/game-covers/` | 原游戏中心的封面 | `/game/` |
-| `site/apps/play/` | 212 款游戏的新游戏中心及完整运行资源 | `/play/` |
+| `site/apps/play/` | FlavorWebGames 4.0 的 30 款游戏及完整运行资源 | `/play/` |
 | `site/apps/flaudioviz/` | FLAudioViz 及完整运行资源 | `/flaudioviz/` |
 | `site/legacy-assets/chromium/` | 原冲浪游戏的 Chromium 辅助资源 | `/resources/` |
 | `site/legacy-assets/eatkun/` | 原游戏所需的图片、音频与脚本 | `/static/` |
@@ -41,6 +41,8 @@ npm start
 
 GitHub Pages 使用同一套构建结果进行部署，不再直接发布整个源码仓库。仓库说明、构建脚本及其他维护文件不会混入网站发布目录。
 
+独立游戏中心的检查还会在 Node.js VM 中只加载注册脚本，核对八个游戏源文件注册的 30 款游戏与 `games.json` 的全部元数据和顺序一致。`assets/covers/` 必须恰好包含对应编号的 30 张 WebP 封面；缺失、过期或多余文件都会使检查失败。这个检查验证发布资源与目录同步，不替代实际游玩和浏览器验证。
+
 ## 修改内容
 
 修改页面时，在 `site/pages/` 找到对应文件；样式、脚本和素材分别在上表列出的目录中。源文件保留原来的运行资源地址，由构建映射确保部署后仍位于这些地址。
@@ -54,5 +56,7 @@ site/data/version.json
 无需把版本号写进首页正文。页面查询按钮会读取部署后的 `/version.json`。
 
 新增网页或资源，优先放入已有的挂载目录。自包含应用可以放在 `site/apps/`，并在 `site.config.json` 中明确配置对外路径。新增挂载后运行构建和检查，再验证页面实际访问与相对资源加载。
+
+更新 `/play/` 时，保持应用目录自包含，同步入口 HTML、八个游戏源文件、共享运行库、美术、`games.json` 和实机封面。门户页 `site/pages/game.html` 的入口数字和预览图片也要跟随当前目录更新；当前预览为雾港守夜 `arcade-siege.webp` 与山脊拉力 `race-ridge-rally.webp`。六款经典游戏的入口与素材留在原来的目录，不并入独立游戏应用。
 
 不要直接编辑 `dist/`：下一次构建会重新生成它。对外路径一旦使用，应保持稳定；确需修改路径时，应同时处理页面引用和旧链接兼容。
